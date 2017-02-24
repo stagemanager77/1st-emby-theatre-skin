@@ -107,6 +107,51 @@ define(['playbackManager', 'dom', 'inputmanager', 'datetime', 'itemHelper', 'med
         var headerElement = document.querySelector('.skinHeader');
         var osdBottomElement = document.querySelector('.videoOsdBottom');
 
+        function onVerticalSwipe(e, elem, data) {
+            var player = currentPlayer;
+            if (player) {
+
+                var windowSize = dom.getWindowSize();
+                var supportsBrightnessChange = false;
+
+                if (supportsBrightnessChange && data.clientX < (windowSize.innerWidth / 2)) {
+                    doBrightnessTouch(data.deltaY, player, windowSize.innerHeight);
+                    return;
+                }
+                doVolumeTouch(data.deltaY, player, windowSize.innerHeight);
+            }
+        }
+
+        function doBrightnessTouch(deltaY, player, viewHeight) {
+
+        }
+
+        function doVolumeTouch(deltaY, player, viewHeight) {
+
+            var delta = -((deltaY / viewHeight) * 100);
+
+            var newVolume = playbackManager.getVolume(player) + delta;
+
+            newVolume = Math.min(newVolume, 100);
+            newVolume = Math.max(newVolume, 0);
+
+            playbackManager.setVolume(newVolume, player);
+        }
+
+        function initSwipeEvents() {
+            require(['touchHelper'], function (TouchHelper) {
+                self.touchHelper = new TouchHelper(view, {
+                    swipeYThreshold: 30,
+                    triggerOnMove: true,
+                    preventDefaultOnMove: true,
+                    ignoreTagNames: ['BUTTON', 'INPUT', 'TEXTAREA']
+                });
+
+                events.on(self.touchHelper, 'swipeup', onVerticalSwipe);
+                events.on(self.touchHelper, 'swipedown', onVerticalSwipe);
+            });
+        }
+
         function updateNowPlayingInfo(state) {
 
             var item = state.NowPlayingItem;
@@ -867,6 +912,14 @@ define(['playbackManager', 'dom', 'inputmanager', 'datetime', 'itemHelper', 'med
             headerElement.classList.remove('hide');
         });
 
+        view.addEventListener('viewhide', function () {
+
+            if (self.touchHelper) {
+                self.touchHelper.destroy();
+                self.touchHelper = null;
+            }
+        });
+
         function onWindowKeyDown(e) {
             if (e.keyCode === 32 && !isOsdOpen()) {
                 playbackManager.playPause(currentPlayer);
@@ -1012,6 +1065,10 @@ define(['playbackManager', 'dom', 'inputmanager', 'datetime', 'itemHelper', 'med
 
         view.querySelector('.btnAudio').addEventListener('click', showAudioTrackSelection);
         view.querySelector('.btnSubtitles').addEventListener('click', showSubtitleTrackSelection);
+
+        if (browser.touch) {
+            initSwipeEvents();
+        }
 
         function onViewHideStopPlayback() {
 
