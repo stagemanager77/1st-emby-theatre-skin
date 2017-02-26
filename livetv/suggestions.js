@@ -88,7 +88,7 @@
 
         var promises = [];
 
-        var limit = enableScrollX() ? 18 : 12;
+        var limit = enableScrollX() ? 24 : 12;
 
         promises.push(apiClient.getLiveTvRecordings({
             UserId: apiClient.getCurrentUserId(),
@@ -111,7 +111,7 @@
 
         }));
 
-        // upcoming programs
+        // upcoming episodes
         promises.push(apiClient.getLiveTvRecommendedPrograms({
 
             UserId: apiClient.getCurrentUserId(),
@@ -121,6 +121,7 @@
             IsMovie: false,
             IsSports: false,
             IsKids: false,
+            IsNews: false,
             IsSeries: true,
             EnableTotalRecordCount: false,
             Fields: "ChannelInfo,PrimaryImageAspectRatio",
@@ -164,6 +165,22 @@
             Fields: "ChannelInfo",
             EnableImageTypes: "Primary,Thumb"
 
+        }));
+
+        // upcoming programs
+        promises.push(apiClient.getLiveTvRecommendedPrograms({
+
+            UserId: apiClient.getCurrentUserId(),
+            IsAiring: false,
+            HasAired: false,
+            Limit: limit,
+            IsMovie: false,
+            IsSports: false,
+            IsKids: false,
+            IsSeries: false,
+            EnableTotalRecordCount: false,
+            Fields: "ChannelInfo,PrimaryImageAspectRatio",
+            EnableImageTypes: "Primary,Thumb"
         }));
 
         this.promises = promises;
@@ -234,7 +251,7 @@
         });
 
         promises[2].then(function (result) {
-            renderItems(view, result.Items, 'upcomingPrograms');
+            renderItems(view, result.Items, 'upcomingEpisodes');
         });
 
         promises[3].then(function (result) {
@@ -250,6 +267,10 @@
 
         promises[5].then(function (result) {
             renderItems(view, result.Items, 'upcomingKids');
+        });
+
+        promises[6].then(function (result) {
+            renderItems(view, result.Items, 'upcomingPrograms');
         });
 
     };

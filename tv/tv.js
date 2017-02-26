@@ -95,21 +95,18 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
                     depends.push('./suggestions');
                     break;
                 case 1:
-                    depends.push('./suggestions');
+                    depends.push('./series');
                     break;
                 case 2:
-                    depends.push('./series');
-                    break;
-                case 3:
                     depends.push('./upcoming');
                     break;
-                case 4:
+                case 3:
                     depends.push('./favorites');
                     break;
-                case 5:
+                case 4:
                     depends.push('./series');
                     break;
-                case 6:
+                case 5:
                     depends.push('./series');
                     break;
                 default:
@@ -138,7 +135,7 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
 
         function preLoadTab(page, index) {
 
-            if (index === 2) {
+            if (index === 1) {
                 alphaPickerContainer.classList.remove('hide');
             } else {
                 alphaPickerContainer.classList.add('hide');

@@ -234,9 +234,9 @@ define(['cardBuilder', 'pluginManager', './../skininfo', 'emby-itemscontainer'],
         });
     }
 
-    function gotoMusicView(tab, parentId) {
+    function gotoMusicView(tab, parentId, apiClient) {
 
-        Emby.Page.show(pluginManager.mapRoute(skinInfo.id, 'music/music.html?tab=' + tab + "&parentid=" + parentId));
+        Emby.Page.show(pluginManager.mapRoute(skinInfo.id, 'music/music.html?tab=' + tab + "&parentid=" + parentId + "&serverId=" + apiClient.serverId()));
     }
 
     function view(element, apiClient, parentId, autoFocus) {
@@ -264,15 +264,15 @@ define(['cardBuilder', 'pluginManager', './../skininfo', 'emby-itemscontainer'],
         };
 
         element.querySelector('.artistsCard').addEventListener('click', function () {
-            gotoMusicView('albumartists', parentId);
+            gotoMusicView('2', parentId, apiClient);
         });
 
         element.querySelector('.albumsCard').addEventListener('click', function () {
-            gotoMusicView('albums', parentId);
+            gotoMusicView('1', parentId, apiClient);
         });
 
         element.querySelector('.genresCard').addEventListener('click', function () {
-            gotoMusicView('genres', parentId);
+            gotoMusicView('5', parentId, apiClient);
         });
 
         self.destroy = function () {

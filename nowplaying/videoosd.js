@@ -106,13 +106,13 @@ define(['playbackManager', 'dom', 'inputmanager', 'datetime', 'itemHelper', 'med
 
         var headerElement = document.querySelector('.skinHeader');
         var osdBottomElement = document.querySelector('.videoOsdBottom');
+        var supportsBrightnessChange;
 
         function onVerticalSwipe(e, elem, data) {
             var player = currentPlayer;
             if (player) {
 
                 var windowSize = dom.getWindowSize();
-                var supportsBrightnessChange = false;
 
                 if (supportsBrightnessChange && data.clientX < (windowSize.innerWidth / 2)) {
                     doBrightnessTouch(data.deltaY, player, windowSize.innerHeight);
@@ -123,7 +123,14 @@ define(['playbackManager', 'dom', 'inputmanager', 'datetime', 'itemHelper', 'med
         }
 
         function doBrightnessTouch(deltaY, player, viewHeight) {
+            var delta = -((deltaY / viewHeight) * 100);
 
+            var newValue = playbackManager.getBrightness(player) + delta;
+
+            newValue = Math.min(newValue, 100);
+            newValue = Math.max(newValue, 0);
+
+            playbackManager.setBrightness(newValue, player);
         }
 
         function doVolumeTouch(deltaY, player, viewHeight) {
@@ -650,6 +657,8 @@ define(['playbackManager', 'dom', 'inputmanager', 'datetime', 'itemHelper', 'med
 
             var supportedCommands = playerInfo.supportedCommands;
             currentPlayerSupportedCommands = supportedCommands;
+
+            supportsBrightnessChange = supportedCommands.indexOf('SetBrightness') !== -1;
 
             //if (supportedCommands.indexOf('SetRepeatMode') == -1) {
             //    toggleRepeatButton.classList.add('hide');

@@ -46,15 +46,14 @@ define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../component
             });
         }
 
-        if (params.genreId) {
+        if (item.Type === 'Genre' || item.Type === 'GameGenre' || item.Type === 'MusicGenre') {
 
             return Emby.Models.items({
                 StartIndex: startIndex,
                 Limit: limit,
                 SortBy: 'SortName',
                 Recursive: true,
-                GenreIds: params.genreId,
-                ParentId: item.Id,
+                GenreIds: item.Id,
                 IncludeItemTypes: item.CollectionType === 'tvshows' ? 'Series' : (item.CollectionType === 'movies' ? 'Movie' : 'MusicAlbum')
             });
 
@@ -109,9 +108,7 @@ define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../component
 
             Emby.Models.item(params.parentid).then(function (item) {
 
-                if (!params.genreId) {
-                    setTitle(item);
-                }
+                setTitle(item);
                 currentItem = item;
 
                 if (!isRestored) {
@@ -122,30 +119,18 @@ define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../component
                     }
                 }
 
-                if (!params.genreId) {
+                if (item.Type === 'MusicGenre') {
+                    view.querySelector('.listPageButtons').classList.remove('hide');
+                } else {
                     view.querySelector('.listPageButtons').classList.add('hide');
                 }
+
+                if (playbackManager.canQueue(item)) {
+                    view.querySelector('.btnQueue').classList.remove('hide');
+                } else {
+                    view.querySelector('.btnQueue').classList.add('hide');
+                }
             });
-
-            if (params.genreId) {
-                Emby.Models.item(params.genreId).then(function (item) {
-
-                    currentItem = item;
-                    Emby.Page.setTitle(item.Name);
-
-                    if (item.Type === 'MusicGenre') {
-                        view.querySelector('.listPageButtons').classList.remove('hide');
-                    } else {
-                        view.querySelector('.listPageButtons').classList.add('hide');
-                    }
-
-                    if (playbackManager.canQueue(item)) {
-                        view.querySelector('.btnQueue').classList.remove('hide');
-                    } else {
-                        view.querySelector('.btnQueue').classList.add('hide');
-                    }
-                });
-            }
 
             if (!isRestored) {
                 view.querySelector('.btnPlay').addEventListener('click', play);

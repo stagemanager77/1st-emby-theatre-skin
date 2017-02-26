@@ -5,7 +5,7 @@
         return !layoutManager.desktop;
     }
 
-    function TvSuggestionsTab(view, params) {
+    function MusicSuggestionsTab(view, params) {
         this.view = view;
         this.params = params;
         this.apiClient = connectionManager.getApiClient(params.serverId);
@@ -35,62 +35,6 @@
         return enableScrollX() ? 'overflowBackdrop' : 'backdrop';
     }
 
-    function renderResume(view, items) {
-
-        var section = view.querySelector('.resumeSection');
-        var container = section.querySelector('.itemsContainer');
-        var supportsImageAnalysis = appHost.supports('imageanalysis');
-        var cardLayout = supportsImageAnalysis;
-
-        var allowBottomPadding = !enableScrollX();
-
-        cardBuilder.buildCards(items, {
-            parentContainer: section,
-            itemsContainer: container,
-            preferThumb: true,
-            shape: getThumbShape(),
-            scalable: true,
-            showTitle: true,
-            showParentTitle: true,
-            overlayText: false,
-            centerText: !cardLayout,
-            overlayPlayButton: true,
-            allowBottomPadding: allowBottomPadding,
-            cardLayout: cardLayout,
-            vibrant: supportsImageAnalysis
-        });
-
-        if (enableScrollX()) {
-            section.querySelector('.emby-scroller').scrollToBeginning();
-        }
-    }
-
-    function renderNextUp(view, items) {
-
-        var section = view.querySelector('.nextUpSection');
-        var container = section.querySelector('.itemsContainer');
-        var supportsImageAnalysis = appHost.supports('imageanalysis');
-
-        cardBuilder.buildCards(items, {
-            parentContainer: section,
-            itemsContainer: container,
-            preferThumb: true,
-            shape: getThumbShape(),
-            scalable: true,
-            showTitle: true,
-            showParentTitle: true,
-            overlayText: false,
-            centerText: !supportsImageAnalysis,
-            overlayPlayButton: true,
-            cardLayout: supportsImageAnalysis,
-            vibrant: supportsImageAnalysis
-        });
-
-        if (enableScrollX()) {
-            section.querySelector('.emby-scroller').scrollToBeginning();
-        }
-    }
-
     function renderLatest(view, items) {
 
         var section = view.querySelector('.latestSection');
@@ -102,20 +46,16 @@
             parentContainer: section,
             itemsContainer: container,
             items: items,
-            shape: getThumbShape(),
-            preferThumb: true,
-            showTitle: true,
-            showSeriesYear: true,
-            showParentTitle: true,
-            overlayText: false,
-            cardLayout: cardLayout,
             showUnplayedIndicator: false,
-            showChildCountIndicator: true,
-            centerText: !cardLayout,
-            lazy: true,
-            overlayPlayButton: true,
-            vibrant: supportsImageAnalysis,
-            lines: 2
+            showLatestItemsPopup: false,
+            shape: getSquareShape(),
+            showTitle: true,
+            showParentTitle: true,
+            centerText: !supportsImageAnalysis,
+            overlayPlayButton: !supportsImageAnalysis,
+            allowBottomPadding: !enableScrollX(),
+            cardLayout: supportsImageAnalysis,
+            vibrant: supportsImageAnalysis
         });
 
         if (enableScrollX()) {
@@ -123,7 +63,62 @@
         }
     }
 
-    TvSuggestionsTab.prototype.onBeforeShow = function (options) {
+    function renderPlaylists(view, items) {
+
+        var section = view.querySelector('.playlistsSection');
+        var container = section.querySelector('.itemsContainer');
+        var supportsImageAnalysis = appHost.supports('imageanalysis');
+        var cardLayout = supportsImageAnalysis;
+
+        cardBuilder.buildCards(items, {
+            parentContainer: section,
+            itemsContainer: container,
+            items: items,
+            shape: getSquareShape(),
+            showTitle: true,
+            coverImage: true,
+            showItemCounts: true,
+            centerText: !supportsImageAnalysis,
+            overlayPlayButton: !supportsImageAnalysis,
+            allowBottomPadding: !enableScrollX(),
+            cardLayout: supportsImageAnalysis,
+            vibrant: supportsImageAnalysis
+        });
+
+        if (enableScrollX()) {
+            section.querySelector('.emby-scroller').scrollToBeginning();
+        }
+    }
+
+    function renderAlbums(view, items, sectionName) {
+
+        var section = view.querySelector('.' + sectionName);
+        var container = section.querySelector('.itemsContainer');
+        var supportsImageAnalysis = appHost.supports('imageanalysis');
+        var cardLayout = supportsImageAnalysis;
+
+        cardBuilder.buildCards(items, {
+            parentContainer: section,
+            itemsContainer: container,
+            items: items,
+            showUnplayedIndicator: false,
+            shape: getSquareShape(),
+            showTitle: true,
+            showParentTitle: true,
+            action: 'instantmix',
+            centerText: !supportsImageAnalysis,
+            overlayMoreButton: !supportsImageAnalysis,
+            allowBottomPadding: !enableScrollX(),
+            cardLayout: supportsImageAnalysis,
+            vibrant: supportsImageAnalysis
+        });
+
+        if (enableScrollX()) {
+            section.querySelector('.emby-scroller').scrollToBeginning();
+        }
+    }
+
+    MusicSuggestionsTab.prototype.onBeforeShow = function (options) {
 
         var apiClient = this.apiClient;
 
@@ -134,53 +129,72 @@
 
         var promises = [];
         var parentId = this.params.parentid;
-        var limit = enableScrollX() ? 18 : 12;
+        var limit = enableScrollX() ? 24 : 12;
+
+        promises.push(apiClient.getLatestItems({
+
+            IncludeItemTypes: "Audio",
+            Limit: limit,
+            Fields: "PrimaryImageAspectRatio,BasicSyncInfo",
+            ParentId: parentId,
+            ImageTypeLimit: 1,
+            EnableImageTypes: "Primary,Backdrop,Banner,Thumb",
+            EnableTotalRecordCount: false
+
+        }));
+
+        promises.push(apiClient.getItems(apiClient.getCurrentUserId(), {
+
+            SortBy: "SortName",
+            SortOrder: "Ascending",
+            IncludeItemTypes: "Playlist",
+            Recursive: true,
+            Fields: "PrimaryImageAspectRatio,CanDelete",
+            StartIndex: 0,
+            Limit: limit,
+            EnableTotalRecordCount: false
+
+        }));
 
         promises.push(apiClient.getItems(apiClient.getCurrentUserId(), {
 
             SortBy: "DatePlayed",
             SortOrder: "Descending",
-            IncludeItemTypes: "Episode",
-            Filters: "IsResumable",
+            IncludeItemTypes: "Audio",
             Limit: limit,
             Recursive: true,
-            Fields: "PrimaryImageAspectRatio,BasicSyncInfo",
-            ExcludeLocationTypes: "Virtual",
+            Fields: "PrimaryImageAspectRatio,CanDelete",
+            Filters: "IsPlayed",
             ParentId: parentId,
             ImageTypeLimit: 1,
-            EnableImageTypes: "Primary,Backdrop,Thumb",
+            EnableImageTypes: "Primary,Backdrop,Banner,Thumb",
             EnableTotalRecordCount: false
+
         }));
 
-        promises.push(apiClient.getNextUpEpisodes({
+        promises.push(apiClient.getItems(apiClient.getCurrentUserId(), {
 
-            ParentId: parentId,
-            Limit: 24,
-            Fields: "PrimaryImageAspectRatio,BasicSyncInfo",
-            UserId: apiClient.getCurrentUserId(),
-            ImageTypeLimit: 1,
-            EnableImageTypes: "Primary,Backdrop,Thumb"
-        }));
-
-        promises.push(apiClient.getLatestItems({
-
-            IncludeItemTypes: "Episode",
-            Limit: 30,
-            Fields: "PrimaryImageAspectRatio,BasicSyncInfo",
+            SortBy: "PlayCount",
+            SortOrder: "Descending",
+            IncludeItemTypes: "Audio",
+            Limit: limit,
+            Recursive: true,
+            Fields: "PrimaryImageAspectRatio,CanDelete",
+            Filters: "IsPlayed",
             ParentId: parentId,
             ImageTypeLimit: 1,
-            EnableImageTypes: "Primary,Backdrop,Thumb"
-
+            EnableImageTypes: "Primary,Backdrop,Banner,Thumb",
+            EnableTotalRecordCount: false
         }));
 
         this.promises = promises;
     };
 
-    function getBackdropShape() {
-        return enableScrollX() ? 'overflowBackdrop' : 'backdrop';
+    function getSquareShape() {
+        return enableScrollX() ? 'overflowSquare' : 'square';
     }
 
-    TvSuggestionsTab.prototype.onShow = function (options) {
+    MusicSuggestionsTab.prototype.onShow = function (options) {
 
         var promises = this.promises;
         if (!promises) {
@@ -197,17 +211,22 @@
         this.promises = [];
 
         promises[0].then(function (result) {
-            renderResume(view, result.Items);
+            renderLatest(view, result);
             return Promise.resolve();
         });
 
         promises[1].then(function (result) {
-            renderNextUp(view, result.Items);
+            renderPlaylists(view, result.Items);
             return Promise.resolve();
         });
 
         promises[2].then(function (result) {
-            renderLatest(view, result);
+            renderAlbums(view, result.Items, 'recentlyPlayedSection');
+            return Promise.resolve();
+        });
+
+        promises[3].then(function (result) {
+            renderAlbums(view, result.Items, 'frequentlyPlayedSection');
             return Promise.resolve();
         });
 
@@ -218,11 +237,11 @@
         });
     };
 
-    TvSuggestionsTab.prototype.onHide = function () {
+    MusicSuggestionsTab.prototype.onHide = function () {
 
     };
 
-    TvSuggestionsTab.prototype.destroy = function () {
+    MusicSuggestionsTab.prototype.destroy = function () {
 
         this.view = null;
         this.params = null;
@@ -230,5 +249,5 @@
         this.promises = null;
     };
 
-    return TvSuggestionsTab;
+    return MusicSuggestionsTab;
 });

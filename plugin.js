@@ -127,7 +127,8 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
             routes.push({
                 path: 'music/music.html',
                 transition: 'slide',
-                controller: self.id + '/music/music'
+                controller: self.id + '/music/music',
+                autoFocus: false
             });
 
             routes.push({
@@ -256,7 +257,7 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
 
         self.showItem = function (item) {
 
-            var showList = false;
+            var showList = item.Type === 'MusicGenre';
 
             if (item.IsFolder) {
 
