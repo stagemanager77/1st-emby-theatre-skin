@@ -12,7 +12,7 @@
         <div class="alphaPicker alphaPicker-vertical flex-grow" data-index="3"></div>
     </div>
 
-   <div class="scrollFrame scrollFrameY flex flex-grow focuscontainer-down">
+    <div class="scrollFrame scrollFrameY flex flex-grow focuscontainer-down">
 
         <div class="scrollSlider flex-grow tabs-container">
 
@@ -30,14 +30,14 @@
                     <button is="emby-button" class="emby-tab-button" data-index="3">
                         <div class="emby-button-foreground">${Artists}</div>
                     </button>
-                    <button is="emby-button" class="emby-tab-button hide" data-index="4">
+                    <button is="emby-button" class="emby-tab-button" data-index="4">
+                        <div class="emby-button-foreground">${Playlists}</div>
+                    </button>
+                    <button is="emby-button" class="emby-tab-button hide" data-index="5">
                         <div class="emby-button-foreground">${Songs}</div>
                     </button>
-                    <button is="emby-button" class="emby-tab-button" data-index="5">
+                    <button is="emby-button" class="emby-tab-button" data-index="6">
                         <div class="emby-button-foreground">${Genres}</div>
-                    </button>
-                    <button is="emby-button" class="emby-tab-button hide" data-index="6">
-                        <div class="emby-button-foreground">${Folders}</div>
                     </button>
                 </div>
             </div>
@@ -80,11 +80,15 @@
             <div class="tabContent padded-left padded-left-withalphapicker padded-right padded-top" data-index="3">
                 <div is="emby-itemscontainer" class="itemsContainer vertical-wrap itemsContainer-withalphapicker"></div>
             </div>
-            <div class="tabContent padded-top padded-left padded-right" data-index="4">
+
+            <div class="tabContent padded-left padded-right padded-top" data-index="4">
+                <div is="emby-itemscontainer" class="itemsContainer vertical-wrap focuscontainer-x"></div>
             </div>
+
             <div class="tabContent padded-left padded-right padded-top" data-index="5">
                 <div is="emby-itemscontainer" class="itemsContainer vertical-wrap focuscontainer-x"></div>
             </div>
+
             <div class="tabContent padded-left padded-right padded-top" data-index="6">
                 <div is="emby-itemscontainer" class="itemsContainer vertical-wrap focuscontainer-x"></div>
             </div>

@@ -1,37 +1,5 @@
-define(['browser', 'loading', 'alphaPicker', 'scroller', './../components/focushandler', 'cardBuilder', 'connectionManager', 'emby-itemscontainer'], function (browser, loading, alphaPicker, scroller, focusHandler, cardBuilder, connectionManager) {
+define(['browser', 'loading', 'alphaPicker', 'scroller', './../components/focushandler', 'cardBuilder', 'connectionManager', 'emby-itemscontainer', 'emby-scroller'], function (browser, loading, alphaPicker, scroller, focusHandler, cardBuilder, connectionManager) {
     'use strict';
-
-    function createVerticalScroller(view, pageInstance) {
-
-        var scrollFrame = view.querySelector('.scrollFrameY');
-
-        var options = {
-            horizontal: 0,
-            itemNav: 0,
-            mouseDragging: 1,
-            touchDragging: 1,
-            slidee: view.querySelector('.scrollSlider'),
-            itemSelector: '.card',
-            smart: true,
-            scrollBy: 200,
-            speed: 270,
-            scrollWidth: 10000
-        };
-
-        pageInstance.verticalScroller = new scroller(scrollFrame, options);
-        pageInstance.verticalScroller.init();
-        initFocusHandler(view, pageInstance.verticalScroller);
-    }
-
-    function initFocusHandler(view, scroller) {
-
-        var searchResults = view.querySelector('.searchResults');
-
-        self.focusHandler = new focusHandler({
-            parent: searchResults,
-            scroller: scroller
-        });
-    }
 
     function isWhitespace(userText) {
         userText = userText.replace(/^\s+/, '').replace(/\s+$/, '');
@@ -43,12 +11,12 @@ define(['browser', 'loading', 'alphaPicker', 'scroller', './../components/focush
         }
     }
 
-    return function(view, params) {
+    return function (view, params) {
 
         var self = this;
 
         if (browser.tizen || browser.orsay) {
-            view.querySelector('.txtSearch').readOnly=true;
+            view.querySelector('.txtSearch').readOnly = true;
         }
 
         function onAlphaValueClicked(e) {
@@ -76,10 +44,15 @@ define(['browser', 'loading', 'alphaPicker', 'scroller', './../components/focush
                     SearchHints: []
                 };
                 populateResults(emptyResult, '.peopleResults');
+                populateResults(emptyResult, '.programResults');
+                populateResults(emptyResult, '.seriesResults');
+                populateResults(emptyResult, '.episodeResults');
                 populateResults(emptyResult, '.movieResults');
                 populateResults(emptyResult, '.artistResults');
                 populateResults(emptyResult, '.albumResults');
                 populateResults(emptyResult, '.songResults');
+                populateResults(emptyResult, '.bookResults');
+                populateResults(emptyResult, '.audioBookResults');
                 return;
             }
 
@@ -90,9 +63,54 @@ define(['browser', 'loading', 'alphaPicker', 'scroller', './../components/focush
                 IncludeGenres: false,
                 IncludeStudios: false,
                 IncludeArtists: false,
-                IncludeItemTypes: "Movie,Series"
+                IncludeItemTypes: "Movie"
 
             }, '.movieResults');
+
+            searchType(value, {
+                searchTerm: value,
+                IncludePeople: false,
+                IncludeMedia: true,
+                IncludeGenres: false,
+                IncludeStudios: false,
+                IncludeArtists: false,
+                IncludeItemTypes: "LiveTvProgram"
+
+            }, '.programResults', {
+                
+                showTitle: true,
+                showParentTitle: true,
+                overlayText: false,
+                centerText: true
+
+            });
+
+            searchType(value, {
+                searchTerm: value,
+                IncludePeople: false,
+                IncludeMedia: true,
+                IncludeGenres: false,
+                IncludeStudios: false,
+                IncludeArtists: false,
+                IncludeItemTypes: "Series"
+
+            }, '.seriesResults');
+
+            searchType(value, {
+                searchTerm: value,
+                IncludePeople: false,
+                IncludeMedia: true,
+                IncludeGenres: false,
+                IncludeStudios: false,
+                IncludeArtists: false,
+                IncludeItemTypes: "Episode"
+
+            }, '.episodeResults', {
+
+                coverImage: true,
+                showTitle: true,
+                showParentTitle: true
+            });
 
             searchType(value, {
                 searchTerm: value,
@@ -103,9 +121,9 @@ define(['browser', 'loading', 'alphaPicker', 'scroller', './../components/focush
                 IncludeArtists: false
 
             }, '.peopleResults', {
+
                 coverImage: true,
-                showTitle: true,
-                overlayTitle: false
+                showTitle: true
             });
 
             searchType(value, {
@@ -118,8 +136,7 @@ define(['browser', 'loading', 'alphaPicker', 'scroller', './../components/focush
 
             }, '.artistResults', {
                 coverImage: true,
-                showTitle: true,
-                overlayTitle: false
+                showTitle: true
             });
 
             searchType(value, {
@@ -145,6 +162,28 @@ define(['browser', 'loading', 'alphaPicker', 'scroller', './../components/focush
             }, '.songResults', {
                 action: 'play'
             });
+
+            searchType(value, {
+                searchTerm: value,
+                IncludePeople: false,
+                IncludeMedia: true,
+                IncludeGenres: false,
+                IncludeStudios: false,
+                IncludeArtists: false,
+                IncludeItemTypes: "Book"
+
+            }, '.bookResults');
+
+            searchType(value, {
+                searchTerm: value,
+                IncludePeople: false,
+                IncludeMedia: true,
+                IncludeGenres: false,
+                IncludeStudios: false,
+                IncludeArtists: false,
+                IncludeItemTypes: "AudioBook"
+
+            }, '.audioBookResults');
         }
 
         function getSearchResults(options) {
@@ -158,9 +197,9 @@ define(['browser', 'loading', 'alphaPicker', 'scroller', './../components/focush
 
         function searchType(value, query, section, cardOptions) {
 
-            query.Limit = 20;
+            query.Limit = 24;
 
-            getSearchResults(query).then(function(result) {
+            getSearchResults(query).then(function (result) {
 
                 populateResults(result, section, cardOptions);
 
@@ -173,28 +212,24 @@ define(['browser', 'loading', 'alphaPicker', 'scroller', './../components/focush
 
             var items = result.SearchHints;
 
-            if (items.length) {
-                section.classList.remove('hide');
-            } else {
-                section.classList.add('hide');
-            }
+            var itemsContainer = section.querySelector('.itemsContainer');
 
-            cardOptions = cardOptions || {};
-            cardOptions.itemsContainer = section.querySelector('.itemsContainer');
-            cardOptions.shape = 'autoVertical';
-            cardOptions.sectionTitleTagName = 'h2';
-            cardOptions.scalable = true;
-            cardOptions.overlayText = true;
+            cardBuilder.buildCards(items, Object.assign({
+                
+                itemsContainer: itemsContainer,
+                parentContainer: section,
+                shape: 'autooverflow',
+                scalable: true,
+                overlayText: true,
+                widths: {
+                    portrait: 340,
+                    thumb: 500,
+                    square: 340
+                }
 
-            cardOptions.widths = {
-                portrait: 340,
-                thumb: 500,
-                square: 340
-            };
+            }, cardOptions|| {}));
 
-            cardBuilder.buildCards(items, cardOptions);
-
-            cardOptions.itemsContainer.scrollLeft = 0;
+            section.querySelector('.emby-scroller').scrollToBeginning(true);
         }
 
         function initAlphaPicker(view) {
@@ -207,6 +242,14 @@ define(['browser', 'loading', 'alphaPicker', 'scroller', './../components/focush
             });
 
             alphaPickerElement.addEventListener('alphavalueclicked', onAlphaValueClicked);
+        }
+
+        function initFocusHandler(view) {
+
+            self.focusHandler = new focusHandler({
+                parent: view,
+                enableBackdrops: false
+            });
         }
 
         var searchTimeout;
@@ -241,7 +284,7 @@ define(['browser', 'loading', 'alphaPicker', 'scroller', './../components/focush
             return document.querySelector('.skinHeader');
         }
 
-        view.addEventListener('viewshow', function(e) {
+        view.addEventListener('viewshow', function (e) {
 
             getHeaderElement().classList.add('searchHeader');
 
@@ -252,31 +295,28 @@ define(['browser', 'loading', 'alphaPicker', 'scroller', './../components/focush
 
             if (!isRestored) {
                 initAlphaPicker(e.target);
+                initFocusHandler(e.target);
 
                 e.target.querySelector('.txtSearch').addEventListener('keyup', onSearchKeyPress);
-
-                createVerticalScroller(e.target, self);
             }
         });
 
-        view.addEventListener('viewhide', function() {
+        view.addEventListener('viewhide', function () {
 
             getHeaderElement().classList.remove('searchHeader');
 
             document.querySelector('.headerSearchButton').classList.remove('hide');
         });
 
-        view.addEventListener('viewdestroy', function() {
+        view.addEventListener('viewdestroy', function () {
 
+            if (self.alphaPicker) {
+                self.alphaPicker.destroy();
+                self.alphaPicker = null;
+            }
             if (self.focusHandler) {
                 self.focusHandler.destroy();
                 self.focusHandler = null;
-            }
-            if (self.alphaPicker) {
-                self.alphaPicker.destroy();
-            }
-            if (self.verticalScroller) {
-                self.verticalScroller.destroy();
             }
         });
     };

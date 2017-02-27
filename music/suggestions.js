@@ -63,33 +63,6 @@
         }
     }
 
-    function renderPlaylists(view, items) {
-
-        var section = view.querySelector('.playlistsSection');
-        var container = section.querySelector('.itemsContainer');
-        var supportsImageAnalysis = appHost.supports('imageanalysis');
-        var cardLayout = supportsImageAnalysis;
-
-        cardBuilder.buildCards(items, {
-            parentContainer: section,
-            itemsContainer: container,
-            items: items,
-            shape: getSquareShape(),
-            showTitle: true,
-            coverImage: true,
-            showItemCounts: true,
-            centerText: !supportsImageAnalysis,
-            overlayPlayButton: !supportsImageAnalysis,
-            allowBottomPadding: !enableScrollX(),
-            cardLayout: supportsImageAnalysis,
-            vibrant: supportsImageAnalysis
-        });
-
-        if (enableScrollX()) {
-            section.querySelector('.emby-scroller').scrollToBeginning();
-        }
-    }
-
     function renderAlbums(view, items, sectionName) {
 
         var section = view.querySelector('.' + sectionName);
@@ -139,19 +112,6 @@
             ParentId: parentId,
             ImageTypeLimit: 1,
             EnableImageTypes: "Primary,Backdrop,Banner,Thumb",
-            EnableTotalRecordCount: false
-
-        }));
-
-        promises.push(apiClient.getItems(apiClient.getCurrentUserId(), {
-
-            SortBy: "SortName",
-            SortOrder: "Ascending",
-            IncludeItemTypes: "Playlist",
-            Recursive: true,
-            Fields: "PrimaryImageAspectRatio,CanDelete",
-            StartIndex: 0,
-            Limit: limit,
             EnableTotalRecordCount: false
 
         }));
@@ -216,16 +176,11 @@
         });
 
         promises[1].then(function (result) {
-            renderPlaylists(view, result.Items);
-            return Promise.resolve();
-        });
-
-        promises[2].then(function (result) {
             renderAlbums(view, result.Items, 'recentlyPlayedSection');
             return Promise.resolve();
         });
 
-        promises[3].then(function (result) {
+        promises[2].then(function (result) {
             renderAlbums(view, result.Items, 'frequentlyPlayedSection');
             return Promise.resolve();
         });

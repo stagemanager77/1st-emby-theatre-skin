@@ -443,7 +443,7 @@ h1 {
 
 
 .verticalSection {
-    margin-bottom: 2.7em;
+    margin-bottom: 2.3em;
 }
 
 .sectionTitle {
@@ -520,7 +520,7 @@ button.mini {
 @media all and (min-width: 1280px) {
 
     .padded-left {
-        padding-left: 3.4%;
+        padding-left: 3.2%;
     }
 
     .padded-left-withalphapicker {
@@ -528,6 +528,6 @@ button.mini {
     }
 
     .padded-right {
-        padding-right: 3.4%;
+        padding-right: 3.2%;
     }
 }

@@ -117,13 +117,13 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
                     depends.push('./artists');
                     break;
                 case 4:
-                    depends.push('./songs');
+                    depends.push('./playlists');
                     break;
                 case 5:
-                    depends.push('./genres');
+                    depends.push('./songs');
                     break;
                 case 6:
-                    depends.push('./folders');
+                    depends.push('./genres');
                     break;
                 default:
                     break;
