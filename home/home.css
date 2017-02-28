@@ -5,3 +5,7 @@
     .wideSpotlightCard .cardImageContainer {
         height: 44.7vh;
     }
+
+    .wideSpotlightCard:focus > .cardBox {
+      transform: scale(1.04, 1.04);
+  }

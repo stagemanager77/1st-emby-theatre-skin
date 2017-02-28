@@ -3,9 +3,6 @@ define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 's
         'use strict';
 
         var enableAnimations = browser.animate || browser.edge;
-        var zoomInEase = 'ease-out';
-        var zoomOutEase = 'ease-in';
-        var zoomDuration = 200;
 
         function fadeIn(elem) {
 
@@ -22,10 +19,7 @@ define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 's
 
             var parent = options.parent;
             var focusedElement;
-            var zoomElement;
             var isHorizontal = options.scroller ? options.scroller.options.horizontal : options.horizontal;
-            var zoomScale = options.zoomScale || (isHorizontal ? '1.16' : '1.12');
-            var zoomScaleClass = (isHorizontal ? 'cardBox-scaled' : 'cardBox-scaled-small');
             var lastFocus = 0;
 
             if (layoutManager.tv) {
@@ -42,11 +36,6 @@ define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 's
             var selectedItemInfoElement = options.selectedItemInfoElement;
             var selectedIndexElement = options.selectedIndexElement;
             var selectedItemPanel;
-
-            function zoomOut(elem, scaleSize) {
-
-                elem.classList.remove(zoomScaleClass);
-            }
 
             function onFocusIn(e) {
 
@@ -73,13 +62,12 @@ define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 's
                             scrollHelper.toCenter(options.scrollElement, focused, isHorizontal);
                         }
                     }
-                    startZoomTimer();
+                    startSelectedInfoTimer();
                 }
             }
 
             function onFocusOut(e) {
 
-                clearZoomTimer();
                 clearSelectedInfoTimer();
 
                 if (selectedItemInfoElement && selectedItemInfoElementHasContent) {
@@ -88,42 +76,19 @@ define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 's
 
                 var focused = focusedElement;
                 focusedElement = null;
-
-                var zoomed = zoomElement;
-                zoomElement = null;
-
-                if (zoomed) {
-                    zoomOut(zoomed, zoomScale);
-                }
             }
 
-            var zoomTimeout;
             var selectedItemInfoTimeout;
-            function clearZoomTimer() {
-                if (zoomTimeout) {
-                    clearTimeout(zoomTimeout);
-                }
-            }
             function clearSelectedInfoTimer() {
                 if (selectedItemInfoTimeout) {
                     clearTimeout(selectedItemInfoTimeout);
                 }
             }
-            function startZoomTimer() {
-
-                clearZoomTimer();
-                zoomTimeout = setTimeout(onZoomTimeout, 50);
+            function startSelectedInfoTimer() {
 
                 if (selectedItemInfoElement) {
                     clearSelectedInfoTimer();
                     selectedItemInfoTimeout = setTimeout(onSelectedInfoTimeout, 500);
-                }
-            }
-
-            function onZoomTimeout() {
-                var focused = focusedElement;
-                if (focused) {
-                    zoomIn(focused);
                 }
             }
 
@@ -132,26 +97,6 @@ define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 's
                 if (focused) {
                     setSelectedItemInfo(focused);
                 }
-            }
-
-            function zoomIn(elem) {
-
-                if (!enableAnimations) {
-                    return;
-                }
-
-                var card = elem;
-
-                var cardBox = card.querySelector('.cardBox-focustransform');
-
-                if (!cardBox) {
-                    return;
-                }
-
-                elem = cardBox;
-
-                elem.classList.add(zoomScaleClass);
-                zoomElement = elem;
             }
 
             function setSelectedItemInfo(card) {

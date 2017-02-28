@@ -244,14 +244,6 @@ define(['browser', 'loading', 'alphaPicker', 'scroller', './../components/focush
             alphaPickerElement.addEventListener('alphavalueclicked', onAlphaValueClicked);
         }
 
-        function initFocusHandler(view) {
-
-            self.focusHandler = new focusHandler({
-                parent: view,
-                enableBackdrops: false
-            });
-        }
-
         var searchTimeout;
 
         function searchOnTimeout() {
@@ -295,7 +287,6 @@ define(['browser', 'loading', 'alphaPicker', 'scroller', './../components/focush
 
             if (!isRestored) {
                 initAlphaPicker(e.target);
-                initFocusHandler(e.target);
 
                 e.target.querySelector('.txtSearch').addEventListener('keyup', onSearchKeyPress);
             }
@@ -313,10 +304,6 @@ define(['browser', 'loading', 'alphaPicker', 'scroller', './../components/focush
             if (self.alphaPicker) {
                 self.alphaPicker.destroy();
                 self.alphaPicker = null;
-            }
-            if (self.focusHandler) {
-                self.focusHandler.destroy();
-                self.focusHandler = null;
             }
         });
     };

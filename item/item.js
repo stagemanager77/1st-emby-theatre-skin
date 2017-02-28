@@ -676,11 +676,11 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
 
                 html += '<div class="verticalSection personSection" data-type="' + section.type + '">';
 
-                html += '<h2>';
+                html += '<h2 class="sectionTitle padded-left">';
                 html += section.name;
                 html += '</h2>';
 
-                html += '<div is="emby-itemscontainer" class="itemsContainer vertical-wrap">';
+                html += '<div is="emby-itemscontainer" class="itemsContainer vertical-wrap padded-left padded-right">';
                 html += '</div>';
 
                 html += '</div>';
