@@ -6,6 +6,10 @@
         height: 44.7vh;
     }
 
-    .wideSpotlightCard:focus > .cardBox {
-      transform: scale(1.04, 1.04);
-  }
+    .wideSpotlightCard.card-focusscale:focus > .cardBox {
+        transform: scale(1.04, 1.04);
+    }
+
+.homePageContainer .cardBox {
+    margin: 4px!important;
+}

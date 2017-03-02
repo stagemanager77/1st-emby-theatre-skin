@@ -104,7 +104,7 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
                     depends.push('./favorites');
                     break;
                 case 4:
-                    depends.push('./series');
+                    depends.push('./genres');
                     break;
                 case 5:
                     depends.push('./series');
@@ -143,9 +143,14 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
 
             getTabController(page, index, function (controller) {
                 if (controller.onBeforeShow) {
+
+                    var refresh = isViewRestored !== true || !controller.refreshed;
+
                     controller.onBeforeShow({
-                        refresh: isViewRestored !== true
+                        refresh: refresh
                     });
+
+                    controller.refreshed = true;
                 }
             });
         }

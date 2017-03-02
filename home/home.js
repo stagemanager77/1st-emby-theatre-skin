@@ -1,4 +1,4 @@
-define(['connectionManager', 'loading', './../components/tabbedpage', 'backdrop', 'focusManager', 'playbackManager', './../skininfo', 'events'], function (connectionManager, loading, tabbedPage, backdrop, focusManager, playbackManager, skinInfo, events) {
+define(['connectionManager', 'loading', './../components/tabbedpage', 'backdrop', 'focusManager', 'playbackManager', 'layoutManager', 'browser', './../skininfo', 'events'], function (connectionManager, loading, tabbedPage, backdrop, focusManager, playbackManager, layoutManager, browser, skinInfo, events) {
     'use strict';
 
     function loadViewHtml(page, parentId, html, viewName, autoFocus, self) {
@@ -14,9 +14,24 @@ define(['connectionManager', 'loading', './../components/tabbedpage', 'backdrop'
             var apiClient = connectionManager.currentApiClient();
             var tabView = new viewBuilder(homePanel, apiClient, parentId, autoFocus);
             tabView.element = homePanel;
+            loadFocusScaleCards(homePanel);
             tabView.loadData();
             self.tabView = tabView;
         });
+    }
+
+    function loadFocusScaleCards(elem) {
+
+        if (!layoutManager.tv || !(browser.animate || browser.edge)) {
+            return;
+        }
+
+        var cards = elem.querySelectorAll('.card-static');
+        for (var i = 0, length = cards.length; i < length; i++) {
+
+            cards[i].classList.add('card-focusscale');
+            cards[i].querySelector('.cardBox').classList.add('cardBox-focustransform');
+        }
     }
 
     function parentWithClass(elem, className) {

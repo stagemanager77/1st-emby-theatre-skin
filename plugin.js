@@ -1,4 +1,4 @@
-define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'events', 'datetime', 'mouseManager', 'dom'], function (playbackManager, pluginManager, browser, connectionManager, events, datetime, mouseManager, dom) {
+define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'events', 'datetime', 'mouseManager', 'dom', 'layoutManager'], function (playbackManager, pluginManager, browser, connectionManager, events, datetime, mouseManager, dom, layoutManager) {
     'use strict';
 
     function updateClock() {
@@ -134,7 +134,8 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
             routes.push({
                 path: 'movies/movies.html',
                 transition: 'slide',
-                controller: self.id + '/movies/movies'
+                controller: self.id + '/movies/movies',
+                autoFocus: false
             });
 
             routes.push({
@@ -231,8 +232,12 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
         var clockInterval;
         self.load = function () {
 
-            updateClock();
-            setInterval(updateClock, 50000);
+            if (!layoutManager.mobile) {
+                document.querySelector('.headerClock').classList.remove('hide');
+                updateClock();
+                setInterval(updateClock, 50000);
+            }
+
             bindEvents();
         };
 

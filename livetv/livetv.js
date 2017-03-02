@@ -82,9 +82,14 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 're
 
             getTabController(page, index, function (controller) {
                 if (controller.onBeforeShow) {
+
+                    var refresh = isViewRestored !== true || !controller.refreshed;
+
                     controller.onBeforeShow({
-                        refresh: isViewRestored !== true
+                        refresh: refresh
                     });
+
+                    controller.refreshed = true;
                 }
             });
         }

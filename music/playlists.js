@@ -16,9 +16,9 @@
             items: items,
             shape: "auto",
             context: 'music',
-            showItemCounts: true,
             cardLayout: true,
             showTitle: true,
+            coverImage: true,
             vibrant: true
         });
     }

@@ -55,7 +55,8 @@
             overlayPlayButton: !supportsImageAnalysis,
             allowBottomPadding: !enableScrollX(),
             cardLayout: supportsImageAnalysis,
-            vibrant: supportsImageAnalysis
+            vibrant: supportsImageAnalysis,
+            coverImage: true
         });
 
         if (enableScrollX()) {
@@ -63,14 +64,14 @@
         }
     }
 
-    function renderAlbums(view, items, sectionName) {
+    function renderAlbums(view, items, sectionName, cardOptions) {
 
         var section = view.querySelector('.' + sectionName);
         var container = section.querySelector('.itemsContainer');
         var supportsImageAnalysis = appHost.supports('imageanalysis');
         var cardLayout = supportsImageAnalysis;
 
-        cardBuilder.buildCards(items, {
+        cardBuilder.buildCards(items, Object.assign({
             parentContainer: section,
             itemsContainer: container,
             items: items,
@@ -83,8 +84,10 @@
             overlayMoreButton: !supportsImageAnalysis,
             allowBottomPadding: !enableScrollX(),
             cardLayout: supportsImageAnalysis,
-            vibrant: supportsImageAnalysis
-        });
+            vibrant: supportsImageAnalysis,
+            coverImage: true
+
+        }, cardOptions || {}));
 
         if (enableScrollX()) {
             section.querySelector('.emby-scroller').scrollToBeginning();
@@ -111,7 +114,7 @@
             Fields: "PrimaryImageAspectRatio,BasicSyncInfo",
             ParentId: parentId,
             ImageTypeLimit: 1,
-            EnableImageTypes: "Primary,Backdrop,Banner,Thumb",
+            EnableImageTypes: "Primary",
             EnableTotalRecordCount: false
 
         }));
@@ -127,7 +130,7 @@
             Filters: "IsPlayed",
             ParentId: parentId,
             ImageTypeLimit: 1,
-            EnableImageTypes: "Primary,Backdrop,Banner,Thumb",
+            EnableImageTypes: "Primary",
             EnableTotalRecordCount: false
 
         }));
@@ -143,7 +146,48 @@
             Filters: "IsPlayed",
             ParentId: parentId,
             ImageTypeLimit: 1,
-            EnableImageTypes: "Primary,Backdrop,Banner,Thumb",
+            EnableImageTypes: "Primary",
+            EnableTotalRecordCount: false
+        }));
+
+        promises.push(apiClient.getArtists(apiClient.getCurrentUserId(), {
+
+            SortBy: "SortName",
+            SortOrder: "Ascending",
+            Recursive: true,
+            Fields: "PrimaryImageAspectRatio,BasicSyncInfo",
+            Filters: "IsFavorite",
+            StartIndex: 0,
+            ImageTypeLimit: 1,
+            EnableImageTypes: "Primary",
+            EnableTotalRecordCount: false
+        }));
+
+        promises.push(apiClient.getItems(apiClient.getCurrentUserId(), {
+
+            SortBy: "Random",
+            IncludeItemTypes: "MusicAlbum",
+            Limit: limit,
+            Recursive: true,
+            Fields: "PrimaryImageAspectRatio,CanDelete",
+            Filters: "IsFavorite",
+            ParentId: parentId,
+            ImageTypeLimit: 1,
+            EnableImageTypes: "Primary",
+            EnableTotalRecordCount: false
+        }));
+
+        promises.push(apiClient.getItems(apiClient.getCurrentUserId(), {
+
+            SortBy: "Random",
+            IncludeItemTypes: "Audio",
+            Limit: limit,
+            Recursive: true,
+            Fields: "PrimaryImageAspectRatio,CanDelete",
+            Filters: "IsFavorite",
+            ParentId: parentId,
+            ImageTypeLimit: 1,
+            EnableImageTypes: "Primary",
             EnableTotalRecordCount: false
         }));
 
@@ -182,6 +226,26 @@
 
         promises[2].then(function (result) {
             renderAlbums(view, result.Items, 'frequentlyPlayedSection');
+            return Promise.resolve();
+        });
+
+        promises[3].then(function (result) {
+            renderAlbums(view, result.Items, 'favoriteArtistsSection', {
+                showParentTitle: false,
+                action: 'play'
+            });
+            return Promise.resolve();
+        });
+
+        promises[4].then(function (result) {
+            renderAlbums(view, result.Items, 'favoriteAlbumsSection', {
+                action: 'play'
+            });
+            return Promise.resolve();
+        });
+
+        promises[5].then(function (result) {
+            renderAlbums(view, result.Items, 'favoriteSongsSection');
             return Promise.resolve();
         });
 

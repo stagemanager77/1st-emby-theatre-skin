@@ -1,28 +1,26 @@
 ﻿define(['cardBuilder', 'imageLoader', 'loading', 'connectionManager', 'apphost', 'layoutManager', 'scrollHelper', 'focusManager', 'emby-itemscontainer'], function (cardBuilder, imageLoader, loading, connectionManager, appHost, layoutManager, scrollHelper, focusManager) {
     'use strict';
 
-    function MusicGenresTab(view, params) {
+    function MoviesTab(view, params) {
         this.view = view;
         this.params = params;
         this.apiClient = connectionManager.getApiClient(params.serverId);
     }
 
-    function renderItems(view, items) {
+    function renderMovies(view, items) {
 
-        var container = view.querySelector('.itemsContainer');
+        var container = view.querySelector('.movieItems');
 
         cardBuilder.buildCards(items, {
             itemsContainer: container,
             items: items,
-            shape: "auto",
-            context: 'music',
-            cardLayout: true,
-            showTitle: true,
-            vibrant: true
+            shape: "portrait",
+            centerText: true,
+            overlayMoreButton: !layoutManager.tv
         });
     }
 
-    MusicGenresTab.prototype.onBeforeShow = function (options) {
+    MoviesTab.prototype.onBeforeShow = function (options) {
 
         var apiClient = this.apiClient;
 
@@ -34,20 +32,31 @@
         var promises = [];
         var parentId = this.params.parentid;
 
-        promises.push(apiClient.getGenres(apiClient.getCurrentUserId(), {
-
+        var query = {
             SortBy: "SortName",
             SortOrder: "Ascending",
-            IncludeItemTypes: "Audio",
+            IncludeItemTypes: "Movie",
             Recursive: true,
-            Fields: "PrimaryImageAspectRatio,ItemCounts",
+            Fields: "PrimaryImageAspectRatio,BasicSyncInfo",
+            ImageTypeLimit: 1,
+            EnableImageTypes: "Primary,Backdrop,Banner,Thumb",
+            StartIndex: 0,
             parentId: parentId
-        }));
+        };
+
+        if (this.mode === 'unwatched') {
+            query.Filters = "IsUnplayed";
+        }
+        else if (this.mode === 'favorites') {
+            query.Filters = "IsFavorite";
+        }
+
+        promises.push(apiClient.getItems(apiClient.getCurrentUserId(), query));
 
         this.promises = promises;
     };
 
-    MusicGenresTab.prototype.onShow = function (options) {
+    MoviesTab.prototype.onShow = function (options) {
 
         var promises = this.promises;
         if (!promises) {
@@ -59,7 +68,7 @@
         var view = this.view;
 
         promises[0].then(function (result) {
-            renderItems(view, result.Items);
+            renderMovies(view, result.Items);
             return Promise.resolve();
         });
 
@@ -70,11 +79,11 @@
         });
     };
 
-    MusicGenresTab.prototype.onHide = function () {
+    MoviesTab.prototype.onHide = function () {
 
     };
 
-    MusicGenresTab.prototype.destroy = function () {
+    MoviesTab.prototype.destroy = function () {
 
         this.view = null;
         this.params = null;
@@ -82,5 +91,5 @@
         this.promises = null;
     };
 
-    return MusicGenresTab;
+    return MoviesTab;
 });

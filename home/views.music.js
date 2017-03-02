@@ -272,7 +272,7 @@ define(['cardBuilder', 'pluginManager', './../skininfo', 'emby-itemscontainer'],
         });
 
         element.querySelector('.genresCard').addEventListener('click', function () {
-            gotoMusicView('5', parentId, apiClient);
+            gotoMusicView('6', parentId, apiClient);
         });
 
         self.destroy = function () {

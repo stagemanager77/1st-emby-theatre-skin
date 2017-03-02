@@ -193,15 +193,15 @@ define(['./spotlight', 'imageLoader', 'focusManager', 'cardBuilder', './../skini
         loadImages(element, parentId);
 
         element.querySelector('.allMoviesCard').addEventListener('click', function () {
-            Emby.Page.show(Emby.PluginManager.mapRoute(skinInfo.id, 'movies/movies.html?parentid=' + parentId));
+            Emby.Page.show(Emby.PluginManager.mapRoute(skinInfo.id, 'movies/movies.html?serverId=' + apiClient.serverId() + '&tab=1&parentid=' + parentId));
         });
 
         element.querySelector('.movieCollectionsCard').addEventListener('click', function () {
-            Emby.Page.show(Emby.PluginManager.mapRoute(skinInfo.id, 'movies/movies.html?tab=collections&parentid=' + parentId));
+            Emby.Page.show(Emby.PluginManager.mapRoute(skinInfo.id, 'movies/movies.html?serverId=' + apiClient.serverId() + '&tab=4&parentid=' + parentId));
         });
 
         element.querySelector('.movieFavoritesCard').addEventListener('click', function () {
-            Emby.Page.show(Emby.PluginManager.mapRoute(skinInfo.id, 'movies/movies.html?tab=favorites&parentid=' + parentId));
+            Emby.Page.show(Emby.PluginManager.mapRoute(skinInfo.id, 'movies/movies.html?serverId=' + apiClient.serverId() + '&tab=3&parentid=' + parentId));
         });
 
         self.destroy = function () {

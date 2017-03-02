@@ -3,33 +3,24 @@ html {
 }
 
 html {
-    font-size: 100%;
+    font-size: 88%;
 }
 
 h1 {
     font-weight: normal;
+    font-size: 1.63em;
 }
 
 h2 {
     font-weight: normal;
+    font-size: 1.34em;
 }
 
 h3 {
     font-weight: normal;
+    font-size: 1.17em;
 }
 
-html.layout-tv {
+.layout-tv {
     font-size: 2.5vh;
-}
-
-.layout-tv h1 {
-    font-size: 4.07vh;
-}
-
-.layout-tv h2 {
-    font-size: 3.3333vh;
-}
-
-.layout-tv h3 {
-    font-size: 3vh;
 }
