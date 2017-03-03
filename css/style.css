@@ -512,7 +512,7 @@ button.mini {
 @media all and (min-width: 1280px) {
 
     .padded-left {
-        padding-left: 3.4%;
+        padding-left: 4%;
     }
 
     .padded-left-withalphapicker {
@@ -520,6 +520,6 @@ button.mini {
     }
 
     .padded-right {
-        padding-right: 3.4%;
+        padding-right: 4%;
     }
 }

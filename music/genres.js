@@ -18,7 +18,8 @@
             context: 'music',
             cardLayout: true,
             showTitle: true,
-            vibrant: true
+            vibrant: true,
+            coverImage: true
         });
     }
 
@@ -38,7 +39,6 @@
 
             SortBy: "SortName",
             SortOrder: "Ascending",
-            IncludeItemTypes: "Audio",
             Recursive: true,
             Fields: "PrimaryImageAspectRatio,ItemCounts",
             parentId: parentId

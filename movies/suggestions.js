@@ -73,25 +73,17 @@
 
         var section = view.querySelector('.latestSection');
         var container = section.querySelector('.itemsContainer');
-        var supportsImageAnalysis = appHost.supports('imageanalysis');
-        var cardLayout = supportsImageAnalysis;
 
         cardBuilder.buildCards(items, {
             parentContainer: section,
             itemsContainer: container,
             items: items,
             shape: getPortraitShape(),
-            showTitle: true,
-            showYear: true,
             overlayText: false,
-            cardLayout: cardLayout,
             showUnplayedIndicator: false,
             showChildCountIndicator: true,
-            centerText: !cardLayout,
             lazy: true,
-            overlayPlayButton: true,
-            vibrant: supportsImageAnalysis,
-            lines: 2
+            overlayPlayButton: true
         });
 
         if (enableScrollX()) {
