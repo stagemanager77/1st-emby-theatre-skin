@@ -73,7 +73,7 @@
             var group = groups[i];
 
             html += '<div class="verticalSection">';
-            html += '<h1 class="sectionTitle">' + group.name + '</h1>';
+            html += '<h2 class="sectionTitle">' + group.name + '</h2>';
 
             var allowBottomPadding = true;
 
@@ -90,16 +90,14 @@
                 items: group.items,
                 showLocationTypeIndicator: false,
                 shape: getThumbShape(),
-                showTitle: true,
                 preferThumb: true,
                 lazy: true,
                 showDetailsMenu: true,
-                centerText: !supportsImageAnalysis,
-                showParentTitle: true,
                 overlayText: false,
                 allowBottomPadding: allowBottomPadding,
-                cardLayout: supportsImageAnalysis,
-                vibrant: supportsImageAnalysis
+                //showTitle: true,
+                //showParentTitle: true,
+                centerText: true
 
             });
             html += '</div>';
@@ -121,11 +119,11 @@
         }
 
         var promises = [];
-        var parentId = this.params.parentid;
+        var parentId = this.params.parentId;
 
         promises.push(apiClient.getUpcomingEpisodes({
 
-            Limit: 40,
+            Limit: 60,
             UserId: apiClient.getCurrentUserId(),
             ImageTypeLimit: 1,
             EnableImageTypes: "Primary,Backdrop,Thumb",

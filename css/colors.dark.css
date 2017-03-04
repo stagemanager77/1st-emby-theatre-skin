@@ -64,7 +64,7 @@ a {
     color: #fff;
 }
 
-.card:focus:not(.card-round) .cardBox {
+.card:focus:not(.card-round) .card-focuscontent {
     border-color: #52B54B;
     /*border-color: rgba(0, 0, 0, .6);*/
 }

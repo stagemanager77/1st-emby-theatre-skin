@@ -30,9 +30,9 @@
             html += '<div class="verticalSection">';
 
             html += '<div>';
-            html += '<h1 class="sectionTitle padded-left padded-right">';
+            html += '<h2 class="sectionTitle padded-left padded-right">';
             html += item.Name;
-            html += '</h1>';
+            html += '</h2>';
             //html += '<button is="emby-button" type="button" class="raised more mini hide btnMoreFromGenre btnMoreFromGenre' + item.Id + '" data-id="' + item.Id + '">';
             //html += '<span>' + globalize.translate('ButtonMore') + '</span>';
             //html += '</button>';
@@ -157,7 +157,7 @@
         }
 
         var promises = [];
-        var parentId = this.params.parentid;
+        var parentId = this.params.parentId;
 
         promises.push(apiClient.getGenres(apiClient.getCurrentUserId(), {
 

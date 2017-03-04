@@ -30,7 +30,7 @@
         }
 
         var promises = [];
-        var parentId = this.params.parentid;
+        var parentId = this.params.parentId;
 
         promises.push(apiClient.getItems(apiClient.getCurrentUserId(), {
 
@@ -38,7 +38,7 @@
             SortOrder: "Ascending",
             IncludeItemTypes: "Series",
             Recursive: true,
-            Fields: "PrimaryImageAspectRatio,BasicSyncInfo",
+            Fields: "PrimaryImageAspectRatio,BasicSyncInfo,SortName",
             ImageTypeLimit: 1,
             EnableImageTypes: "Primary,Backdrop,Banner,Thumb",
             StartIndex: 0,

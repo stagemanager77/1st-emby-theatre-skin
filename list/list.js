@@ -168,7 +168,7 @@ define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../component
                 card = contentScrollSlider.querySelector('.card');
 
                 if (card) {
-                    self.scroller.toCenter(card, false);
+                    self.scroller.toStart(card, false);
                     return;
                 }
             }
@@ -176,7 +176,7 @@ define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../component
             card = contentScrollSlider.querySelector('.card[data-prefix^=\'' + value + '\']');
 
             if (card) {
-                self.scroller.toCenter(card, false);
+                self.scroller.toStart(card, false);
                 return;
             }
 
@@ -191,7 +191,7 @@ define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../component
                 card = all.length ? all[all.length - 1] : null;
 
                 if (card) {
-                    self.scroller.toCenter(card, false);
+                    self.scroller.toStart(card, false);
                 }
             }
         }

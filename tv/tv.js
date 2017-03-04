@@ -34,7 +34,7 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
             card = view.querySelector('.card');
 
             if (card) {
-                instance.scroller.toCenter(card, false);
+                instance.scroller.toStart(card, false);
                 return;
             }
         }
@@ -42,7 +42,7 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
         card = view.querySelector('.card[data-prefix^=\'' + value + '\']');
 
         if (card) {
-            instance.scroller.toCenter(card, false);
+            instance.scroller.toStart(card, false);
             return;
         }
 
@@ -57,7 +57,7 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
             card = all.length ? all[all.length - 1] : null;
 
             if (card) {
-                instance.scroller.toCenter(card, false);
+                instance.scroller.toStart(card, false);
             }
         }
     }
@@ -203,6 +203,7 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
             isViewRestored = e.detail.isRestored;
 
             Emby.Page.setTitle('');
+            backdrop.clear();
 
             if (initialTabIndex != null) {
                 viewTabs.selectedIndex(initialTabIndex);

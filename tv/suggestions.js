@@ -133,7 +133,7 @@
         }
 
         var promises = [];
-        var parentId = this.params.parentid;
+        var parentId = this.params.parentId;
         var limit = enableScrollX() ? 18 : 12;
 
         promises.push(apiClient.getItems(apiClient.getCurrentUserId(), {

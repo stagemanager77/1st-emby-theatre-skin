@@ -30,14 +30,14 @@
         }
 
         var promises = [];
-        var parentId = this.params.parentid;
+        var parentId = this.params.parentId;
 
         var query = {
             SortBy: "SortName",
             SortOrder: "Ascending",
             IncludeItemTypes: "Movie",
             Recursive: true,
-            Fields: "PrimaryImageAspectRatio,BasicSyncInfo",
+            Fields: "PrimaryImageAspectRatio,BasicSyncInfo,SortName",
             ImageTypeLimit: 1,
             EnableImageTypes: "Primary,Backdrop,Banner,Thumb",
             StartIndex: 0,

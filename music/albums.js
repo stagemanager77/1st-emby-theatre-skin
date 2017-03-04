@@ -42,7 +42,7 @@
             SortOrder: "Ascending",
             IncludeItemTypes: "MusicAlbum",
             Recursive: true,
-            Fields: "PrimaryImageAspectRatio,BasicSyncInfo",
+            Fields: "PrimaryImageAspectRatio,BasicSyncInfo,SortName",
             ImageTypeLimit: 1,
             EnableImageTypes: "Primary",
             StartIndex: 0,
