@@ -28,6 +28,7 @@ define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../component
                 EnableImageTypes: "Primary,Backdrop,Thumb",
                 StartIndex: startIndex,
                 Limit: limit,
+                Fields: 'PrimaryImageAspectRatio,SortName',
                 SortBy: 'SortName'
             });
         }
@@ -39,6 +40,7 @@ define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../component
                 EnableImageTypes: "Primary,Backdrop,Thumb",
                 StartIndex: startIndex,
                 Limit: limit,
+                Fields: 'PrimaryImageAspectRatio,SortName',
                 SortBy: 'SortName',
                 IncludeItemTypes: 'Movie',
                 Recursive: true,
@@ -51,6 +53,7 @@ define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../component
             return Emby.Models.items({
                 StartIndex: startIndex,
                 Limit: limit,
+                Fields: 'PrimaryImageAspectRatio,SortName',
                 SortBy: 'SortName',
                 Recursive: true,
                 GenreIds: item.Id,
@@ -61,13 +64,11 @@ define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../component
         return Emby.Models.children(item, {
             StartIndex: startIndex,
             Limit: limit,
-            Fields: 'SortName'
+            Fields: 'PrimaryImageAspectRatio,SortName'
         });
     }
 
     function loadChildren(instance, view, item, loading) {
-
-        var enableCardLayout = item.Type !== 'PhotoAlbum';
 
         instance.listController = new itemsList({
 
@@ -80,10 +81,9 @@ define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../component
             cardOptions: {
                 coverImage: true,
                 shape: 'autoVertical',
-                cardLayout: enableCardLayout,
-                showTitle: enableCardLayout,
-                showYear: enableCardLayout,
-                vibrant: enableCardLayout
+                showTitle: item.Type !== 'PhotoAlbum',
+                showYear: item.Type !== 'PhotoAlbum',
+                centerText: true
             }
         });
 

@@ -60,6 +60,7 @@
     right: 0;
     background: rgba(0, 0, 0, 0.7);
     padding: .25em .5em;
+    user-select: none;
 }
 
 .chapterThumbText {
@@ -118,6 +119,7 @@
 
 .osdTimeText {
     margin-left: 1em;
+    user-select: none;
 }
 
 .mouseIdle .videoOsdBottom .volumeButtons {
@@ -164,6 +166,7 @@
 .osdTextContainer {
     display: flex;
     align-items: baseline;
+    user-select: none;
 }
 
 @media all and (max-width:480px) {

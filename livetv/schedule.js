@@ -103,7 +103,7 @@
 
             html += '<div class="verticalSection">';
 
-            html += '<h2 class="sectionTitle padded-left">' + group.name + '</h2>';
+            html += '<h2 class="sectionTitle sectionTitle-cards padded-left">' + group.name + '</h2>';
 
             if (enableScrollX()) {
                 html += '<div is="emby-itemscontainer" class="itemsContainer hiddenScrollX padded-left padded-right padded-top-focusscale padded-bottom-focusscale">';

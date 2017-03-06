@@ -19,8 +19,7 @@
             showTitle: true,
             coverImage: true,
             showParentTitle: true,
-            cardLayout: true,
-            vibrant: true
+            centerText: true
         });
     }
 

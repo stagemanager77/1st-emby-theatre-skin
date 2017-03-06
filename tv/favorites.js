@@ -26,12 +26,10 @@
             itemsContainer: view.querySelector('.episodeItems'),
             items: items,
             shape: "backdrop",
-            centerText: false,
             showTitle: true,
             showParentTitle: true,
             overlayText: false,
-            cardLayout: true,
-            vibrant: true,
+            centerText: true,
             coverImage: true,
             overlayMoreButton: !layoutManager.tv
         });

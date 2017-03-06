@@ -42,8 +42,7 @@
         var section = view.querySelector('.' + sectionClass);
 
         var container = section.querySelector('.itemsContainer');
-        var supportsImageAnalysis = appHost.supports('imageanalysis');
-        var cardLayout = supportsImageAnalysis;
+        var cardLayout = true;
 
         cardOptions = cardOptions || {};
 
@@ -67,7 +66,6 @@
             showAirTime: true,
             showAirDateTime: true,
             showChannelName: true,
-            vibrant: true,
             cardLayout: cardLayout
 
         }, cardOptions));
@@ -200,7 +198,6 @@
             coverImage: true,
             lazy: true,
             cardLayout: true,
-            vibrant: true,
             allowBottomPadding: !enableScrollX(),
             preferThumb: 'auto'
         }, cardOptions || {}));
@@ -224,7 +221,6 @@
             showAirEndTime: true,
             showChannelName: true,
             cardLayout: true,
-            vibrant: true,
             preferThumb: true,
             coverImage: true,
             overlayText: false

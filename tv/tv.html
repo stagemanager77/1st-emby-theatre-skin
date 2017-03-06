@@ -4,7 +4,7 @@
         <div class="alphaPicker alphaPicker-vertical flex-grow"></div>
     </div>
 
-    <div class="scrollFrame scrollFrameY flex flex-grow focuscontainer-down">
+    <div is="emby-scroller" data-horizontal="false" data-centerfocus="card" data-navcommands="card" class="scrollFrameY flex flex-grow focuscontainer-down">
 
         <div class="scrollSlider flex-grow tabs-container">
 
@@ -34,41 +34,42 @@
             <div class="tabContent padded-top" data-index="0">
                 <div class="resumeSection hide verticalSection autoScrollSection">
                     <div>
-                        <h2 class="sectionTitle padded-left padded-right" style="display: inline-block; vertical-align: middle;">${ContinueWatching}</h2>
+                        <h2 class="sectionTitle sectionTitle-cards padded-left padded-right" style="display: inline-block; vertical-align: middle;">${ContinueWatching}</h2>
                     </div>
                 </div>
                 <div class="nextUpSection hide verticalSection autoScrollSection">
                     <div>
-                        <h2 class="sectionTitle padded-left padded-right" style="display: inline-block; vertical-align: middle;">${NextUp}</h2>
+                        <h2 class="sectionTitle sectionTitle-cards padded-left padded-right" style="display: inline-block; vertical-align: middle;">${NextUp}</h2>
                     </div>
                 </div>
                 <div class="latestSection hide verticalSection autoScrollSection">
                     <div>
-                        <h2 class="sectionTitle padded-left padded-right" style="display: inline-block; vertical-align: middle;">${LatestEpisodes}</h2>
+                        <h2 class="sectionTitle sectionTitle-cards padded-left padded-right" style="display: inline-block; vertical-align: middle;">${LatestEpisodes}</h2>
                     </div>
                 </div>
             </div>
             <div class="tabContent padded-left padded-left-withalphapicker padded-right padded-top" data-index="1">
-                <div is="emby-itemscontainer" class="seriesItems itemsContainer vertical-wrap itemsContainer-withalphapicker focuscontainer-right focuscontainer-down"></div>
+                <div is="emby-itemscontainer" class="seriesItems itemsContainer vertical-wrap itemsContainer-withalphapicker focuscontainer-right focuscontainer-down" data-alphanumericshortcuts="true"></div>
             </div>
             <div class="tabContent padded-left padded-right padded-top focuscontainer-x" data-index="2">
-                
+
             </div>
             <div class="tabContent padded-top padded-left padded-right" data-index="3">
                 <div class="favoriteSeriesSection hide verticalSection">
                     <div>
-                        <h2 class="sectionTitle" style="display: inline-block; vertical-align: middle;">${FavoriteSeries}</h2>
+                        <h2 class="sectionTitle sectionTitle-cards" style="display: inline-block; vertical-align: middle;">${FavoriteSeries}</h2>
                     </div>
                     <div is="emby-itemscontainer" class="seriesItems itemsContainer vertical-wrap focuscontainer-x"></div>
                 </div>
                 <div class="favoriteEpisodesSection hide verticalSection">
                     <div>
-                        <h2 class="sectionTitle" style="display: inline-block; vertical-align: middle;">${FavoriteEpisodes}</h2>
+                        <h2 class="sectionTitle sectionTitle-cards" style="display: inline-block; vertical-align: middle;">${FavoriteEpisodes}</h2>
                     </div>
                     <div is="emby-itemscontainer" class="episodeItems itemsContainer vertical-wrap focuscontainer-x"></div>
                 </div>
             </div>
-            <div class="tabContent padded-top" data-index="4">
+            <div class="tabContent padded-left padded-right padded-top" data-index="4">
+                <div is="emby-itemscontainer" class="itemsContainer vertical-wrap focuscontainer-x"></div>
             </div>
             <div class="tabContent padded-left padded-right padded-top" data-index="5">
             </div>

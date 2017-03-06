@@ -67,6 +67,7 @@ a {
 .card:focus:not(.card-round) .card-focuscontent {
     border-color: #52B54B;
     /*border-color: rgba(0, 0, 0, .6);*/
+    border-radius: .14em;
 }
 
 .card[data-cardtype='embyconnect'] .cardImageContainer {

@@ -12,7 +12,7 @@
         <div class="alphaPicker alphaPicker-vertical flex-grow" data-index="3"></div>
     </div>
 
-    <div class="scrollFrame scrollFrameY flex flex-grow focuscontainer-down">
+    <div is="emby-scroller" data-horizontal="false" data-centerfocus="card" data-navcommands="card" class="scrollFrameY flex flex-grow focuscontainer-down">
 
         <div class="scrollSlider flex-grow tabs-container">
 
@@ -46,43 +46,43 @@
 
                 <div class="latestSection hide verticalSection autoScrollSection">
                     <div>
-                        <h2 class="sectionTitle padded-left padded-right" style="display: inline-block; vertical-align: middle;">${LatestMusic}</h2>
+                        <h2 class="sectionTitle sectionTitle-cards padded-left padded-right" style="display: inline-block; vertical-align: middle;">${LatestMusic}</h2>
                     </div>
                 </div>
 
                 <div class="playlistsSection hide verticalSection autoScrollSection">
                     <div>
-                        <h2 class="sectionTitle padded-left padded-right" style="display: inline-block; vertical-align: middle;">${Playlists}</h2>
+                        <h2 class="sectionTitle sectionTitle-cards padded-left padded-right" style="display: inline-block; vertical-align: middle;">${Playlists}</h2>
                     </div>
                 </div>
 
                 <div class="recentlyPlayedSection hide verticalSection autoScrollSection">
                     <div>
-                        <h2 class="sectionTitle padded-left padded-right" style="display: inline-block; vertical-align: middle;">${RecentlyPlayed}</h2>
+                        <h2 class="sectionTitle sectionTitle-cards padded-left padded-right" style="display: inline-block; vertical-align: middle;">${RecentlyPlayed}</h2>
                     </div>
                 </div>
 
                 <div class="frequentlyPlayedSection hide verticalSection autoScrollSection">
                     <div>
-                        <h2 class="sectionTitle padded-left padded-right" style="display: inline-block; vertical-align: middle;">${FrequentlyPlayed}</h2>
+                        <h2 class="sectionTitle sectionTitle-cards padded-left padded-right" style="display: inline-block; vertical-align: middle;">${FrequentlyPlayed}</h2>
                     </div>
                 </div>
 
                 <div class="favoriteArtistsSection hide verticalSection autoScrollSection">
                     <div>
-                        <h2 class="sectionTitle padded-left padded-right" style="display: inline-block; vertical-align: middle;">${FavoriteArtists}</h2>
+                        <h2 class="sectionTitle sectionTitle-cards padded-left padded-right" style="display: inline-block; vertical-align: middle;">${FavoriteArtists}</h2>
                     </div>
                 </div>
 
                 <div class="favoriteAlbumsSection hide verticalSection autoScrollSection">
                     <div>
-                        <h2 class="sectionTitle padded-left padded-right" style="display: inline-block; vertical-align: middle;">${FavoriteAlbums}</h2>
+                        <h2 class="sectionTitle sectionTitle-cards padded-left padded-right" style="display: inline-block; vertical-align: middle;">${FavoriteAlbums}</h2>
                     </div>
                 </div>
 
                 <div class="favoriteSongsSection hide verticalSection autoScrollSection">
                     <div>
-                        <h2 class="sectionTitle padded-left padded-right" style="display: inline-block; vertical-align: middle;">${FavoriteSongs}</h2>
+                        <h2 class="sectionTitle sectionTitle-cards padded-left padded-right" style="display: inline-block; vertical-align: middle;">${FavoriteSongs}</h2>
                     </div>
                 </div>
 
@@ -90,21 +90,21 @@
 
             </div>
             <div class="tabContent padded-left padded-left-withalphapicker padded-right padded-top" data-index="1">
-                <div is="emby-itemscontainer" class="itemsContainer vertical-wrap itemsContainer-withalphapicker focuscontainer-right focuscontainer-down"></div>
+                <div is="emby-itemscontainer" class="itemsContainer vertical-wrap itemsContainer-withalphapicker focuscontainer-right focuscontainer-down" data-alphanumericshortcuts="true"></div>
             </div>
             <div class="tabContent padded-left padded-left-withalphapicker padded-right padded-top" data-index="2">
-                <div is="emby-itemscontainer" class="itemsContainer vertical-wrap itemsContainer-withalphapicker focuscontainer-right focuscontainer-down"></div>
+                <div is="emby-itemscontainer" class="itemsContainer vertical-wrap itemsContainer-withalphapicker focuscontainer-right focuscontainer-down" data-alphanumericshortcuts="true"></div>
             </div>
             <div class="tabContent padded-left padded-left-withalphapicker padded-right padded-top" data-index="3">
-                <div is="emby-itemscontainer" class="itemsContainer vertical-wrap itemsContainer-withalphapicker focuscontainer-right focuscontainer-down"></div>
+                <div is="emby-itemscontainer" class="itemsContainer vertical-wrap itemsContainer-withalphapicker focuscontainer-right focuscontainer-down" data-alphanumericshortcuts="true"></div>
             </div>
 
             <div class="tabContent padded-left padded-right padded-top" data-index="4">
-                <div is="emby-itemscontainer" class="itemsContainer vertical-wrap focuscontainer-x"></div>
+                <div is="emby-itemscontainer" class="itemsContainer vertical-wrap focuscontainer-x" data-alphanumericshortcuts="true"></div>
             </div>
 
             <div class="tabContent padded-left padded-right padded-top" data-index="5">
-                <div is="emby-itemscontainer" class="itemsContainer vertical-wrap focuscontainer-x"></div>
+                <div is="emby-itemscontainer" class="itemsContainer vertical-wrap focuscontainer-x" data-alphanumericshortcuts="true"></div>
             </div>
 
             <div class="tabContent padded-left padded-right padded-top" data-index="6">

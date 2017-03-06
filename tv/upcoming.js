@@ -73,7 +73,7 @@
             var group = groups[i];
 
             html += '<div class="verticalSection">';
-            html += '<h2 class="sectionTitle">' + group.name + '</h2>';
+            html += '<h2 class="sectionTitle sectionTitle-cards">' + group.name + '</h2>';
 
             var allowBottomPadding = true;
 
@@ -93,7 +93,7 @@
                 preferThumb: true,
                 lazy: true,
                 showDetailsMenu: true,
-                overlayText: false,
+                overlayText: true,
                 allowBottomPadding: allowBottomPadding,
                 //showTitle: true,
                 //showParentTitle: true,

@@ -16,7 +16,9 @@
             items: items,
             shape: "portrait",
             centerText: true,
-            overlayMoreButton: !layoutManager.tv
+            overlayMoreButton: !layoutManager.tv,
+            //showTitle: true,
+            //showYear: true
         });
     }
 

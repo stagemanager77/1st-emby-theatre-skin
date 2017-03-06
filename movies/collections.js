@@ -17,8 +17,7 @@
             shape: "portrait",
             centerText: true,
             overlayMoreButton: !layoutManager.tv,
-            showTitle: true,
-            cardLayout: true
+            showTitle: true
         });
     }
 

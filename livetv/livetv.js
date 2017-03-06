@@ -1,28 +1,5 @@
-define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'require', './../components/focushandler', 'emby-itemscontainer', 'emby-tabs', 'emby-button'], function (loading, backdrop, connectionManager, scroller, globalize, require, focusHandler) {
+define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'require', './../components/focushandler', 'emby-itemscontainer', 'emby-tabs', 'emby-button', 'emby-scroller'], function (loading, backdrop, connectionManager, scroller, globalize, require, focusHandler) {
     'use strict';
-
-    function createVerticalScroller(instance, view) {
-
-        var scrollFrame = view.querySelector('.scrollFrame');
-
-        var options = {
-            horizontal: 0,
-            slidee: view.querySelector('.scrollSlider'),
-            scrollBy: 200,
-            speed: 270,
-            scrollWidth: 50000,
-            immediateSpeed: 160
-        };
-
-        instance.scroller = new scroller(scrollFrame, options);
-        instance.scroller.init();
-
-        instance.focusHandler = new focusHandler({
-            parent: view.querySelector('.scrollSlider'),
-            scroller: instance.scroller,
-            enableBackdrops: false
-        });
-    }
 
     return function (view, params) {
 
@@ -71,8 +48,6 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 're
                 callback(controller);
             });
         }
-
-        createVerticalScroller(self, view);
 
         var viewTabs = view.querySelector('.viewTabs');
         var initialTabIndex = parseInt(params.tab || '0');
@@ -160,11 +135,6 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 're
             if (self.focusHandler) {
                 self.focusHandler.destroy();
                 self.focusHandler = null;
-            }
-
-            if (self.scroller) {
-                self.scroller.destroy();
-                self.scroller = null;
             }
         });
     };

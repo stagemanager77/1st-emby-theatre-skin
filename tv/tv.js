@@ -1,28 +1,5 @@
-define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'alphaPicker', 'require', './../components/focushandler', 'emby-itemscontainer', 'emby-tabs', 'emby-button'], function (loading, backdrop, connectionManager, scroller, globalize, alphaPicker, require, focusHandler) {
+define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'alphaPicker', 'require', './../components/focushandler', 'emby-itemscontainer', 'emby-tabs', 'emby-button', 'emby-scroller'], function (loading, backdrop, connectionManager, scroller, globalize, alphaPicker, require, focusHandler) {
     'use strict';
-
-    function createVerticalScroller(instance, view) {
-
-        var scrollFrame = view.querySelector('.scrollFrame');
-
-        var options = {
-            horizontal: 0,
-            slidee: view.querySelector('.scrollSlider'),
-            scrollBy: 200,
-            speed: 270,
-            scrollWidth: 50000,
-            immediateSpeed: 160
-        };
-
-        instance.scroller = new scroller(scrollFrame, options);
-        instance.scroller.init();
-
-        instance.focusHandler = new focusHandler({
-            parent: view.querySelector('.scrollSlider'),
-            scroller: instance.scroller,
-            enableBackdrops: false
-        });
-    }
 
     function trySelectValue(instance, view, value) {
 
@@ -126,7 +103,7 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
             });
         }
 
-        createVerticalScroller(self, view);
+        self.scroller = view.querySelector('.emby-scroller');
 
         var alphaPickerContainer = view.querySelector('.alphaPickerContainer');
         var viewTabs = view.querySelector('.viewTabs');
@@ -220,15 +197,7 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
                 }
             });
 
-            if (self.focusHandler) {
-                self.focusHandler.destroy();
-                self.focusHandler = null;
-            }
-
-            if (self.scroller) {
-                self.scroller.destroy();
-                self.scroller = null;
-            }
+            self.scroller = null;
 
             if (self.alphaPicker) {
                 self.alphaPicker.destroy();

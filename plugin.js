@@ -262,7 +262,7 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
 
         self.showItem = function (item) {
 
-            var showList = item.Type === 'MusicGenre';
+            var showList = item.Type === 'MusicGenre' || item.Type === 'Genre';
 
             if (item.IsFolder) {
 

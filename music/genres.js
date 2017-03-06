@@ -16,9 +16,8 @@
             items: items,
             shape: "auto",
             context: 'music',
-            cardLayout: true,
+            centerText: true,
             showTitle: true,
-            vibrant: true,
             coverImage: true
         });
     }
