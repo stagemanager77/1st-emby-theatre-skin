@@ -1115,7 +1115,6 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                 chaptercardbuilder.buildChapterCards(item, chapters, {
                     parentContainer: section,
                     itemsContainer: section.querySelector('.itemsContainer'),
-                    coverImage: true,
                     width: Math.round((section.offsetWidth / 4))
                 });
             });

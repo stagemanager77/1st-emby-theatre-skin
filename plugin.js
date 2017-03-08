@@ -260,9 +260,38 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
             });
         };
 
-        self.showItem = function (item) {
+        self.showItem = function (item, options) {
 
-            var showList = item.Type === 'MusicGenre' || item.Type === 'Genre';
+            options = options || {};
+            var url;
+
+            if (item.Type === 'Genre') {
+
+                url = pluginManager.mapRoute(self, 'list/list.html') + '?genreId=' + item.Id + '&serverId=' + item.ServerId;
+                if (options.parentId) {
+                    url += '&parentId=' + options.parentId;
+                }
+                Emby.Page.show(url, { item: item });
+                return;
+            }
+            else if (item.Type === 'GameGenre') {
+                url = pluginManager.mapRoute(self, 'list/list.html') + '?gameGenreId=' + item.Id + '&serverId=' + item.ServerId;
+                if (options.parentId) {
+                    url += '&parentId=' + options.parentId;
+                }
+                Emby.Page.show(url, { item: item });
+                return;
+            }
+            else if (item.Type === 'MusicGenre') {
+                url = pluginManager.mapRoute(self, 'list/list.html') + '?musicGenreId=' + item.Id + '&serverId=' + item.ServerId;
+                if (options.parentId) {
+                    url += '&parentId=' + options.parentId;
+                }
+                Emby.Page.show(url, { item: item });
+                return;
+            }
+
+            var showList;
 
             if (item.IsFolder) {
 
@@ -272,14 +301,14 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
             }
 
             if (showList) {
-                Emby.Page.show(pluginManager.mapRoute(self, 'list/list.html') + '?parentid=' + item.Id + '&serverId=' + item.ServerId, { item: item });
+                Emby.Page.show(pluginManager.mapRoute(self, 'list/list.html') + '?parentId=' + item.Id + '&serverId=' + item.ServerId, { item: item });
             } else {
                 Emby.Page.show(pluginManager.mapRoute(self, 'item/item.html') + '?id=' + item.Id + '&serverId=' + item.ServerId, { item: item });
             }
         };
 
         self.showGenre = function (options) {
-            Emby.Page.show(pluginManager.mapRoute(self.id, 'list/list.html') + '?parentid=' + options.ParentId + '&genreId=' + options.Id);
+            Emby.Page.show(pluginManager.mapRoute(self.id, 'list/list.html') + '?parentId=' + options.ParentId + '&genreId=' + options.Id);
         };
 
         self.setTitle = function (title) {

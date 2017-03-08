@@ -50,15 +50,30 @@ define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../component
 
         if (item.Type === 'Genre' || item.Type === 'GameGenre' || item.Type === 'MusicGenre') {
 
-            return Emby.Models.items({
+            var query = {
                 StartIndex: startIndex,
                 Limit: limit,
                 Fields: 'PrimaryImageAspectRatio,SortName',
                 SortBy: 'SortName',
                 Recursive: true,
                 GenreIds: item.Id,
-                IncludeItemTypes: item.CollectionType === 'tvshows' ? 'Series' : (item.CollectionType === 'movies' ? 'Movie' : 'MusicAlbum')
-            });
+                parentId: params.parentId
+            };
+
+            if (item.Type === 'MusicGenre') {
+                query.IncludeItemTypes = 'MusicAlbum';
+            }
+            else if (item.Type === 'GameGenre') {
+                query.IncludeItemTypes = 'Game';
+            }
+            else if (item.CollectionType === 'movies') {
+                query.IncludeItemTypes = 'Movie';
+            }
+            else if (item.CollectionType === 'tvshows') {
+                query.IncludeItemTypes = 'Series';
+            }
+
+            return Emby.Models.items(query);
 
         }
         return Emby.Models.children(item, {
@@ -106,7 +121,7 @@ define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../component
                 loading.show();
             }
 
-            Emby.Models.item(params.parentid).then(function (item) {
+            Emby.Models.item((params.genreId || params.gameGenreId || params.musicGenreId || params.parentId)).then(function (item) {
 
                 setTitle(item);
                 currentItem = item;

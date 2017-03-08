@@ -30,7 +30,7 @@
             html += '<div class="verticalSection">';
 
             html += '<div>';
-            html += '<h2 class="sectionTitle padded-left padded-right">';
+            html += '<h2 class="sectionTitle sectionTitle-cards padded-left padded-right">';
             html += item.Name;
             html += '</h2>';
             //html += '<button is="emby-button" type="button" class="raised more mini hide btnMoreFromGenre btnMoreFromGenre' + item.Id + '" data-id="' + item.Id + '">';
@@ -66,7 +66,7 @@
             8;
 
         if (enableScrollX()) {
-            limit = 10;
+            limit = layoutManager.tv ? 7 : 10;
         }
 
         var enableImageTypes = viewStyle === 'Thumb' || viewStyle === 'ThumbCard' ?
@@ -92,6 +92,8 @@
         apiClient.getItems(apiClient.getCurrentUserId(), query).then(function (result) {
 
             var supportsImageAnalysis = appHost.supports('imageanalysis');
+
+            var showMoreButton = result.Items.length >= query.Limit;
 
             if (viewStyle === "Thumb") {
                 cardBuilder.buildCards(result.Items, {
@@ -139,10 +141,6 @@
                     overlayMoreButton: true,
                     allowBottomPadding: !enableScrollX()
                 });
-            }
-
-            if (result.Items.length >= query.Limit) {
-                //tabContent.querySelector('.btnMoreFromGenre' + id).classList.remove('hide');
             }
         });
     }

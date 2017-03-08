@@ -7,7 +7,7 @@
         this.apiClient = connectionManager.getApiClient(params.serverId);
     }
 
-    function renderItems(view, items) {
+    function renderItems(view, items, parentId) {
 
         var container = view.querySelector('.itemsContainer');
 
@@ -15,10 +15,10 @@
             itemsContainer: container,
             items: items,
             shape: "auto",
-            context: 'music',
             centerText: true,
             showTitle: true,
-            coverImage: true
+            coverImage: true,
+            parentId: parentId
         });
     }
 
@@ -32,7 +32,7 @@
         }
 
         var promises = [];
-        var parentId = this.params.parentid;
+        var parentId = this.params.parentId;
 
         promises.push(apiClient.getGenres(apiClient.getCurrentUserId(), {
 
@@ -56,9 +56,10 @@
         this.promises = [];
 
         var view = this.view;
+        var parentId = this.params.parentId;
 
         promises[0].then(function (result) {
-            renderItems(view, result.Items);
+            renderItems(view, result.Items, parentId);
             return Promise.resolve();
         });
 

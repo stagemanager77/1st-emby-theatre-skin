@@ -31,7 +31,7 @@
         }
 
         var promises = [];
-        var parentId = this.params.parentid;
+        var parentId = this.params.parentId;
 
         var query = {
             SortBy: "SortName",

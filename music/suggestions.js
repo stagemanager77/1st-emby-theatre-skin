@@ -104,7 +104,7 @@
         }
 
         var promises = [];
-        var parentId = this.params.parentid;
+        var parentId = this.params.parentId;
         var limit = enableScrollX() ? 24 : 12;
 
         promises.push(apiClient.getLatestItems({
