@@ -1,14 +1,34 @@
-﻿define(['cardBuilder', 'imageLoader', 'loading', 'connectionManager', 'apphost', 'layoutManager', 'scrollHelper', 'focusManager', 'lazyLoader', 'emby-itemscontainer', 'emby-scroller'], function (cardBuilder, imageLoader, loading, connectionManager, appHost, layoutManager, scrollHelper, focusManager, lazyLoader) {
+﻿define(['cardBuilder', 'imageLoader', 'loading', 'connectionManager', 'apphost', 'layoutManager', 'scrollHelper', 'focusManager', 'lazyLoader', 'globalize', 'dom', 'emby-itemscontainer', 'emby-scroller'], function (cardBuilder, imageLoader, loading, connectionManager, appHost, layoutManager, scrollHelper, focusManager, lazyLoader, globalize, dom) {
     'use strict';
 
-    function MovieGenresTab(view, params) {
+    function GenresTab(view, params) {
         this.view = view;
         this.params = params;
         this.apiClient = connectionManager.getApiClient(params.serverId);
+
+        initEvents(view, params, this.apiClient);
+    }
+
+    function initEvents(view, params, apiClient) {
+
+        dom.addEventListener(view, 'click', function (e) {
+
+            var btnMoreFromGenre = dom.parentWithClass(e.target, 'btnMoreFromGenre');
+            if (btnMoreFromGenre) {
+                var id = btnMoreFromGenre.getAttribute('data-id');
+
+                Emby.Page.showItem(id, apiClient.serverId(), {
+                    parentId: params.parentId
+                });
+            }
+
+        }, {
+            passive: true
+        });
     }
 
     function enableScrollX() {
-        return !layoutManager.desktop;
+        return !layoutManager.tv;
     }
 
     function getThumbShape() {
@@ -19,7 +39,7 @@
         return enableScrollX() ? 'overflowPortrait' : 'portrait';
     }
 
-    function renderGenres(instance, view, items) {
+    function renderGenresAsVerticalCategories(instance, view, items) {
 
         var html = '';
 
@@ -29,22 +49,19 @@
 
             html += '<div class="verticalSection">';
 
-            html += '<div>';
-            html += '<h2 class="sectionTitle sectionTitle-cards padded-left padded-right">';
+            html += '<div class="flex align-items-center padded-left">';
+            html += '<h2 class="sectionTitle sectionTitle-cards">';
             html += item.Name;
             html += '</h2>';
-            //html += '<button is="emby-button" type="button" class="raised more mini hide btnMoreFromGenre btnMoreFromGenre' + item.Id + '" data-id="' + item.Id + '">';
-            //html += '<span>' + globalize.translate('ButtonMore') + '</span>';
-            //html += '</button>';
+            html += '<button style="margin-left:1.5em;" is="emby-button" type="button" class="raised more raised-mini btnMoreFromGenre btnMoreFromGenre' + item.Id + '" data-id="' + item.Id + '">';
+            html += '<span>' + globalize.translate('More') + '</span>';
+            html += '</button>';
             html += '</div>';
 
-            if (enableScrollX()) {
-                html += '<div is="emby-scroller" class="padded-top-focusscale padded-bottom-focusscale" data-mousewheel="false" data-centerfocus="card" data-horizontal="true">';
-                html += '<div is="emby-itemscontainer" class="itemsContainer lazy scrollSlider focuscontainer-x padded-left padded-right" data-id="' + item.Id + '">';
-                html += '</div>';
-            } else {
-                html += '<div is="emby-itemscontainer" class="itemsContainer vertical-wrap lazy padded-left padded-right focuscontainer-x" data-id="' + item.Id + '">';
-            }
+            html += '<div is="emby-scroller" class="padded-top-focusscale padded-bottom-focusscale" data-mousewheel="false" data-centerfocus="card" data-horizontal="true">';
+            html += '<div is="emby-itemscontainer" class="itemsContainer lazy scrollSlider focuscontainer-x padded-left padded-right" data-id="' + item.Id + '">';
+            html += '</div>';
+
             html += '</div>';
 
             html += '</div>';
@@ -145,7 +162,27 @@
         });
     }
 
-    MovieGenresTab.prototype.onBeforeShow = function (options) {
+    function renderGenres(instance, view, items, parentId) {
+
+        view.classList.add('padded-left');
+        view.classList.add('padded-right');
+
+        view.innerHTML = '<div is="emby-itemscontainer" class="itemsContainer vertical-wrap focuscontainer-x"></div>';
+
+        var container = view.querySelector('.itemsContainer');
+
+        cardBuilder.buildCards(items, {
+            itemsContainer: container,
+            items: items,
+            shape: "auto",
+            centerText: true,
+            showTitle: true,
+            coverImage: true,
+            parentId: parentId
+        });
+    }
+
+    GenresTab.prototype.onBeforeShow = function (options) {
 
         var apiClient = this.apiClient;
 
@@ -164,14 +201,16 @@
             IncludeItemTypes: "Movie",
             Recursive: true,
             EnableTotalRecordCount: false,
-            EnableImages: false,
+            EnableImageTypes: "Primary",
+            ImageTypeLimit: 1,
+            Fields: "PrimaryImageAspectRatio",
             parentId: parentId
         }));
 
         this.promises = promises;
     };
 
-    MovieGenresTab.prototype.onShow = function (options) {
+    GenresTab.prototype.onShow = function (options) {
 
         var promises = this.promises;
         if (!promises) {
@@ -182,9 +221,14 @@
 
         var view = this.view;
         var instance = this;
+        var parentId = this.params.parentId;
 
         promises[0].then(function (result) {
-            return renderGenres(instance, view, result.Items);
+
+            if (enableScrollX()) {
+                return renderGenresAsVerticalCategories(instance, view, result.Items);
+            }
+            return renderGenres(instance, view, result.Items, parentId);
         });
 
         Promise.all(promises).then(function () {
@@ -194,11 +238,11 @@
         });
     };
 
-    MovieGenresTab.prototype.onHide = function () {
+    GenresTab.prototype.onHide = function () {
 
     };
 
-    MovieGenresTab.prototype.destroy = function () {
+    GenresTab.prototype.destroy = function () {
 
         this.view = null;
         this.params = null;
@@ -206,5 +250,5 @@
         this.promises = null;
     };
 
-    return MovieGenresTab;
+    return GenresTab;
 });

@@ -86,6 +86,9 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
                 case 5:
                     depends.push('./genres');
                     break;
+                case 6:
+                    depends.push('./years');
+                    break;
                 default:
                     break;
             }
