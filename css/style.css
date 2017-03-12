@@ -348,35 +348,7 @@ h1, h2 {
 }
 
 .loginSquareCard {
-    width: 54vw !important;
-    flex-shrink: 0;
-}
-
-@media (orientation: landscape) {
-    .loginSquareCard {
-        width: 40vh !important;
-    }
-}
-
-@media (orientation: landscape) and (max-height: 600px) {
-
-    .loginSquareCard {
-        width: 50vh !important;
-    }
-}
-
-@media (orientation: landscape) and (min-width: 800px) {
-
-    .loginSquareCard {
-        width: 26vw !important;
-    }
-}
-
-@media (orientation: landscape) and (min-width: 1280px) {
-
-    .loginSquareCard {
-        width: 18vw !important;
-    }
+    display: inline-block!important;
 }
 
 .playlistPageContainer {
@@ -469,7 +441,7 @@ button.mini {
 }
 
 .padded-left {
-    padding-left: .25em;
+    padding-left: 1em;
 }
 
 .padded-left-withalphapicker {
@@ -477,7 +449,7 @@ button.mini {
 }
 
 .padded-right {
-    padding-right: .25em;
+    padding-right: 1em;
 }
 
 .padded-top {

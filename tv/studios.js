@@ -1,27 +1,30 @@
 ﻿define(['cardBuilder', 'imageLoader', 'loading', 'connectionManager', 'apphost', 'layoutManager', 'scrollHelper', 'focusManager', 'emby-itemscontainer'], function (cardBuilder, imageLoader, loading, connectionManager, appHost, layoutManager, scrollHelper, focusManager) {
     'use strict';
 
-    function AlbumsTab(view, params) {
+    function StudiosTab(view, params) {
         this.view = view;
         this.params = params;
         this.apiClient = connectionManager.getApiClient(params.serverId);
     }
 
-    function renderAlbums(view, items) {
+    function renderSeries(view, items, parentId) {
 
-        var container = view.querySelector('.itemsContainer');
+        var container = view.querySelector('.studioItems');
 
         cardBuilder.buildCards(items, {
             itemsContainer: container,
             items: items,
-            shape: "square",
+            shape: "backdrop",
+            preferThumb: true,
             showTitle: true,
-            overlayText: true,
-            overlayMoreButton: !layoutManager.tv
+            scalable: true,
+            centerText: true,
+            overlayMoreButton: true,
+            parentId: parentId
         });
     }
 
-    AlbumsTab.prototype.onBeforeShow = function (options) {
+    StudiosTab.prototype.onBeforeShow = function (options) {
 
         var apiClient = this.apiClient;
 
@@ -33,27 +36,22 @@
         var promises = [];
         var parentId = this.params.parentId;
 
-        var query = {
+        promises.push(apiClient.getStudios(apiClient.getCurrentUserId(), {
+
             SortBy: "SortName",
             SortOrder: "Ascending",
+            IncludeItemTypes: "Series",
             Recursive: true,
-            Fields: "PrimaryImageAspectRatio,SortName,ItemCounts,BasicSyncInfo",
-            StartIndex: 0,
+            Fields: "PrimaryImageAspectRatio,BasicSyncInfo,SortName",
             ImageTypeLimit: 1,
-            EnableImageTypes: "Primary,Backdrop,Banner,Thumb",
+            EnableImageTypes: "Primary,Thumb",
             ParentId: parentId
-        };
-
-        var promise = this.mode === 'albumartists' ?
-           apiClient.getAlbumArtists(apiClient.getCurrentUserId(), query) :
-           apiClient.getArtists(apiClient.getCurrentUserId(), query);
-
-        promises.push(promise);
+        }));
 
         this.promises = promises;
     };
 
-    AlbumsTab.prototype.onShow = function (options) {
+    StudiosTab.prototype.onShow = function (options) {
 
         var promises = this.promises;
         if (!promises) {
@@ -64,8 +62,10 @@
 
         var view = this.view;
 
+        var parentId = this.params.parentId;
+
         promises[0].then(function (result) {
-            renderAlbums(view, result.Items);
+            renderSeries(view, result.Items, parentId);
             return Promise.resolve();
         });
 
@@ -76,11 +76,11 @@
         });
     };
 
-    AlbumsTab.prototype.onHide = function () {
+    StudiosTab.prototype.onHide = function () {
 
     };
 
-    AlbumsTab.prototype.destroy = function () {
+    StudiosTab.prototype.destroy = function () {
 
         this.view = null;
         this.params = null;
@@ -88,5 +88,5 @@
         this.promises = null;
     };
 
-    return AlbumsTab;
+    return StudiosTab;
 });

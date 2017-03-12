@@ -55,13 +55,13 @@ a {
 }
 
 .emby-button.raised {
-    background-color: rgba(170,170,190, .4);
+    background-color: rgba(170,170,190, .5);
     color: #fff;
 }
 
 .emby-button:focus:not(.btnUserViewHeader):not(.emby-tab-button) {
     background: #52B54B;
-    color: #fff;
+    color: #fff!important;
 }
 
 .card:focus:not(.card-round) .card-focuscontent {

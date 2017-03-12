@@ -84,7 +84,7 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
                     depends.push('./genres');
                     break;
                 case 5:
-                    depends.push('./series');
+                    depends.push('./studios');
                     break;
                 default:
                     break;
@@ -103,7 +103,7 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
             });
         }
 
-        self.scroller = view.querySelector('.emby-scroller');
+        self.scroller = view.querySelector('.scrollFrameY');
 
         var alphaPickerContainer = view.querySelector('.alphaPickerContainer');
         var viewTabs = view.querySelector('.viewTabs');

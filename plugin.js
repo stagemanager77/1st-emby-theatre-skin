@@ -290,6 +290,14 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
                 Emby.Page.show(url, { item: item });
                 return;
             }
+            else if (item.Type === 'Studio') {
+                url = pluginManager.mapRoute(self, 'list/list.html') + '?studioId=' + item.Id + '&serverId=' + item.ServerId;
+                if (options.parentId) {
+                    url += '&parentId=' + options.parentId;
+                }
+                Emby.Page.show(url, { item: item });
+                return;
+            }
 
             var showList;
 

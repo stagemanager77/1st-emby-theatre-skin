@@ -122,7 +122,7 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
             });
         }
 
-        self.scroller = view.querySelector('.emby-scroller');
+        self.scroller = view.querySelector('.scrollFrameY');
 
         var alphaPickerContainers = view.querySelectorAll('.alphaPickerContainer');
         var viewTabs = view.querySelector('.viewTabs');

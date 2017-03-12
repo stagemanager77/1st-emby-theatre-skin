@@ -5,7 +5,7 @@
     "HeaderUpcomingEpisodes": "Upcoming Episodes",
     "Books": "Books",
     "HeaderAudioBooks": "Audio Books",
-    "Programs": "Programs",
+    "Programs": "Programmes",
     "ButtonEditRecording": "Edit Recording",
     "Episodes": "Episodes",
     "OtherVideos": "Other videos",
@@ -61,7 +61,7 @@
     "Suggestions": "Suggestions",
     "Schedule": "Schedule",
     "Series": "Series",
-    "HeaderUpcomingPrograms": "Upcoming Programs",
+    "HeaderUpcomingPrograms": "Upcoming Programmes",
     "HeaderUpcomingMovies": "Upcoming Movies",
     "HeaderUpcomingSports": "Upcoming Sports",
     "HeaderUpcomingForKids": "Upcoming for Kids",
@@ -114,5 +114,5 @@
     "PlayOnAnotherDevice": "Play on another device",
     "FastForward": "Fast-forward",
     "Items": "Items",
-    "PictureInPicture": "Picture in picture"
+    "PictureInPicture": "Picture in Picture"
 }
