@@ -42,7 +42,7 @@
         var section = view.querySelector('.' + sectionClass);
 
         var container = section.querySelector('.itemsContainer');
-        var cardLayout = true;
+        var cardLayout = false;
 
         cardOptions = cardOptions || {};
 
@@ -187,7 +187,7 @@
     function renderRecordings(section, items, cardOptions) {
 
         var container = section.querySelector('.itemsContainer');
-        var supportsImageAnalysis = appHost.supports('imageanalysis');
+        var cardLayout = false;
 
         cardBuilder.buildCards(items, Object.assign({
             parentContainer: section,
@@ -197,9 +197,12 @@
             showParentTitle: true,
             coverImage: true,
             lazy: true,
-            cardLayout: true,
+            cardLayout: cardLayout,
             allowBottomPadding: !enableScrollX(),
-            preferThumb: 'auto'
+            preferThumb: 'auto',
+            centerText: !cardLayout,
+            overlayText: false
+
         }, cardOptions || {}));
 
         if (enableScrollX()) {

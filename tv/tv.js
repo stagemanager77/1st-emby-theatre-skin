@@ -72,18 +72,21 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
                     depends.push('./suggestions');
                     break;
                 case 1:
-                    depends.push('./series');
+                    depends.push('./latest');
                     break;
                 case 2:
-                    depends.push('./upcoming');
+                    depends.push('./series');
                     break;
                 case 3:
-                    depends.push('./favorites');
+                    depends.push('./upcoming');
                     break;
                 case 4:
-                    depends.push('./genres');
+                    depends.push('./favorites');
                     break;
                 case 5:
+                    depends.push('./genres');
+                    break;
+                case 6:
                     depends.push('./studios');
                     break;
                 default:
@@ -112,7 +115,7 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
 
         function preLoadTab(page, index) {
 
-            if (index === 1) {
+            if (index === 2) {
                 alphaPickerContainer.classList.remove('hide');
             } else {
                 alphaPickerContainer.classList.add('hide');

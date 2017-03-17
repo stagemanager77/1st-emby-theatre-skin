@@ -1,8 +1,13 @@
 ﻿define(['cardBuilder', 'loading', 'connectionManager', 'apphost', 'layoutManager', 'scrollHelper', 'focusManager', 'emby-itemscontainer', 'emby-scroller'], function (cardBuilder, loading, connectionManager, appHost, layoutManager, scrollHelper, focusManager) {
     'use strict';
 
-    function enableScrollX() {
-        return !layoutManager.desktop;
+    function enableScrollX(section) {
+
+        if (section === 'resume') {
+            return !layoutManager.desktop;
+        }
+
+        return false;
     }
 
     function TvSuggestionsTab(view, params) {
@@ -21,18 +26,18 @@
 
             var html;
 
-            if (enableScrollX()) {
+            if (enableScrollX(section.getAttribute('data-section'))) {
                 html = '<div is="emby-scroller" class="padded-top-focusscale padded-bottom-focusscale" data-mousewheel="false" data-framesize="matchgrandparent" data-centerfocus="card"><div is="emby-itemscontainer" class="scrollSlider focuscontainer-x padded-left padded-right"></div></div>';
             } else {
-                html = '<div is="emby-itemscontainer" class="itemsContainer padded-left padded-right vertical-wrap"></div>';
+                html = '<div is="emby-itemscontainer" class="itemsContainer padded-left padded-right vertical-wrap focuscontainer-x"></div>';
             }
 
             section.insertAdjacentHTML('beforeend', html);
         }
     }
 
-    function getThumbShape() {
-        return enableScrollX() ? 'overflowBackdrop' : 'backdrop';
+    function getThumbShape(section) {
+        return enableScrollX(section) ? 'overflowBackdrop' : 'backdrop';
     }
 
     function renderResume(view, items) {
@@ -42,13 +47,13 @@
         var supportsImageAnalysis = appHost.supports('imageanalysis');
         var cardLayout = supportsImageAnalysis;
 
-        var allowBottomPadding = !enableScrollX();
+        var allowBottomPadding = !enableScrollX('resume');
 
         cardBuilder.buildCards(items, {
             parentContainer: section,
             itemsContainer: container,
             preferThumb: true,
-            shape: getThumbShape(),
+            shape: getThumbShape('resume'),
             scalable: true,
             showTitle: true,
             showParentTitle: true,
@@ -60,7 +65,7 @@
             vibrant: supportsImageAnalysis
         });
 
-        if (enableScrollX()) {
+        if (enableScrollX('resume')) {
             section.querySelector('.emby-scroller').scrollToBeginning();
         }
     }
@@ -75,7 +80,7 @@
             parentContainer: section,
             itemsContainer: container,
             preferThumb: true,
-            shape: getThumbShape(),
+            shape: getThumbShape('nextup'),
             scalable: true,
             showTitle: true,
             showParentTitle: true,
@@ -86,39 +91,7 @@
             vibrant: supportsImageAnalysis
         });
 
-        if (enableScrollX()) {
-            section.querySelector('.emby-scroller').scrollToBeginning();
-        }
-    }
-
-    function renderLatest(view, items) {
-
-        var section = view.querySelector('.latestSection');
-        var container = section.querySelector('.itemsContainer');
-        var supportsImageAnalysis = appHost.supports('imageanalysis');
-        var cardLayout = supportsImageAnalysis;
-
-        cardBuilder.buildCards(items, {
-            parentContainer: section,
-            itemsContainer: container,
-            items: items,
-            shape: getThumbShape(),
-            preferThumb: true,
-            showTitle: true,
-            showSeriesYear: true,
-            showParentTitle: true,
-            overlayText: false,
-            cardLayout: cardLayout,
-            showUnplayedIndicator: false,
-            showChildCountIndicator: true,
-            centerText: !cardLayout,
-            lazy: true,
-            overlayPlayButton: true,
-            vibrant: supportsImageAnalysis,
-            lines: 2
-        });
-
-        if (enableScrollX()) {
+        if (enableScrollX('nextup')) {
             section.querySelector('.emby-scroller').scrollToBeginning();
         }
     }
@@ -134,7 +107,7 @@
 
         var promises = [];
         var parentId = this.params.parentId;
-        var limit = enableScrollX() ? 18 : 12;
+        var limit = enableScrollX('resume') ? 18 : 12;
 
         promises.push(apiClient.getItems(apiClient.getCurrentUserId(), {
 
@@ -155,30 +128,15 @@
         promises.push(apiClient.getNextUpEpisodes({
 
             ParentId: parentId,
-            Limit: 24,
+            Limit: 32,
             Fields: "PrimaryImageAspectRatio,BasicSyncInfo",
             UserId: apiClient.getCurrentUserId(),
             ImageTypeLimit: 1,
             EnableImageTypes: "Primary,Backdrop,Thumb"
         }));
 
-        promises.push(apiClient.getLatestItems({
-
-            IncludeItemTypes: "Episode",
-            Limit: 30,
-            Fields: "PrimaryImageAspectRatio,BasicSyncInfo",
-            ParentId: parentId,
-            ImageTypeLimit: 1,
-            EnableImageTypes: "Primary,Backdrop,Thumb"
-
-        }));
-
         this.promises = promises;
     };
-
-    function getBackdropShape() {
-        return enableScrollX() ? 'overflowBackdrop' : 'backdrop';
-    }
 
     TvSuggestionsTab.prototype.onShow = function (options) {
 
@@ -203,11 +161,6 @@
 
         promises[1].then(function (result) {
             renderNextUp(view, result.Items);
-            return Promise.resolve();
-        });
-
-        promises[2].then(function (result) {
-            renderLatest(view, result);
             return Promise.resolve();
         });
 

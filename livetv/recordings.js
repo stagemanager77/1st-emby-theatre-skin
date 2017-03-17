@@ -115,6 +115,7 @@
 
         var container = section.querySelector('.itemsContainer');
         var supportsImageAnalysis = appHost.supports('imageanalysis');
+        var cardLayout = supportsImageAnalysis;
 
         cardBuilder.buildCards(items, Object.assign({
             parentContainer: section,
@@ -124,10 +125,13 @@
             showParentTitle: true,
             coverImage: true,
             lazy: true,
-            cardLayout: true,
+            cardLayout: cardLayout,
             vibrant: true,
             allowBottomPadding: !enableScrollX(),
-            preferThumb: 'auto'
+            preferThumb: 'auto',
+            centerText: !cardLayout,
+            overlayText: false
+
         }, cardOptions || {}));
 
         if (enableScrollX()) {

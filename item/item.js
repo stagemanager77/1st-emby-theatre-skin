@@ -617,7 +617,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
             if (item.SeriesCount) {
 
                 sections.push({
-                    name: globalize.translate('Series'),
+                    name: globalize.translate('Shows'),
                     type: 'Series'
                 });
             }

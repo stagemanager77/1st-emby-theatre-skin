@@ -89,6 +89,7 @@ define(['playbackManager', 'dom', 'inputmanager', 'datetime', 'itemHelper', 'med
         var lastUpdateTime = 0;
         var isEnabled;
         var currentItem;
+        var recordingButtonManager;
 
         var nowPlayingVolumeSlider = view.querySelector('.osdVolumeSlider');
         var nowPlayingVolumeSliderContainer = view.querySelector('.osdVolumeSliderContainer');
@@ -136,13 +137,12 @@ define(['playbackManager', 'dom', 'inputmanager', 'datetime', 'itemHelper', 'med
         function doVolumeTouch(deltaY, player, viewHeight) {
 
             var delta = -((deltaY / viewHeight) * 100);
+            var newValue = playbackManager.getVolume(player) + delta;
 
-            var newVolume = playbackManager.getVolume(player) + delta;
+            newValue = Math.min(newValue, 100);
+            newValue = Math.max(newValue, 0);
 
-            newVolume = Math.min(newVolume, 100);
-            newVolume = Math.max(newVolume, 0);
-
-            playbackManager.setVolume(newVolume, player);
+            playbackManager.setVolume(newValue, player);
         }
 
         function initSwipeEvents() {
@@ -159,14 +159,54 @@ define(['playbackManager', 'dom', 'inputmanager', 'datetime', 'itemHelper', 'med
             });
         }
 
+        function getDisplayItem(item) {
+
+            if (item.Type === 'TvChannel') {
+
+                var apiClient = connectionManager.getApiClient(item.ServerId);
+                return apiClient.getItem(apiClient.getCurrentUserId(), item.Id).then(function (refreshedItem) {
+                    return refreshedItem.CurrentProgram || refreshedItem;
+                });
+            }
+
+            return Promise.resolve(item);
+        }
+
+        function updateRecordingButton(item) {
+
+            if (item.Type !== 'Program') {
+
+                if (recordingButtonManager) {
+                    recordingButtonManager.destroy();
+                    recordingButtonManager = null;
+                }
+                view.querySelector('.btnRecord').classList.add('hide');
+                return;
+            }
+
+            if (recordingButtonManager) {
+                recordingButtonManager.refreshItem(item);
+                return;
+            }
+
+            require(['recordingButton'], function (RecordingButton) {
+
+                recordingButtonManager = new RecordingButton({
+                    item: item,
+                    button: view.querySelector('.btnRecord')
+                });
+
+                view.querySelector('.btnRecord').classList.remove('hide');
+            });
+        }
+
         function updateNowPlayingInfo(state) {
 
             var item = state.NowPlayingItem;
             currentItem = item;
 
-            setPoster(item);
-
             if (!item) {
+                setPoster(null);
                 Emby.Page.setTitle('');
                 nowPlayingVolumeSlider.disabled = true;
                 nowPlayingPositionSlider.disabled = true;
@@ -181,14 +221,20 @@ define(['playbackManager', 'dom', 'inputmanager', 'datetime', 'itemHelper', 'med
                 return;
             }
 
-            setTitle(item);
+            getDisplayItem(item).then(function (displayItem) {
 
-            view.querySelector('.osdTitle').innerHTML = itemHelper.getDisplayName(item);
-            view.querySelector('.osdMediaInfo').innerHTML = mediaInfo.getPrimaryMediaInfoHtml(item, {
-                runtime: false,
-                subtitles: false,
-                tomatoes: false,
-                endsAt: false
+                updateRecordingButton(displayItem);
+                setPoster(displayItem);
+                setTitle(displayItem);
+
+                view.querySelector('.osdTitle').innerHTML = itemHelper.getDisplayName(displayItem);
+                view.querySelector('.osdMediaInfo').innerHTML = mediaInfo.getPrimaryMediaInfoHtml(displayItem, {
+                    runtime: false,
+                    subtitles: false,
+                    tomatoes: false,
+                    endsAt: false,
+                    episodeTitle: false
+                });
             });
 
             nowPlayingVolumeSlider.disabled = false;
@@ -929,6 +975,14 @@ define(['playbackManager', 'dom', 'inputmanager', 'datetime', 'itemHelper', 'med
             }
         });
 
+        view.addEventListener('viewdestroy', function () {
+
+            if (recordingButtonManager) {
+                recordingButtonManager.destroy();
+                recordingButtonManager = null;
+            }
+        });
+
         function onWindowKeyDown(e) {
             if (e.keyCode === 32 && !isOsdOpen()) {
                 playbackManager.playPause(currentPlayer);
@@ -939,7 +993,7 @@ define(['playbackManager', 'dom', 'inputmanager', 'datetime', 'itemHelper', 'med
         view.querySelector('.pageContainer').addEventListener('click', function () {
 
             // TODO: Replace this check with click vs tap detection
-            if (!browser.touch) {
+            if (!layoutManager.mobile) {
                 playbackManager.playPause(currentPlayer);
             }
             showOsd();

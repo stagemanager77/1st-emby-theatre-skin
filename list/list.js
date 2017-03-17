@@ -77,6 +77,9 @@ define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../component
             else if (item.CollectionType === 'tvshows') {
                 query.IncludeItemTypes = 'Series';
             }
+            else if (item.Type === 'Genre') {
+                query.IncludeItemTypes = 'Movie,Series';
+            }
 
             return Emby.Models.items(query);
         }
