@@ -165,11 +165,17 @@ define(['playbackManager', 'dom', 'inputmanager', 'datetime', 'itemHelper', 'med
 
                 var apiClient = connectionManager.getApiClient(item.ServerId);
                 return apiClient.getItem(apiClient.getCurrentUserId(), item.Id).then(function (refreshedItem) {
-                    return refreshedItem.CurrentProgram || refreshedItem;
+
+                    return {
+                        originalItem: refreshedItem,
+                        displayItem: refreshedItem.CurrentProgram
+                    };
                 });
             }
 
-            return Promise.resolve(item);
+            return Promise.resolve({
+                originalItem: item
+            });
         }
 
         function updateRecordingButton(item) {
@@ -200,6 +206,94 @@ define(['playbackManager', 'dom', 'inputmanager', 'datetime', 'itemHelper', 'med
             });
         }
 
+        function updateDisplayItem(itemInfo) {
+
+            var item = itemInfo.originalItem;
+            currentItem = item;
+            var displayItem = itemInfo.displayItem || item;
+
+            updateRecordingButton(displayItem);
+            setPoster(displayItem, item);
+            setTitle(displayItem);
+
+            var osdParentTitle = view.querySelector('.osdParentTitle');
+
+            var parentName = displayItem.SeriesName || displayItem.Album;
+
+            if (displayItem.EpisodeTitle || displayItem.IsSeries) {
+                parentName = displayItem.Name;
+            }
+
+            osdParentTitle.innerHTML = parentName || '';
+            var isShowingParentName;
+            if (parentName) {
+                view.querySelector('.osdParentTitleContainer').classList.remove('hide');
+                isShowingParentName = true;
+            } else {
+                view.querySelector('.osdParentTitleContainer').classList.add('hide');
+            }
+
+            var osdTitle = view.querySelector('.osdTitle');
+            var osdTitleSmall = view.querySelector('.osdTitleSmall');
+            var titleElement;
+
+            if (isShowingParentName) {
+                titleElement = osdTitleSmall;
+                osdTitle.classList.add('hide');
+                osdTitle.innerHTML = '';
+            } else {
+                titleElement = osdTitle;
+                osdTitleSmall.classList.add('hide');
+                osdTitleSmall.innerHTML = '';
+            }
+
+            // Don't use this for live tv programs because this is contained in mediaInfo.getPrimaryMediaInfoHtml
+            var displayName = displayItem.Type === 'Program' && isShowingParentName ? '' :
+                itemHelper.getDisplayName(displayItem, {
+                    includeParentInfo: false,
+                    includeIndexNumber: false
+                });
+            titleElement.innerHTML = displayName;
+
+            if (displayName) {
+                titleElement.classList.remove('hide');
+            } else {
+                titleElement.classList.add('hide');
+            }
+
+            var mediaInfoHtml = mediaInfo.getPrimaryMediaInfoHtml(displayItem, {
+                runtime: false,
+                subtitles: false,
+                tomatoes: false,
+                endsAt: false,
+                episodeTitle: true,
+                originalAirDate: false,
+                episodeTitleIndexNumber: false,
+                programIndicator: false
+            });
+
+            var osdMediaInfo = view.querySelector('.osdMediaInfo');
+            osdMediaInfo.innerHTML = mediaInfoHtml;
+
+            if (mediaInfoHtml) {
+                osdMediaInfo.classList.remove('hide');
+            } else {
+                osdMediaInfo.classList.add('hide');
+            }
+
+            var secondaryMediaInfo = view.querySelector('.osdSecondaryMediaInfo');
+            var secondaryMediaInfoHtml = mediaInfo.getSecondaryMediaInfoHtml(displayItem, {
+                startDate: false
+            });
+            secondaryMediaInfo.innerHTML = secondaryMediaInfoHtml;
+
+            if (secondaryMediaInfoHtml) {
+                secondaryMediaInfo.classList.remove('hide');
+            } else {
+                secondaryMediaInfo.classList.add('hide');
+            }
+        }
+
         function updateNowPlayingInfo(state) {
 
             var item = state.NowPlayingItem;
@@ -217,25 +311,12 @@ define(['playbackManager', 'dom', 'inputmanager', 'datetime', 'itemHelper', 'med
                 view.querySelector('.btnAudio').classList.add('hide');
 
                 view.querySelector('.osdTitle').innerHTML = '';
+                view.querySelector('.osdTitleSmall').innerHTML = '';
                 view.querySelector('.osdMediaInfo').innerHTML = '';
                 return;
             }
 
-            getDisplayItem(item).then(function (displayItem) {
-
-                updateRecordingButton(displayItem);
-                setPoster(displayItem);
-                setTitle(displayItem);
-
-                view.querySelector('.osdTitle').innerHTML = itemHelper.getDisplayName(displayItem);
-                view.querySelector('.osdMediaInfo').innerHTML = mediaInfo.getPrimaryMediaInfoHtml(displayItem, {
-                    runtime: false,
-                    subtitles: false,
-                    tomatoes: false,
-                    endsAt: false,
-                    episodeTitle: false
-                });
-            });
+            getDisplayItem(item).then(updateDisplayItem);
 
             nowPlayingVolumeSlider.disabled = false;
             nowPlayingPositionSlider.disabled = false;
@@ -253,7 +334,6 @@ define(['playbackManager', 'dom', 'inputmanager', 'datetime', 'itemHelper', 'med
             } else {
                 view.querySelector('.btnAudio').classList.add('hide');
             }
-
         }
 
         function setTitle(item) {
@@ -272,7 +352,7 @@ define(['playbackManager', 'dom', 'inputmanager', 'datetime', 'itemHelper', 'med
             }
         }
 
-        function setPoster(item) {
+        function setPoster(item, secondaryItem) {
 
             var osdPoster = view.querySelector('.osdPoster');
 
@@ -281,6 +361,12 @@ define(['playbackManager', 'dom', 'inputmanager', 'datetime', 'itemHelper', 'med
                 var imgUrl = seriesImageUrl(item, { type: 'Primary' }) ||
                     seriesImageUrl(item, { type: 'Thumb' }) ||
                     imageUrl(item, { type: 'Primary' });
+
+                if (!imgUrl && secondaryItem) {
+                    imgUrl = seriesImageUrl(secondaryItem, { type: 'Primary' }) ||
+                       seriesImageUrl(secondaryItem, { type: 'Thumb' }) ||
+                       imageUrl(secondaryItem, { type: 'Primary' });
+                }
 
                 if (imgUrl) {
                     osdPoster.innerHTML = '<img src="' + imgUrl + '" />';
@@ -465,8 +551,19 @@ define(['playbackManager', 'dom', 'inputmanager', 'datetime', 'itemHelper', 'med
                 case 'previous':
                     showOsd();
                     break;
+                case 'record':
+                    onRecordingCommand();
+                    showOsd();
+                    break;
                 default:
                     break;
+            }
+        }
+
+        function onRecordingCommand() {
+            var btnRecord = view.querySelector('.btnRecord');
+            if (!btnRecord.classList.contains('hide')) {
+                btnRecord.click();
             }
         }
 
@@ -682,6 +779,39 @@ define(['playbackManager', 'dom', 'inputmanager', 'datetime', 'itemHelper', 'med
             var player = this;
             currentRuntimeTicks = playbackManager.duration(player);
             updateTimeDisplay(playbackManager.currentTime(player), currentRuntimeTicks);
+
+            refreshProgramInfoIfNeeded(player);
+        }
+
+        function refreshProgramInfoIfNeeded(player) {
+            var item = currentItem;
+            if (item.Type !== 'TvChannel') {
+                return;
+            }
+
+            var program = item.CurrentProgram;
+            if (!program || !program.EndDate) {
+                return;
+            }
+
+            try {
+
+                var endDate = datetime.parseISO8601Date(program.EndDate);
+
+                // program has changed and needs to be refreshed
+                if (new Date().getTime() >= endDate.getTime()) {
+
+                    console.log('program info needs to be refreshed');
+
+                    playbackManager.getPlayerState(player).then(function (state) {
+
+                        onStateChanged.call(player, { type: 'init' }, state);
+                    });
+                }
+            }
+            catch (e) {
+                console.log("Error parsing date: " + program.EndDate);
+            }
         }
 
         function updatePlayPauseState(isPaused) {

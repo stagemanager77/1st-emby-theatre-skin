@@ -99,11 +99,8 @@
 .videoOsdBottom .buttons {
     padding: .25em 0 0;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-}
-
-.videoOsdBottom paper-icon-button {
-    color: #eee;
 }
 
 .osdVolumeSliderContainer {
@@ -151,22 +148,39 @@
         -ms-user-select: none;
     }
 
+.osdParentTitle {
+    opacity: 1;
+    margin: 0;
+}
+
 .osdTitle {
     margin: 0;
-    padding-left: .4em;
+    opacity: 1;
+    margin-right: 1em;
+}
+
+.osdTitleSmall {
+    margin: 0;
+    opacity: 1;
+    margin-right: 1em;
 }
 
 .osdMediaInfo {
-    margin-left: 1em;
     color: #eee;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
+}
+
+.osdSecondaryMediaInfo {
+    padding-left: .6em;
 }
 
 .osdTextContainer {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     user-select: none;
+    margin-bottom: .7em;
+    padding-left: .5em;
 }
 
 @media all and (max-width:480px) {

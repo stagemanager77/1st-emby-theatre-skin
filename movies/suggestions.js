@@ -43,8 +43,7 @@
 
         var section = view.querySelector('.resumeSection');
         var container = section.querySelector('.itemsContainer');
-        var supportsImageAnalysis = appHost.supports('imageanalysis');
-        var cardLayout = supportsImageAnalysis;
+        var cardLayout = false;
 
         var allowBottomPadding = !enableScrollX();
 
@@ -60,8 +59,7 @@
             centerText: !cardLayout,
             overlayPlayButton: true,
             allowBottomPadding: allowBottomPadding,
-            cardLayout: cardLayout,
-            vibrant: supportsImageAnalysis
+            cardLayout: cardLayout
         });
 
         if (enableScrollX()) {

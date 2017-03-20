@@ -31,6 +31,7 @@ h1, h2 {
     background-size: contain;
     background-repeat: no-repeat;
     width: 13.2em;
+    opacity: 1;
 }
 
 .headerAudioPlayerButton {
@@ -434,10 +435,6 @@ button.mini {
 
 .horizontalItemsContainer {
     display: flex;
-}
-
-.xlargePaperIconButton {
-    font-size: 1.7em !important;
 }
 
 .padded-left {

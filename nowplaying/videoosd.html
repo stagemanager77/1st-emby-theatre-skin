@@ -7,17 +7,26 @@
 
     </div>
     <div class="osdControls">
+        
+        <div class="osdTextContainer osdParentTitleContainer hide">
+            <h2 class="osdParentTitle"></h2>
+        </div>
+
         <div class="osdTextContainer">
             <h2 class="osdTitle"></h2>
+            <div class="osdTitleSmall"></div>
             <div class="osdMediaInfo"></div>
         </div>
-        <div class="sliderContainer" style="margin: .25em .5em;">
+
+        <div class="osdTextContainer osdSecondaryMediaInfo">
+        </div>
+        <div class="sliderContainer" style="margin: .5em .5em .25em;">
             <input type="range" step=".01" min="0" max="100" value="0" is="emby-slider" class="osdPositionSlider" />
         </div>
 
         <div class="buttons">
             <button is="paper-icon-button-light" class="btnRecord autoSize hide">
-                <i class="xlargePaperIconButton md-icon">&#xE061;</i>
+                <i class="md-icon">&#xE061;</i>
             </button>
 
             <button is="paper-icon-button-light" class="btnPreviousTrack autoSize hide">
@@ -50,7 +59,7 @@
                 <i class="xlargePaperIconButton md-icon">&#xE307;</i>
             </button>
             <button is="paper-icon-button-light" class="btnVideoOsdSettings hide autoSize" title="${Settings}">
-                <i class="largePaperIconButton md-icon">&#xE8B8;</i>
+                <i class="md-icon">&#xE8B8;</i>
             </button>
             <button is="paper-icon-button-light" class="btnFullscreen hide autoSize" title="${Fullscreen}">
                 <i class="xlargePaperIconButton md-icon">&#xE5D0;</i>
@@ -66,7 +75,7 @@
                     <i class="xlargePaperIconButton md-icon">&#xE050;</i>
                 </button>
                 <div class="sliderContainer osdVolumeSliderContainer">
-                    <input is="emby-slider" type="range" step="1" min="0" max="100" value="0" class="osdVolumeSlider" />
+                    <input is="emby-slider" type="range" step="1" min="0" max="100" value="0" class="osdVolumeSlider"/>
                 </div>
             </div>
         </div>
