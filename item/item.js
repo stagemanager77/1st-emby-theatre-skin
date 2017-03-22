@@ -355,7 +355,8 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
             } else {
                 mediaInfoElem.classList.remove('hide');
                 mediaInfo.fillPrimaryMediaInfo(mediaInfoElem, item, {
-                    interactive: true
+                    interactive: true,
+                    episodeTitle: false
                 });
             }
 

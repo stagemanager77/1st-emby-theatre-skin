@@ -47,7 +47,8 @@ define(['./spotlight', 'focusManager', 'cardBuilder', './../skininfo', 'emby-ite
             ImageTypeLimit: 1,
             Limit: 18,
             ParentId: parentId,
-            UserId: apiClient.getCurrentUserId()
+            UserId: apiClient.getCurrentUserId(),
+            EnableTotalRecordCount: false
         };
 
         return apiClient.getNextUpEpisodes(options).then(function (result) {
