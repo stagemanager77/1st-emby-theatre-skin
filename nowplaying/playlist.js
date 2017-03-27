@@ -1,4 +1,4 @@
-define(['playbackManager', 'scroller', 'loading', 'imageLoader', 'backdrop', 'listView', 'focusManager', 'itemShortcuts', 'emby-itemscontainer'], function (playbackManager, scroller, loading, imageLoader, backdrop, listview, focusManager, itemShortcuts) {
+define(['playbackManager', 'scroller', 'loading', 'imageLoader', 'backdrop', 'listView', 'focusManager', 'itemShortcuts', 'globalize', 'emby-itemscontainer'], function (playbackManager, scroller, loading, imageLoader, backdrop, listview, focusManager, itemShortcuts, globalize) {
     'use strict';
 
     function createVerticalScroller(view, pageInstance) {
@@ -109,7 +109,7 @@ define(['playbackManager', 'scroller', 'loading', 'imageLoader', 'backdrop', 'li
 
             var isRestored = e.detail.isRestored;
 
-            Emby.Page.setTitle(Globalize.translate('NowPlaying'));
+            Emby.Page.setTitle(globalize.translate('NowPlaying'));
 
             Events.on(playbackManager, 'playbackstart', onPlaybackStart);
             Events.on(playbackManager, 'playbackstop', onPlaybackStop);

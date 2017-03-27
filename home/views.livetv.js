@@ -145,15 +145,15 @@ define(['focusManager', 'cardBuilder', 'pluginManager', './../skininfo', 'browse
         };
 
         element.querySelector('.guideCard').addEventListener('click', function () {
-            Emby.Page.show(Emby.PluginManager.mapRoute(skinInfo.id, 'livetv/guide.html'));
+            Emby.Page.show(pluginManager.mapRoute(skinInfo.id, 'livetv/guide.html'));
         });
 
         element.querySelector('.recordingsCard').addEventListener('click', function () {
             gotoTvView('3', parentId, apiClient.serverId());
         });
 
-        element.querySelector('.scheduledLiveTvCard').addEventListener('click', function () {
-            gotoTvView('4', parentId, apiClient.serverId());
+        element.querySelector('.channelsLiveTvCard').addEventListener('click', function () {
+            gotoTvView('2', parentId, apiClient.serverId());
         });
 
         self.destroy = function () {

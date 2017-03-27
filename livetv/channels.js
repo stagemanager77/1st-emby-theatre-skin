@@ -1,4 +1,4 @@
-﻿define(['cardBuilder', 'imageLoader', 'loading', 'connectionManager', 'apphost', 'layoutManager', 'scrollHelper', 'emby-itemscontainer'], function (cardBuilder, imageLoader, loading, connectionManager, appHost, layoutManager, scrollHelper) {
+﻿define(['cardBuilder', 'imageLoader', 'loading', 'connectionManager', 'apphost', 'layoutManager', 'scrollHelper', 'focusManager', 'emby-itemscontainer'], function (cardBuilder, imageLoader, loading, connectionManager, appHost, layoutManager, scrollHelper, focusManager) {
     'use strict';
 
     function LiveTvChannelsTab(view, params) {
@@ -54,7 +54,7 @@
         this.promises = promises;
     };
 
-    LiveTvChannelsTab.prototype.onShow = function () {
+    LiveTvChannelsTab.prototype.onShow = function (options) {
 
         var promises = this.promises;
         if (!promises) {
@@ -67,8 +67,14 @@
 
         promises[0].then(function (result) {
             renderItems(view, result.Items, 'itemsContainer');
+            return Promise.resolve();
         });
 
+        Promise.all(promises).then(function () {
+            if (options.autoFocus) {
+                focusManager.autoFocus(view);
+            }
+        });
     };
 
     LiveTvChannelsTab.prototype.onHide = function () {

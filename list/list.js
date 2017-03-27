@@ -1,4 +1,4 @@
-define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../components/itemslist', 'emby-itemscontainer'], function (loading, scroller, playbackManager, alphaPicker, itemsList) {
+define(['globalize', 'loading', 'scroller', 'playbackManager', 'alphaPicker', './../components/itemslist', 'emby-itemscontainer'], function (globalize, loading, scroller, playbackManager, alphaPicker, itemsList) {
     'use strict';
 
     function createVerticalScroller(instance, view, item, loading) {
@@ -222,9 +222,9 @@ define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../component
         function setTitle(item) {
 
             if (params.type === 'collections') {
-                Emby.Page.setTitle(Globalize.translate('Collections'));
+                Emby.Page.setTitle(globalize.translate('Collections'));
             } else if (params.type === 'favoritemovies') {
-                Emby.Page.setTitle(Globalize.translate('FavoriteMovies'));
+                Emby.Page.setTitle(globalize.translate('FavoriteMovies'));
             } else {
                 Emby.Page.setTitle(item.Name);
             }

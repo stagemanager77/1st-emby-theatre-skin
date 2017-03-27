@@ -1,4 +1,4 @@
-﻿define(['cardBuilder', 'loading', 'connectionManager', 'apphost', 'layoutManager', 'scrollHelper', 'emby-itemscontainer', 'emby-scroller'], function (cardBuilder, loading, connectionManager, appHost, layoutManager, scrollHelper) {
+﻿define(['embyRouter', 'cardBuilder', 'loading', 'connectionManager', 'apphost', 'layoutManager', 'scrollHelper', 'pluginManager', './../skininfo', 'emby-itemscontainer', 'emby-scroller'], function (embyRouter, cardBuilder, loading, connectionManager, appHost, layoutManager, scrollHelper, pluginManager, skinInfo) {
     'use strict';
 
     function enableScrollX() {
@@ -11,6 +11,7 @@
         this.apiClient = connectionManager.getApiClient(params.serverId);
 
         initLayout(view);
+        initMoreButtons(view, params);
     }
 
     function initLayout(view) {
@@ -30,6 +31,25 @@
             }
 
             section.insertAdjacentHTML('beforeend', html);
+        }
+    }
+
+    function onMoreButtonClick() {
+
+        var url = 'livetv/' + this.getAttribute('data-href');
+
+        url += '&serverId=' + this.getAttribute('data-serverid');
+
+        embyRouter.show(pluginManager.mapRoute(skinInfo.id, url));
+    }
+
+    function initMoreButtons(view, params) {
+
+        var elems = view.querySelectorAll('.btnMore');
+        for (var i = 0, length = elems.length; i < length; i++) {
+
+            elems[i].setAttribute('data-serverid', params.serverId);
+            elems[i].addEventListener('click', onMoreButtonClick);
         }
     }
 
@@ -223,7 +243,6 @@
             showAirTime: true,
             showAirEndTime: true,
             showChannelName: true,
-            cardLayout: true,
             preferThumb: true,
             coverImage: true,
             overlayText: false

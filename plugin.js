@@ -142,9 +142,15 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
                 path: 'livetv/livetv.html',
                 transition: 'slide',
                 controller: self.id + '/livetv/livetv',
-                dependencies: [
-                    'cardStyle',
-                ],
+                dependencies: [],
+                autoFocus: false
+            });
+
+            routes.push({
+                path: 'livetv/livetvitems.html',
+                transition: 'slide',
+                controller: self.id + '/livetv/livetvitems',
+                dependencies: [],
                 autoFocus: false
             });
 

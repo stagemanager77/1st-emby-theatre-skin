@@ -41,6 +41,7 @@
         var container = section.querySelector('.itemsContainer');
         var supportsImageAnalysis = appHost.supports('imageanalysis');
         var cardLayout = supportsImageAnalysis;
+        cardLayout = false;
 
         cardBuilder.buildCards(items, {
             parentContainer: section,
@@ -51,11 +52,11 @@
             shape: getSquareShape(),
             showTitle: true,
             showParentTitle: true,
-            centerText: !supportsImageAnalysis,
-            overlayPlayButton: !supportsImageAnalysis,
+            centerText: !cardLayout,
+            overlayPlayButton: !cardLayout,
             allowBottomPadding: !enableScrollX(),
-            cardLayout: supportsImageAnalysis,
-            vibrant: supportsImageAnalysis,
+            cardLayout: cardLayout,
+            vibrant: cardLayout && supportsImageAnalysis,
             coverImage: true
         });
 
@@ -70,6 +71,7 @@
         var container = section.querySelector('.itemsContainer');
         var supportsImageAnalysis = appHost.supports('imageanalysis');
         var cardLayout = supportsImageAnalysis;
+        cardLayout = false;
 
         cardBuilder.buildCards(items, Object.assign({
             parentContainer: section,
@@ -80,11 +82,11 @@
             showTitle: true,
             showParentTitle: true,
             action: 'instantmix',
-            centerText: !supportsImageAnalysis,
-            overlayMoreButton: !supportsImageAnalysis,
+            centerText: !cardLayout,
+            overlayMoreButton: !cardLayout,
             allowBottomPadding: !enableScrollX(),
-            cardLayout: supportsImageAnalysis,
-            vibrant: supportsImageAnalysis,
+            cardLayout: cardLayout,
+            vibrant: cardLayout && supportsImageAnalysis,
             coverImage: true
 
         }, cardOptions || {}));

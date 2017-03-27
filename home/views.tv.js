@@ -1,4 +1,4 @@
-define(['./spotlight', 'focusManager', 'cardBuilder', './../skininfo', 'emby-itemscontainer'], function (spotlight, focusManager, cardBuilder, skinInfo) {
+define(['./spotlight', 'focusManager', 'pluginManager', 'cardBuilder', './../skininfo', 'emby-itemscontainer'], function (spotlight, focusManager, pluginManager, cardBuilder, skinInfo) {
     'use strict';
 
     function loadResume(element, parentId) {
@@ -168,15 +168,15 @@ define(['./spotlight', 'focusManager', 'cardBuilder', './../skininfo', 'emby-ite
         var serverId = apiClient.serverId();
 
         element.querySelector('.allSeriesCard').addEventListener('click', function () {
-            Emby.Page.show(Emby.PluginManager.mapRoute(skinInfo.id, 'tv/tv.html?tab=2&parentId=' + parentId + "&serverId=" + serverId));
+            Emby.Page.show(pluginManager.mapRoute(skinInfo.id, 'tv/tv.html?tab=2&parentId=' + parentId + "&serverId=" + serverId));
         });
 
         element.querySelector('.tvUpcomingCard').addEventListener('click', function () {
-            Emby.Page.show(Emby.PluginManager.mapRoute(skinInfo.id, 'tv/tv.html?tab=3&parentId=' + parentId + "&serverId=" + serverId));
+            Emby.Page.show(pluginManager.mapRoute(skinInfo.id, 'tv/tv.html?tab=3&parentId=' + parentId + "&serverId=" + serverId));
         });
 
         element.querySelector('.tvFavoritesCard').addEventListener('click', function () {
-            Emby.Page.show(Emby.PluginManager.mapRoute(skinInfo.id, 'tv/tv.html?tab=4&parentId=' + parentId + "&serverId=" + serverId));
+            Emby.Page.show(pluginManager.mapRoute(skinInfo.id, 'tv/tv.html?tab=4&parentId=' + parentId + "&serverId=" + serverId));
         });
 
         self.destroy = function () {

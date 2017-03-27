@@ -1,4 +1,4 @@
-define(['connectionManager', 'loading', './../components/tabbedpage', 'backdrop', 'focusManager', 'playbackManager', 'layoutManager', 'browser', './../skininfo', 'events'], function (connectionManager, loading, tabbedPage, backdrop, focusManager, playbackManager, layoutManager, browser, skinInfo, events) {
+define(['globalize', 'pluginManager', 'connectionManager', 'loading', './../components/tabbedpage', 'backdrop', 'focusManager', 'playbackManager', 'layoutManager', 'browser', './../skininfo', 'events'], function (globalize, pluginManager, connectionManager, loading, tabbedPage, backdrop, focusManager, playbackManager, layoutManager, browser, skinInfo, events) {
     'use strict';
 
     function loadViewHtml(page, parentId, html, viewName, autoFocus, self) {
@@ -6,7 +6,7 @@ define(['connectionManager', 'loading', './../components/tabbedpage', 'backdrop'
         var homeScrollContent = page.querySelector('.contentScrollSlider');
 
         html = html;
-        homeScrollContent.innerHTML = Globalize.translateDocument(html, skinInfo.id);
+        homeScrollContent.innerHTML = globalize.translateDocument(html, skinInfo.id);
 
         require([skinInfo.id + '/home/views.' + viewName], function (viewBuilder) {
 
@@ -221,7 +221,7 @@ define(['connectionManager', 'loading', './../components/tabbedpage', 'backdrop'
                         break;
                 }
 
-                require(['text!' + Emby.PluginManager.mapPath(skinInfo.id, 'home/views.' + viewName + '.html')], function (html) {
+                require(['text!' + pluginManager.mapPath(skinInfo.id, 'home/views.' + viewName + '.html')], function (html) {
 
                     if (!autoFocusTabContent) {
                         var activeElement = document.activeElement;

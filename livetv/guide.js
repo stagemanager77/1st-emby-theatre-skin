@@ -1,4 +1,4 @@
-define(['tvguide', 'events', 'datetime', 'imageLoader', 'backdrop', 'mediaInfo'], function (tvguide, events, datetime, imageLoader, backdrop, mediaInfo) {
+define(['globalize', 'tvguide', 'events', 'datetime', 'imageLoader', 'backdrop', 'mediaInfo'], function (globalize, tvguide, events, datetime, imageLoader, backdrop, mediaInfo) {
     'use strict';
 
     return function (view, params) {
@@ -13,7 +13,7 @@ define(['tvguide', 'events', 'datetime', 'imageLoader', 'backdrop', 'mediaInfo']
 
         view.addEventListener('viewshow', function (e) {
 
-            Emby.Page.setTitle(Globalize.translate('Guide'));
+            Emby.Page.setTitle(globalize.translate('Guide'));
             backdrop.clear();
 
             if (e.detail.isRestored) {

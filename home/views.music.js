@@ -1,4 +1,4 @@
-define(['cardBuilder', 'pluginManager', './../skininfo', 'emby-itemscontainer'], function (cardBuilder, pluginManager, skinInfo) {
+define(['cardBuilder', 'pluginManager', './../skininfo', 'focusManager', 'emby-itemscontainer'], function (cardBuilder, pluginManager, skinInfo, focusManager) {
     'use strict';
 
 	function loadLatest(element, parentId) {
@@ -243,7 +243,7 @@ define(['cardBuilder', 'pluginManager', './../skininfo', 'emby-itemscontainer'],
         var self = this;
 
         if (autoFocus) {
-            Emby.FocusManager.autoFocus(element, true);
+            focusManager.autoFocus(element, true);
         }
 
         self.loadData = function (isRefresh) {

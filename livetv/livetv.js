@@ -1,4 +1,4 @@
-define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'require', './../components/focushandler', 'emby-itemscontainer', 'emby-tabs', 'emby-button', 'emby-scroller'], function (loading, backdrop, connectionManager, scroller, globalize, require, focusHandler) {
+define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'require', './../components/focushandler', 'emby-itemscontainer', 'emby-tabs', 'emby-button', 'emby-scroller', 'cardStyle'], function (loading, backdrop, connectionManager, scroller, globalize, require, focusHandler) {
     'use strict';
 
     return function (view, params) {

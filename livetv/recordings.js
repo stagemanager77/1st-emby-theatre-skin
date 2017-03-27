@@ -1,4 +1,4 @@
-﻿define(['cardBuilder', 'loading', 'connectionManager', 'apphost', 'datetime', 'layoutManager', 'scrollHelper', 'focusManager', 'emby-itemscontainer', 'emby-scroller'], function (cardBuilder, loading, connectionManager, appHost, datetime, layoutManager, scrollHelper, focusManager) {
+﻿define(['cardBuilder', 'loading', 'connectionManager', 'apphost', 'datetime', 'layoutManager', 'scrollHelper', 'focusManager', 'pluginManager', './../skininfo', 'embyRouter', 'emby-itemscontainer', 'emby-scroller'], function (cardBuilder, loading, connectionManager, appHost, datetime, layoutManager, scrollHelper, focusManager, pluginManager, skinInfo, embyRouter) {
     'use strict';
 
     function enableScrollX() {
@@ -11,6 +11,12 @@
         this.apiClient = connectionManager.getApiClient(params.serverId);
 
         initLayout(view);
+
+        var moreButtons = view.querySelectorAll('.btnMore');
+        for (var i = 0, length = moreButtons.length; i < length; i++) {
+            moreButtons[i].setAttribute('data-serverid', params.serverId);
+            moreButtons[i].addEventListener('click', onMoreClick);
+        }
     }
 
     function initLayout(view) {
@@ -85,6 +91,15 @@
         }));
 
         promises.push(apiClient.getLiveTvRecordings({
+            UserId: apiClient.getCurrentUserId(),
+            Limit: enableScrollX() ? 12 : 8,
+            IsInProgress: false,
+            Fields: 'CanDelete,PrimaryImageAspectRatio,BasicSyncInfo',
+            EnableTotalRecordCount: false,
+            IsSports: true
+        }));
+
+        promises.push(apiClient.getLiveTvRecordings({
 
             UserId: apiClient.getCurrentUserId(),
             Limit: enableScrollX() ? 12 : 8,
@@ -92,15 +107,6 @@
             Fields: 'CanDelete,PrimaryImageAspectRatio,BasicSyncInfo',
             EnableTotalRecordCount: false,
             IsKids: true
-        }));
-
-        promises.push(apiClient.getLiveTvRecordings({
-            UserId: apiClient.getCurrentUserId(),
-            Limit: enableScrollX() ? 12 : 8,
-            IsInProgress: false,
-            Fields: 'CanDelete,PrimaryImageAspectRatio,BasicSyncInfo',
-            EnableTotalRecordCount: false,
-            IsSports: true
         }));
 
         promises.push(apiClient.getLiveTvRecordingGroups({
@@ -115,6 +121,7 @@
 
         var container = section.querySelector('.itemsContainer');
         var supportsImageAnalysis = appHost.supports('imageanalysis');
+        supportsImageAnalysis = false;
         var cardLayout = supportsImageAnalysis;
 
         cardBuilder.buildCards(items, Object.assign({
@@ -126,7 +133,7 @@
             coverImage: true,
             lazy: true,
             cardLayout: cardLayout,
-            vibrant: true,
+            vibrant: supportsImageAnalysis,
             allowBottomPadding: !enableScrollX(),
             preferThumb: 'auto',
             centerText: !cardLayout,
@@ -154,6 +161,41 @@
             coverImage: true,
             overlayText: false
         });
+    }
+
+    function onMoreClick(e) {
+
+        var type = this.getAttribute('data-type');
+        var url;
+
+        switch (type) {
+            case 'latest':
+                url = 'livetvitems.html?type=Recordings';
+                break;
+            case 'movies':
+                url = 'livetvitems.html?type=Recordings&IsMovie=true';
+                break;
+            case 'episodes':
+                url = 'livetvitems.html?type=RecordingSeries';
+                break;
+            case 'programs':
+                url = 'livetvitems.html?type=Recordings&IsSeries=false&IsMovie=false';
+                break;
+            case 'kids':
+                url = 'livetvitems.html?type=Recordings&IsKids=true';
+                break;
+            case 'sports':
+                url = 'livetvitems.html?type=Recordings&IsSports=true';
+                break;
+            default:
+                break;
+        }
+
+        url = 'livetv/' + url;
+
+        url += '&serverId=' + this.getAttribute('data-serverid');
+
+        embyRouter.show(pluginManager.mapRoute(skinInfo.id, url));
     }
 
     LiveTvRecordingsTab.prototype.onShow = function (options) {

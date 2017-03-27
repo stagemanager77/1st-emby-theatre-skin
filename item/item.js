@@ -8,6 +8,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
 
             for (var i = 0, length = btns.length; i < length; i++) {
                 var btn = btns[i];
+
                 if (focusManager.isCurrentlyFocusable(btn)) {
                     try {
                         btn.focus();
@@ -242,7 +243,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
             return html;
         }
 
-        function getContextMenuOptions(item, button) {
+        function getContextMenuOptions(item, user, button) {
 
             var options = {
                 item: item,
@@ -255,7 +256,8 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                 cancelTimer: false,
                 record: false,
                 //editImages: false,
-                deleteItem: item.IsFolder === true
+                deleteItem: item.IsFolder === true,
+                user: user
             };
 
             if (appHost.supports('sync')) {
@@ -334,20 +336,19 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                 view.querySelector('.recordingFields').classList.add('hide');
             }
 
-            itemContextMenu.getCommands(getContextMenuOptions(item)).then(function (commands) {
+            var commands = itemContextMenu.getCommands(getContextMenuOptions(item, user));
 
-                if (commands.length && !browser.tv) {
-                    view.querySelector('.mainSection .btnMore').classList.remove('hide');
-                } else {
-                    view.querySelector('.mainSection .btnMore').classList.add('hide');
-                }
+            if (commands.length && !browser.tv) {
+                view.querySelector('.mainSection .btnMore').classList.remove('hide');
+            } else {
+                view.querySelector('.mainSection .btnMore').classList.add('hide');
+            }
 
-                if (view.querySelector('.mainSection .itemPageButtons button:not(.hide)')) {
-                    view.querySelector('.mainSection .itemPageButtonsContainer').classList.remove('hide');
-                } else {
-                    view.querySelector('.mainSection .itemPageButtonsContainer').classList.add('hide');
-                }
-            });
+            if (view.querySelector('.mainSection .itemPageButtons button:not(.hide)')) {
+                view.querySelector('.mainSection .itemPageButtonsContainer').classList.remove('hide');
+            } else {
+                view.querySelector('.mainSection .itemPageButtonsContainer').classList.add('hide');
+            }
 
             var mediaInfoElem = view.querySelector('.mediaInfoPrimary');
             if (item.Type === 'Season') {
@@ -1597,14 +1598,16 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
 
                 var button = this;
 
-                itemContextMenu.show(getContextMenuOptions(currentItem, button)).then(function (result) {
+                connectionManager.getApiClient(currentItem.ServerId).getCurrentUser().then(function(user) {
+                    itemContextMenu.show(getContextMenuOptions(currentItem, user, button)).then(function (result) {
 
-                    if (result.deleted) {
-                        Emby.Page.goHome();
+                        if (result.deleted) {
+                            Emby.Page.goHome();
 
-                    } else if (result.updated) {
-                        reloadItem(true);
-                    }
+                        } else if (result.updated) {
+                            reloadItem(true);
+                        }
+                    });
                 });
             }
 

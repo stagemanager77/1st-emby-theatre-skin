@@ -1,4 +1,4 @@
-define(['./spotlight', 'imageLoader', 'focusManager', 'cardBuilder', './../skininfo', 'emby-itemscontainer'], function (spotlight, imageLoader, focusManager, cardbuilder, skinInfo) {
+define(['globalize', './spotlight', 'imageLoader', 'focusManager', 'pluginManager', 'cardBuilder', './../skininfo', 'emby-itemscontainer'], function (globalize, spotlight, imageLoader, focusManager, pluginManager, cardbuilder, skinInfo) {
     'use strict';
 
     function loadResume(element, parentId) {
@@ -111,18 +111,18 @@ define(['./spotlight', 'imageLoader', 'focusManager', 'cardBuilder', './../skini
         switch (recommendation.RecommendationType) {
 
             case 'SimilarToRecentlyPlayed':
-                title = Globalize.translate('RecommendationBecauseYouWatched').replace("{0}", recommendation.BaselineItemName);
+                title = globalize.translate('RecommendationBecauseYouWatched').replace("{0}", recommendation.BaselineItemName);
                 break;
             case 'SimilarToLikedItem':
-                title = Globalize.translate('RecommendationBecauseYouLike').replace("{0}", recommendation.BaselineItemName);
+                title = globalize.translate('RecommendationBecauseYouLike').replace("{0}", recommendation.BaselineItemName);
                 break;
             case 'HasDirectorFromRecentlyPlayed':
             case 'HasLikedDirector':
-                title = Globalize.translate('RecommendationDirectedBy').replace("{0}", recommendation.BaselineItemName);
+                title = globalize.translate('RecommendationDirectedBy').replace("{0}", recommendation.BaselineItemName);
                 break;
             case 'HasActorFromRecentlyPlayed':
             case 'HasLikedActor':
-                title = Globalize.translate('RecommendationStarring').replace("{0}", recommendation.BaselineItemName);
+                title = globalize.translate('RecommendationStarring').replace("{0}", recommendation.BaselineItemName);
                 break;
         }
 
@@ -193,15 +193,15 @@ define(['./spotlight', 'imageLoader', 'focusManager', 'cardBuilder', './../skini
         loadImages(element, parentId);
 
         element.querySelector('.allMoviesCard').addEventListener('click', function () {
-            Emby.Page.show(Emby.PluginManager.mapRoute(skinInfo.id, 'movies/movies.html?serverId=' + apiClient.serverId() + '&tab=1&parentId=' + parentId));
+            Emby.Page.show(pluginManager.mapRoute(skinInfo.id, 'movies/movies.html?serverId=' + apiClient.serverId() + '&tab=1&parentId=' + parentId));
         });
 
         element.querySelector('.movieCollectionsCard').addEventListener('click', function () {
-            Emby.Page.show(Emby.PluginManager.mapRoute(skinInfo.id, 'movies/movies.html?serverId=' + apiClient.serverId() + '&tab=4&parentId=' + parentId));
+            Emby.Page.show(pluginManager.mapRoute(skinInfo.id, 'movies/movies.html?serverId=' + apiClient.serverId() + '&tab=4&parentId=' + parentId));
         });
 
         element.querySelector('.movieFavoritesCard').addEventListener('click', function () {
-            Emby.Page.show(Emby.PluginManager.mapRoute(skinInfo.id, 'movies/movies.html?serverId=' + apiClient.serverId() + '&tab=3&parentId=' + parentId));
+            Emby.Page.show(pluginManager.mapRoute(skinInfo.id, 'movies/movies.html?serverId=' + apiClient.serverId() + '&tab=3&parentId=' + parentId));
         });
 
         self.destroy = function () {

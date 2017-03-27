@@ -1,11 +1,23 @@
 <div class="horizontalSection">
     <div class="sectionTitle">&nbsp;</div>
     <div class="cardColumn">
+        <button type="button" class="card squareCard homeSquareCard channelsLiveTvCard card-static" data-type="all">
+            <div class="cardBox card-focuscontent">
+                <div class="cardImageContainer">
+
+                    <i class="cardImageIcon md-icon">&#xE5D2;</i>
+
+                    <div class="innerCardFooter">
+                        <div class="cardText">${Channels}</div>
+                    </div>
+                </div>
+            </div>
+        </button>
         <button type="button" class="card squareCard homeSquareCard allGenericCard guideCard card-static" data-type="all">
             <div class="cardBox card-focuscontent">
                 <div class="cardImageContainer">
 
-                    <i class="cardImageIcon md-icon">dvr</i>
+                    <i class="cardImageIcon md-icon">&#xE1B2;</i>
 
                     <div class="innerCardFooter">
                         <div class="cardText">${Guide}</div>
@@ -25,18 +37,6 @@
                 </div>
             </div>
         </button>
-        <button type="button" class="card squareCard homeSquareCard scheduledLiveTvCard hide card-static" data-type="all">
-            <div class="cardBox card-focuscontent">
-                <div class="cardImageContainer">
-
-                    <i class="cardImageIcon md-icon">schedule</i>
-
-                    <div class="innerCardFooter">
-                        <div class="cardText">${Scheduled}</div>
-                    </div>
-                </div>
-            </div>
-        </button>
     </div>
 </div>
 
@@ -48,7 +48,7 @@
 </div>
 
 <div class="horizontalSection nowPlayingSection hide">
-    <div class="sectionTitle">${NowPlaying}</div>
+    <div class="sectionTitle">${HeaderOnNow}</div>
     <div is="emby-itemscontainer" class="itemsContainer">
 
     </div>
@@ -62,21 +62,21 @@
 </div>
 
 <div class="horizontalSection upcomingMoviesSection hide">
-    <div class="sectionTitle">${UpcomingMovies}</div>
+    <div class="sectionTitle">${HeaderUpcomingMovies}</div>
     <div is="emby-itemscontainer" class="itemsContainer">
 
     </div>
 </div>
 
 <div class="horizontalSection upcomingSportsSection hide">
-    <div class="sectionTitle">${UpcomingSports}</div>
+    <div class="sectionTitle">${HeaderUpcomingSports}</div>
     <div is="emby-itemscontainer" class="itemsContainer">
 
     </div>
 </div>
 
 <div class="horizontalSection upcomingKidsSection hide">
-    <div class="sectionTitle">${UpcomingForKids}</div>
+    <div class="sectionTitle">${HeaderUpcomingForKids}</div>
     <div is="emby-itemscontainer" class="itemsContainer">
 
     </div>

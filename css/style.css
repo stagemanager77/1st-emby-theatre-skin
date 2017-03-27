@@ -349,7 +349,7 @@ h1, h2 {
 }
 
 .loginSquareCard {
-    display: inline-block!important;
+    display: inline-block !important;
 }
 
 .playlistPageContainer {
@@ -411,8 +411,26 @@ h1, h2 {
     margin-bottom: 2.3em;
 }
 
+.sectionTitleContainer {
+    margin-bottom: .3em;
+}
+
 .sectionTitle {
     margin-bottom: .2em;
+}
+
+.sectionTitleContainer > .sectionTitle {
+    margin: 0;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.sectionTitleButton {
+    margin-left: 1.5em;
+    margin-right: 0;
+    flex-shrink: 0;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .sectionTitle-cards {
