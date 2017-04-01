@@ -11,7 +11,7 @@
 
         var container = view.querySelector('.latestItems');
         var supportsImageAnalysis = appHost.supports('imageanalysis');
-        var cardLayout = supportsImageAnalysis;
+        var cardLayout = false;
 
         cardBuilder.buildCards(items, {
             itemsContainer: container,
@@ -28,7 +28,7 @@
             centerText: !cardLayout,
             lazy: true,
             overlayPlayButton: true,
-            vibrant: supportsImageAnalysis,
+            vibrant: cardLayout && supportsImageAnalysis,
             lines: 2
         });
     }

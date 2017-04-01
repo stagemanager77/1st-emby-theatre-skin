@@ -45,7 +45,7 @@
         var section = view.querySelector('.resumeSection');
         var container = section.querySelector('.itemsContainer');
         var supportsImageAnalysis = appHost.supports('imageanalysis');
-        var cardLayout = supportsImageAnalysis;
+        var cardLayout = false;
 
         var allowBottomPadding = !enableScrollX('resume');
 
@@ -62,7 +62,7 @@
             overlayPlayButton: true,
             allowBottomPadding: allowBottomPadding,
             cardLayout: cardLayout,
-            vibrant: supportsImageAnalysis
+            vibrant: cardLayout && supportsImageAnalysis
         });
 
         if (enableScrollX('resume')) {
@@ -75,6 +75,7 @@
         var section = view.querySelector('.nextUpSection');
         var container = section.querySelector('.itemsContainer');
         var supportsImageAnalysis = appHost.supports('imageanalysis');
+        var cardLayout = false;
 
         cardBuilder.buildCards(items, {
             parentContainer: section,
@@ -85,10 +86,10 @@
             showTitle: true,
             showParentTitle: true,
             overlayText: false,
-            centerText: !supportsImageAnalysis,
+            centerText: !cardLayout,
             overlayPlayButton: true,
-            cardLayout: supportsImageAnalysis,
-            vibrant: supportsImageAnalysis
+            cardLayout: cardLayout,
+            vibrant: cardLayout && supportsImageAnalysis
         });
 
         if (enableScrollX('nextup')) {
@@ -128,7 +129,7 @@
         promises.push(apiClient.getNextUpEpisodes({
 
             ParentId: parentId,
-            Limit: 32,
+            Limit: 48,
             Fields: "PrimaryImageAspectRatio,BasicSyncInfo",
             UserId: apiClient.getCurrentUserId(),
             ImageTypeLimit: 1,

@@ -239,7 +239,8 @@
         renderRecordings(context.querySelector('.activeRecordings'), items, {
             shape: getBackdropShape(),
             showParentTitle: false,
-            showTitle: true,
+            showParentTitleOrTitle: true,
+            showTitle: false,
             showAirTime: true,
             showAirEndTime: true,
             showChannelName: true,

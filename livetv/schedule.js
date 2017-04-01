@@ -114,6 +114,7 @@
 
             var supportsImageAnalysis = appHost.supports('imageanalysis');
             var cardLayout = appHost.preferVisualCards || supportsImageAnalysis;
+            cardLayout = false;
 
             html += cardBuilder.getCardsHtml({
                 items: group.items,
@@ -124,11 +125,12 @@
                 showChannelName: true,
                 cardLayout: cardLayout,
                 centerText: !cardLayout,
-                vibrant: supportsImageAnalysis,
+                vibrant: cardLayout && supportsImageAnalysis,
                 action: 'edit',
                 cardFooterAside: 'none',
                 preferThumb: true,
                 coverImage: true,
+                allowBottomPadding: !enableScrollX(),
                 overlayText: false
 
             });
@@ -167,30 +169,6 @@
         this.promises = promises;
     };
 
-    function renderRecordings(section, items, cardOptions) {
-
-        var container = section.querySelector('.itemsContainer');
-        var supportsImageAnalysis = appHost.supports('imageanalysis');
-
-        cardBuilder.buildCards(items, Object.assign({
-            parentContainer: section,
-            itemsContainer: container,
-            shape: (enableScrollX() ? 'autooverflow' : 'auto'),
-            showTitle: true,
-            showParentTitle: true,
-            coverImage: true,
-            lazy: true,
-            cardLayout: true,
-            vibrant: true,
-            allowBottomPadding: !enableScrollX(),
-            preferThumb: 'auto'
-        }, cardOptions || {}));
-
-        if (enableScrollX()) {
-            section.querySelector('.emby-scroller').scrollToBeginning();
-        }
-    }
-
     function renderTimers(elem, items) {
 
         var html = getTimersHtml(items);
@@ -208,19 +186,32 @@
 
     function renderActiveRecordings(context, items) {
 
-        renderRecordings(context.querySelector('.activeRecordings'), items, {
+        var section = context.querySelector('.activeRecordings');
+
+        var container = section.querySelector('.itemsContainer');
+        var supportsImageAnalysis = appHost.supports('imageanalysis');
+
+        cardBuilder.buildCards(items, {
+            parentContainer: section,
+            itemsContainer: container,
             shape: getBackdropShape(),
+            cardLayout: true,
+            vibrant: true,
             showParentTitle: false,
-            showTitle: true,
+            showParentTitleOrTitle: true,
+            showTitle: false,
             showAirTime: true,
             showAirEndTime: true,
             showChannelName: true,
-            cardLayout: true,
-            vibrant: true,
             preferThumb: true,
             coverImage: true,
             overlayText: false
+
         });
+
+        if (enableScrollX()) {
+            section.querySelector('.emby-scroller').scrollToBeginning();
+        }
     }
 
     LiveTvScheduleTab.prototype.onShow = function () {

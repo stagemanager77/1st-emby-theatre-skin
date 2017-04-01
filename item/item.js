@@ -1267,7 +1267,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
 
             } else if (item.Album) {
                 //html.push(item.Album);
-            } else if (item.Type === 'Program' && item.IsSeries) {
+            } else if (item.IsSeries || item.EpisodeTitle) {
                 html.push(getHeadingText(item.Name));
             }
 
