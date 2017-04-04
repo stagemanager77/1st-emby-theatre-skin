@@ -114,7 +114,7 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 're
 
             isViewRestored = e.detail.isRestored;
 
-            Emby.Page.setTitle(globalize.translate('LiveTV'));
+            Emby.Page.setTitle('');
             backdrop.clear();
 
             if (initialTabIndex != null) {

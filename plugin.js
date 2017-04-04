@@ -316,6 +316,8 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
 
             if (showList) {
                 Emby.Page.show(pluginManager.mapRoute(self, 'list/list.html') + '?parentId=' + item.Id + '&serverId=' + item.ServerId, { item: item });
+            } else if (item.Type === 'SeriesTimer') {
+                Emby.Page.show(pluginManager.mapRoute(self, 'item/item.html') + '?seriesTimerId=' + item.Id + '&serverId=' + item.ServerId, { item: item });
             } else {
                 Emby.Page.show(pluginManager.mapRoute(self, 'item/item.html') + '?id=' + item.Id + '&serverId=' + item.ServerId, { item: item });
             }

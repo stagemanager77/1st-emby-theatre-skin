@@ -1,4 +1,4 @@
-﻿define(['embyRouter', 'cardBuilder', 'loading', 'connectionManager', 'apphost', 'layoutManager', 'scrollHelper', 'pluginManager', './../skininfo', 'emby-itemscontainer', 'emby-scroller'], function (embyRouter, cardBuilder, loading, connectionManager, appHost, layoutManager, scrollHelper, pluginManager, skinInfo) {
+﻿define(['embyRouter', 'cardBuilder', 'loading', 'connectionManager', 'apphost', 'layoutManager', 'scrollHelper', 'pluginManager', './../skininfo', 'globalize', 'dom', 'emby-itemscontainer', 'emby-scroller'], function (embyRouter, cardBuilder, loading, connectionManager, appHost, layoutManager, scrollHelper, pluginManager, skinInfo, globalize, dom) {
     'use strict';
 
     function enableScrollX() {
@@ -12,6 +12,20 @@
 
         initLayout(view);
         initMoreButtons(view, params);
+
+        view.addEventListener('click', onViewClick);
+    }
+
+    function onViewClick(e) {
+        var textButtonCard = dom.parentWithClass(e.target, 'textButtonCard');
+
+        if (textButtonCard) {
+            var verticalSection = dom.parentWithClass(textButtonCard, 'verticalSection');
+
+            var btnMore = verticalSection.querySelector('.btnMore');
+
+            btnMore.click();
+        }
     }
 
     function initLayout(view) {
@@ -25,7 +39,7 @@
             var html;
 
             if (enableScrollX()) {
-                html = '<div is="emby-scroller" class="padded-top-focusscale padded-bottom-focusscale" data-mousewheel="false" data-framesize="matchgrandparent" data-centerfocus="card"><div is="emby-itemscontainer" class="scrollSlider focuscontainer-x padded-left padded-right"></div></div>';
+                html = '<div is="emby-scroller" class="padded-top-focusscale padded-bottom-focusscale" data-mousewheel="false" data-framesize="matchgrandparent" data-centerfocus="card"><div is="emby-itemscontainer" class="scrollSlider focuscontainer-x padded-left padded-right align-items-flex-start"></div></div>';
             } else {
                 html = '<div is="emby-itemscontainer" class="itemsContainer padded-left padded-right vertical-wrap"></div>';
             }
@@ -66,6 +80,15 @@
 
         cardOptions = cardOptions || {};
 
+        var enableCardMoreButton = layoutManager.tv;
+
+        var trailingButtons = enableCardMoreButton && section.classList.contains('withMoreButton') ? [
+            {
+                name: globalize.translate('More'),
+                id: 'more'
+            }
+        ] : null;
+
         cardBuilder.buildCards(items, Object.assign({
 
             parentContainer: section,
@@ -86,12 +109,22 @@
             showAirTime: true,
             showAirDateTime: true,
             showChannelName: true,
-            cardLayout: cardLayout
+            cardLayout: cardLayout,
+            trailingButtons: trailingButtons
 
         }, cardOptions));
 
         if (enableScrollX()) {
             section.querySelector('.emby-scroller').scrollToBeginning();
+        }
+
+        var moreButton = section.querySelector('.btnMore');
+        if (moreButton) {
+            if (enableCardMoreButton) {
+                moreButton.classList.add('hide');
+            } else {
+                moreButton.classList.remove('hide');
+            }
         }
     }
 

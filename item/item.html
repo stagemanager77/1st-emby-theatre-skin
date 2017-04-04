@@ -27,7 +27,7 @@
 
             <div class="detailLogo"></div>
 
-            <div class="verticalSection mainSection padded-left padded-right">
+            <div class="verticalSection itemVerticalSection mainSection padded-left padded-right">
                 <div class="itemPageLeft">
                     <div class="detailImageContainer"></div>
                 </div>
@@ -57,6 +57,10 @@
 
                             <button is="emby-button" class="btnTrailer hide raised">
                                 <span>${Trailer}</span>
+                            </button>
+
+                            <button is="emby-button" type="button" class="btnCancelSeriesTimer hide raised">
+                                <span>${ButtonCancelSeries}</span>
                             </button>
 
                             <button is="emby-button" class="btnMore hide raised">
@@ -97,42 +101,53 @@
 
                     </div>
 
+                    <div class="seriesRecordingEditor hide">
+
+                    </div>
+
                     <div class="mediaInfoIcons hide">
                     </div>
                 </div>
                 <div style="clear:both;"></div>
             </div>
 
-            <div class="itemNextUpSection verticalSection padded-left padded-right hide">
+            <div class="itemNextUpSection verticalSection itemVerticalSection padded-left padded-right hide">
                 <h2 class="sectionTitle">${NextUp}</h2>
                 <div is="emby-itemscontainer" class="itemsContainer vertical-wrap"></div>
             </div>
-            <div class="verticalSection childrenSection padded-left padded-right hide">
+            <div class="verticalSection itemVerticalSection childrenSection padded-left padded-right hide">
                 <h2 class="sectionTitle"></h2>
                 <div is="emby-itemscontainer" class="itemsContainer vertical-wrap childrenItemsContainer focuscontainer-x"></div>
             </div>
-            <div class="verticalSection peopleSection padded-left padded-right hide">
+            <div class="verticalSection itemVerticalSection peopleSection padded-left padded-right hide">
                 <h2 class="sectionTitle">${CastAndCrew}</h2>
                 <div is="emby-itemscontainer" class="itemsContainer vertical-wrap focuscontainer-x"></div>
             </div>
-            <div class="verticalSection extrasSection padded-left padded-right hide">
+            <div class="verticalSection itemVerticalSection extrasSection padded-left padded-right hide">
                 <h2 class="sectionTitle">${Extras}</h2>
                 <div is="emby-itemscontainer" class="itemsContainer vertical-wrap focuscontainer-x"></div>
             </div>
-            <div class="verticalSection moreFromSection padded-left padded-right hide">
+            <div class="verticalSection itemVerticalSection moreFromSection padded-left padded-right hide">
                 <h2 class="sectionTitle"></h2>
                 <div is="emby-itemscontainer" class="itemsContainer vertical-wrap focuscontainer-x"></div>
             </div>
-            <div class="verticalSection similarSection padded-left padded-right hide">
+            <div class="verticalSection itemVerticalSection similarSection padded-left padded-right hide">
                 <h2 class="sectionTitle">${HeaderMoreLikeThis}</h2>
                 <div is="emby-itemscontainer" class="itemsContainer vertical-wrap focuscontainer-x"></div>
             </div>
-            <div class="verticalSection scenesSection padded-left padded-right hide">
+            <div class="verticalSection itemVerticalSection scenesSection padded-left padded-right hide">
                 <h2 class="sectionTitle">${Scenes}</h2>
                 <div is="emby-itemscontainer" class="itemsContainer vertical-wrap focuscontainer-x"></div>
             </div>
             <div class="peopleItems">
 
+            </div>
+            <div class="verticalSection itemVerticalSection seriesTimerScheduleSection padded-left padded-right hide">
+                <h1>
+                    ${Schedule}
+                </h1>
+                <div class="seriesTimerSchedule">
+                </div>
             </div>
         </div>
     </div>

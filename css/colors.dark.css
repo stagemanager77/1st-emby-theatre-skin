@@ -24,6 +24,7 @@ a {
 
 .backgroundContainer {
     background: #141414;
+    background: linear-gradient(to right, #080808, #282828, #080808);
 }
 
     .backgroundContainer.withBackdrop {
@@ -61,7 +62,7 @@ a {
 
 .emby-button:focus:not(.btnUserViewHeader):not(.emby-tab-button) {
     background: #52B54B;
-    color: #fff!important;
+    color: #fff !important;
 }
 
 .card:focus:not(.card-round) .card-focuscontent {

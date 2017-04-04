@@ -1,4 +1,4 @@
-﻿define(['cardBuilder', 'loading', 'connectionManager', 'apphost', 'datetime', 'layoutManager', 'scrollHelper', 'focusManager', 'pluginManager', './../skininfo', 'embyRouter', 'emby-itemscontainer', 'emby-scroller'], function (cardBuilder, loading, connectionManager, appHost, datetime, layoutManager, scrollHelper, focusManager, pluginManager, skinInfo, embyRouter) {
+﻿define(['cardBuilder', 'loading', 'connectionManager', 'apphost', 'datetime', 'layoutManager', 'scrollHelper', 'focusManager', 'pluginManager', './../skininfo', 'embyRouter', 'globalize', 'dom', 'emby-itemscontainer', 'emby-scroller'], function (cardBuilder, loading, connectionManager, appHost, datetime, layoutManager, scrollHelper, focusManager, pluginManager, skinInfo, embyRouter, globalize, dom) {
     'use strict';
 
     function enableScrollX() {
@@ -17,6 +17,20 @@
             moreButtons[i].setAttribute('data-serverid', params.serverId);
             moreButtons[i].addEventListener('click', onMoreClick);
         }
+
+        view.addEventListener('click', onViewClick);
+    }
+
+    function onViewClick(e) {
+        var textButtonCard = dom.parentWithClass(e.target, 'textButtonCard');
+
+        if (textButtonCard) {
+            var verticalSection = dom.parentWithClass(textButtonCard, 'verticalSection');
+
+            var btnMore = verticalSection.querySelector('.btnMore');
+
+            btnMore.click();
+        }
     }
 
     function initLayout(view) {
@@ -30,7 +44,7 @@
             var html;
 
             if (enableScrollX()) {
-                html = '<div is="emby-scroller" class="padded-top-focusscale padded-bottom-focusscale" data-mousewheel="false" data-framesize="matchgrandparent" data-centerfocus="card"><div is="emby-itemscontainer" class="scrollSlider focuscontainer-x padded-left padded-right"></div></div>';
+                html = '<div is="emby-scroller" class="padded-top-focusscale padded-bottom-focusscale" data-mousewheel="false" data-framesize="matchgrandparent" data-centerfocus="card"><div is="emby-itemscontainer" class="scrollSlider focuscontainer-x padded-left padded-right align-items-flex-start"></div></div>';
             } else {
                 html = '<div is="emby-itemscontainer" class="itemsContainer padded-left padded-right vertical-wrap"></div>';
             }
@@ -124,6 +138,15 @@
         supportsImageAnalysis = false;
         var cardLayout = supportsImageAnalysis;
 
+        var enableCardMoreButton = layoutManager.tv;
+
+        var trailingButtons = enableCardMoreButton && section.classList.contains('withMoreButton') ? [
+            {
+                name: globalize.translate('More'),
+                id: 'more'
+            }
+        ] : null;
+
         cardBuilder.buildCards(items, Object.assign({
             parentContainer: section,
             itemsContainer: container,
@@ -137,12 +160,22 @@
             allowBottomPadding: !enableScrollX(),
             preferThumb: 'auto',
             centerText: !cardLayout,
-            overlayText: false
+            overlayText: false,
+            trailingButtons: trailingButtons
 
         }, cardOptions || {}));
 
         if (enableScrollX()) {
             section.querySelector('.emby-scroller').scrollToBeginning();
+        }
+
+        var moreButton = section.querySelector('.btnMore');
+        if (moreButton) {
+            if (enableCardMoreButton) {
+                moreButton.classList.add('hide');
+            } else {
+                moreButton.classList.remove('hide');
+            }
         }
     }
 

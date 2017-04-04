@@ -1,5 +1,5 @@
 define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper', 'playbackManager', 'connectionManager', 'imageLoader', 'userdataButtons', 'itemHelper', './../components/focushandler', 'backdrop', 'listView', 'mediaInfo', 'inputManager', 'focusManager', './../skinsettings', 'cardBuilder', 'indicators', 'layoutManager', 'browser', 'serverNotifications', 'events', 'dom', 'apphost', 'globalize', 'itemShortcuts', 'emby-itemscontainer'],
-    function (itemContextMenu, loading, skinInfo, datetime, scrollHelper, playbackManager, connectionManager, imageLoader, userdataButtons, itemHelper, focusHandler, backdrop, listview, mediaInfo, inputManager, focusManager, skinSettings, cardBuilder, indicators, layoutManager, browser, serverNotifications, events, dom, appHost, globalize, itemShortcuts) {
+    function (itemContextMenu, loading, skinInfo, datetime, scrollHelper, playbackManager, connectionManager, imageLoader, userdataButtons, itemHelper, focusHandler, backdrop, listView, mediaInfo, inputManager, focusManager, skinSettings, cardBuilder, indicators, layoutManager, browser, serverNotifications, events, dom, appHost, globalize, itemShortcuts) {
         'use strict';
 
         function focusMainSection() {
@@ -197,6 +197,14 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                     type: "Primary",
                     width: imageWidth,
                     tag: item.SeriesPrimaryImageTag
+                });
+            }
+            else if (item.ParentPrimaryImageItemId && item.ParentPrimaryImageTag) {
+
+                url = apiClient.getScaledImageUrl(item.ParentPrimaryImageItemId, {
+                    type: "Primary",
+                    width: imageWidth,
+                    tag: item.ParentPrimaryImageTag
                 });
             }
 
@@ -561,7 +569,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                     }
                 }
 
-                section.innerHTML = listview.getListViewHtml({
+                section.innerHTML = listView.getListViewHtml({
                     items: result.Items,
                     showIndexNumber: item.Type === 'MusicAlbum',
                     action: 'playallfromhere',
@@ -594,6 +602,80 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
 
                 }).then(onItemsResult);
             }
+        }
+
+        function getProgramScheduleHtml(items, options) {
+
+            options = options || {};
+
+            var html = '';
+            html += '<div is="emby-itemscontainer" class="itemsContainer vertical-list" data-contextmenu="false">';
+            html += listView.getListViewHtml({
+                items: items,
+                enableUserDataButtons: false,
+                image: false,
+                showProgramDateTime: true,
+                showChannel: true,
+                mediaInfo: false,
+                action: 'none',
+                moreButton: false,
+                recordButton: false
+            });
+
+            html += '</div>';
+
+            return html;
+        }
+
+        function renderSeriesTimerSchedule(page, seriesTimerId, apiClient) {
+
+            apiClient.getLiveTvTimers({
+                UserId: apiClient.getCurrentUserId(),
+                ImageTypeLimit: 1,
+                EnableImageTypes: "Primary,Backdrop,Thumb",
+                SortBy: "StartDate",
+                EnableTotalRecordCount: false,
+                EnableUserData: false,
+                SeriesTimerId: seriesTimerId,
+                Fields: "ChannelInfo"
+
+            }).then(function (result) {
+
+                if (result.Items.length && result.Items[0].SeriesTimerId !== seriesTimerId) {
+                    result.Items = [];
+                }
+
+                var html = getProgramScheduleHtml(result.Items);
+
+                var scheduleTab = page.querySelector('.seriesTimerSchedule');
+                scheduleTab.innerHTML = html;
+
+                imageLoader.lazyChildren(scheduleTab);
+            });
+        }
+
+        function renderSeriesTimerEditor(view, item, user, apiClient) {
+
+            if (item.Type !== 'SeriesTimer') {
+                return;
+            }
+
+            if (!user.Policy.EnableLiveTvManagement) {
+                view.querySelector('.seriesTimerScheduleSection').classList.add('hide');
+                view.querySelector('.btnCancelSeriesTimer').classList.add('hide');
+                return;
+            }
+
+            require(['seriesRecordingEditor'], function (seriesRecordingEditor) {
+                seriesRecordingEditor.embed(item, apiClient.serverId(), {
+                    context: view.querySelector('.seriesRecordingEditor')
+                });
+            });
+
+            view.querySelector('.seriesTimerScheduleSection').classList.remove('hide');
+            view.querySelector('.btnCancelSeriesTimer').classList.remove('hide');
+
+            renderSeriesTimerSchedule(view, item.Id, apiClient);
         }
 
         function renderPeopleItems(view, item, apiClient) {
@@ -856,7 +938,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                     });
                 }
 
-                section.innerHTML = listview.getListViewHtml({
+                section.innerHTML = listView.getListViewHtml({
                     items: result.Items,
                     showIndexNumber: item.Type === 'MusicAlbum',
                     enableOverview: true,
@@ -1379,11 +1461,20 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                 e.stopPropagation();
             }
 
+            function getItemPromise(apiClient) {
+                
+                if (params.seriesTimerId) {
+                    return apiClient.getLiveTvSeriesTimer(params.seriesTimerId);
+                }
+
+                return apiClient.getItem(apiClient.getCurrentUserId(), params.id);
+            }
+
             function startDataLoad() {
 
                 var apiClient = connectionManager.getApiClient(params.serverId);
 
-                dataPromises = [apiClient.getItem(apiClient.getCurrentUserId(), params.id), apiClient.getCurrentUser()];
+                dataPromises = [getItemPromise(apiClient), apiClient.getCurrentUser()];
             }
 
             function renderUserDataIcons(view, item) {
@@ -1392,7 +1483,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
 
                 var elem = view.querySelector(userDataIconsSelector);
 
-                if (item.Type === 'Program') {
+                if (item.Type === 'Program' || item.Type === 'SeriesTimer') {
 
                     elem.classList.add('hide');
 
@@ -1438,6 +1529,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                         renderImage(view, item);
                         renderLogo(view, item, apiClient);
                         renderChildren(view, item, apiClient);
+                        renderSeriesTimerEditor(view, item, user, apiClient);
                         renderDetails(self, view, item, user);
                         renderMediaInfoIcons(view, item);
                         renderPeople(view, item);
@@ -1511,6 +1603,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
 
                     view.querySelector('.itemPageFixedLeft .btnPlay').addEventListener('click', onPlayClick);
                     view.querySelector('.mainSection .btnPlay').addEventListener('click', onPlayClick);
+                    view.querySelector('.mainSection .btnCancelSeriesTimer').addEventListener('click', onCancelSeriesTimerClick);
                     view.querySelector('.mainSection .btnResume').addEventListener('click', onPlayClick);
                     view.querySelector('.mainSection .btnMore').addEventListener('click', showMoreMenu);
                     view.querySelector('.btnDeleteItem').addEventListener('click', deleteItem);
@@ -1582,6 +1675,16 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
             function onPlayClick() {
                 var mode = this.getAttribute('data-mode');
                 play(mode);
+            }
+
+            function onCancelSeriesTimerClick() {
+
+                require(['recordingHelper', 'pluginManager'], function (recordingHelper, pluginManager) {
+
+                    recordingHelper.cancelSeriesTimerWithConfirmation(currentItem.Id, currentItem.ServerId).then(function () {
+                        Emby.Page.show(pluginManager.mapRoute(skinInfo.id, 'livetv/livetv.html?tab=5&serverId=' + serverId));
+                    });
+                });
             }
 
             function deleteItem() {

@@ -11,6 +11,7 @@
 
         var supportsImageAnalysis = appHost.supports('imageanalysis');
         var cardLayout = appHost.preferVisualCards || supportsImageAnalysis;
+        cardLayout = false;
 
         cardOptions = cardOptions || {};
 
@@ -19,7 +20,7 @@
             shape: 'backdrop',
             showTitle: true,
             cardLayout: cardLayout,
-            vibrant: supportsImageAnalysis,
+            vibrant: cardLayout && supportsImageAnalysis,
             preferThumb: true,
             coverImage: true,
             overlayText: false,
