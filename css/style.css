@@ -65,7 +65,7 @@ h1, h2 {
     top: 0;
     left: 0;
     right: 0;
-    height: 9.6%;
+    height: 9%;
 }
 
 .headerLeft {
@@ -97,13 +97,13 @@ h1, h2 {
 }
 
 .pageContainer {
-    padding-top: 9.6vh;
+    padding-top: 9vh;
     overflow: hidden;
     contain: layout style;
 }
 
     .pageContainer.flex {
-        padding-top: 9.6vh;
+        padding-top: 9vh;
         overflow: hidden;
         display: flex;
         contain: strict;
@@ -127,14 +127,6 @@ h1, h2 {
 
 .itemScrollFrame.scrollFrameX .scrollSlider {
     padding-left: 4.5%;
-}
-
-.userViewNames {
-    padding-left: 3.75%;
-}
-
-.userViewButtonText {
-    font-weight: normal;
 }
 
 .itemScrollFrame.scrollFrameX .scrollSlider {
@@ -200,20 +192,6 @@ h1, h2 {
     flex-shrink: 0;
 }
 
-.userViewNames h3 {
-    margin-top: 0;
-    margin-bottom: 0;
-    font-weight: 300;
-}
-
-.userViewNames .btnUserViewHeader {
-    min-width: initial;
-    text-transform: none !important;
-    margin-top: 0;
-    padding-top: 0;
-    padding-bottom: .2em;
-}
-
 .listNumbers {
     position: fixed;
     bottom: 2.5%;
@@ -251,11 +229,6 @@ h1, h2 {
     display: flex;
 }
 
-.homePageContainer .selectedItemInfo {
-    right: 2%;
-    bottom: 2.5%;
-}
-
 .selectedItemInfo h2 {
     margin: 0;
 }
@@ -286,67 +259,6 @@ h1, h2 {
         overflow: hidden;
         text-overflow: ellipsis;
     }
-
-/* Need to use :not due to conflict with loginSquareCard */
-.horizontalPageContent .squareCard:not(.scalableCard) .cardImageContainer {
-    width: 20.83vh;
-    height: 20.83vh;
-}
-
-.horizontalPageContent .backdropCard .cardImageContainer {
-    width: 37.04vh;
-    height: 20.83vh;
-}
-
-.horizontalPageContent .bannerCard .cardImageContainer {
-    width: 56.32432vh;
-    height: 10.42vh;
-}
-
-.horizontalPageContent .portraitCard .cardImageContainer {
-    width: 21.02vh;
-    height: 31.57vh;
-}
-
-.homePageContent .squareCard:not(.scalableCard) .cardImageContainer {
-    width: 21.85vh;
-    height: 21.85vh;
-}
-
-.homePageContent .bannerCard .cardImageContainer {
-    width: 56.32432vh;
-    height: 10.42vh;
-}
-
-.homePageContent .backdropCard .cardImageContainer {
-    width: 38.89vh;
-    height: 21.85vh;
-}
-
-.homePageContent .portraitCard .cardImageContainer {
-    width: 21.94vh;
-    height: 32.96vh;
-}
-
-.listPageContent .squareCard:not(.scalableCard) .cardImageContainer {
-    width: 21.5vh;
-    height: 21.5vh;
-}
-
-.listPageContent .backdropCard .cardImageContainer {
-    width: 38.222vh;
-    height: 21.5vh;
-}
-
-.listPageContent .bannerCard .cardImageContainer {
-    width: 56.32432vh;
-    height: 10.42vh;
-}
-
-.listPageContent .portraitCard .cardImageContainer {
-    width: 21.7333vh;
-    height: 32.6vh;
-}
 
 .loginSquareCard {
     display: inline-block !important;

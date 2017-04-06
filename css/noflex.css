@@ -1,20 +1,20 @@
 /* 480p */
-.horizontalPageContent .squareCard .cardImageContainer, .homePageContent .squareCard .cardImageContainer {
+.homePageContent .squareCard .cardImageContainer {
     width: 95px !important;
     height: 95px !important;
 }
 
-.horizontalPageContent .backdropCard .cardImageContainer, .homePageContent .backdropCard .cardImageContainer {
+.homePageContent .backdropCard .cardImageContainer {
     width: 169px !important;
     height: 95px !important;
 }
 
-.horizontalPageContent .bannerCard .cardImageContainer, .homePageContent .bannerCard .cardImageContainer {
+.homePageContent .bannerCard .cardImageContainer {
     width: 169px !important;
     height: 25px !important;
 }
 
-.horizontalPageContent .portraitCard .cardImageContainer, .homePageContent .portraitCard .cardImageContainer {
+.homePageContent .portraitCard .cardImageContainer {
     width: 96px !important;
     height: 145px !important;
 }
@@ -24,22 +24,22 @@
 }
 
 @media all and (min-height: 720px) {
-    .horizontalPageContent .squareCard .cardImageContainer, .homePageContent .squareCard .cardImageContainer {
+    .homePageContent .squareCard .cardImageContainer {
         width: 145px !important;
         height: 145px !important;
     }
 
-    .horizontalPageContent .backdropCard .cardImageContainer, .homePageContent .backdropCard .cardImageContainer {
+    .homePageContent .backdropCard .cardImageContainer {
         width: 258px !important;
         height: 145px !important;
     }
 
-    .horizontalPageContent .bannerCard .cardImageContainer, .homePageContent .bannerCard .cardImageContainer {
+    .homePageContent .bannerCard .cardImageContainer {
         width: 258px !important;
         height: 39px !important;
     }
 
-    .horizontalPageContent .portraitCard .cardImageContainer, .homePageContent .portraitCard .cardImageContainer {
+    .homePageContent .portraitCard .cardImageContainer {
         width: 147px !important;
         height: 220px !important;
     }
@@ -50,22 +50,22 @@
 }
 
 @media all and (min-height: 1080px) {
-    .horizontalPageContent .squareCard .cardImageContainer, .homePageContent .squareCard .cardImageContainer {
+    .homePageContent .squareCard .cardImageContainer {
         width: 225px !important;
         height: 225px !important;
     }
 
-    .horizontalPageContent .backdropCard .cardImageContainer, .homePageContent .backdropCard .cardImageContainer {
+    .homePageContent .backdropCard .cardImageContainer {
         width: 400px !important;
         height: 225px !important;
     }
 
-    .horizontalPageContent .bannerCard .cardImageContainer, .homePageContent .bannerCard .cardImageContainer {
+    .homePageContent .bannerCard .cardImageContainer {
         width: 400px !important;
         height: 60px !important;
     }
 
-    .horizontalPageContent .portraitCard .cardImageContainer, .homePageContent .portraitCard .cardImageContainer {
+    .homePageContent .portraitCard .cardImageContainer {
         width: 227px !important;
         height: 340px !important;
     }

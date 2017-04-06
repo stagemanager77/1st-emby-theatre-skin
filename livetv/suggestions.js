@@ -1,4 +1,4 @@
-﻿define(['embyRouter', 'cardBuilder', 'loading', 'connectionManager', 'apphost', 'layoutManager', 'scrollHelper', 'pluginManager', './../skininfo', 'globalize', 'dom', 'emby-itemscontainer', 'emby-scroller'], function (embyRouter, cardBuilder, loading, connectionManager, appHost, layoutManager, scrollHelper, pluginManager, skinInfo, globalize, dom) {
+﻿define(['embyRouter', 'cardBuilder', 'loading', 'connectionManager', 'apphost', 'layoutManager', 'focusManager', 'scrollHelper', 'pluginManager', './../skininfo', 'globalize', 'dom', 'emby-itemscontainer', 'emby-scroller'], function (embyRouter, cardBuilder, loading, connectionManager, appHost, layoutManager, focusManager, scrollHelper, pluginManager, skinInfo, globalize, dom) {
     'use strict';
 
     function enableScrollX() {
@@ -283,7 +283,7 @@
         });
     }
 
-    LiveTvSuggestionsTab.prototype.onShow = function () {
+    LiveTvSuggestionsTab.prototype.onShow = function (options) {
 
         var promises = this.promises;
         if (!promises) {
@@ -296,14 +296,17 @@
 
         promises[0].then(function (result) {
             renderActiveRecordings(view, result.Items);
+            return Promise.resolve();
         });
 
         promises[1].then(function (result) {
             renderItems(view, result.Items, 'activePrograms');
+            return Promise.resolve();
         });
 
         promises[2].then(function (result) {
             renderItems(view, result.Items, 'upcomingEpisodes');
+            return Promise.resolve();
         });
 
         promises[3].then(function (result) {
@@ -311,20 +314,29 @@
                 shape: getPortraitShape(),
                 preferThumb: null
             });
+            return Promise.resolve();
         });
 
         promises[4].then(function (result) {
             renderItems(view, result.Items, 'upcomingSports');
+            return Promise.resolve();
         });
 
         promises[5].then(function (result) {
             renderItems(view, result.Items, 'upcomingKids');
+            return Promise.resolve();
         });
 
         promises[6].then(function (result) {
             renderItems(view, result.Items, 'upcomingPrograms');
+            return Promise.resolve();
         });
 
+        Promise.all(promises).then(function () {
+            if (options.autoFocus) {
+                focusManager.autoFocus(view);
+            }
+        });
     };
 
     LiveTvSuggestionsTab.prototype.onHide = function () {

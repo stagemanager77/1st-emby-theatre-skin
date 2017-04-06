@@ -90,13 +90,25 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
             var icons = 'material-icons';
 
             routes.push({
-                path: 'home.html',
+                path: 'home/home.html',
                 transition: 'slide',
                 type: 'home',
                 controller: self.id + '/home/home',
                 dependencies: [
                     'cardStyle',
-                    'css!' + pluginManager.mapPath(self, 'home/home.css'),
+                    icons
+                ],
+                autoFocus: false
+            });
+
+            routes.push({
+                path: 'home_horiz/home.html',
+                transition: 'slide',
+                type: 'home',
+                controller: self.id + '/home_horiz/home',
+                dependencies: [
+                    'cardStyle',
+                    'css!' + pluginManager.mapPath(self, 'home_horiz/home.css'),
                     icons
                 ]
             });
@@ -266,6 +278,16 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
             });
         };
 
+        self.getHomeRoute = function () {
+
+            if (browser.operaTv || browser.web0s) {
+                return 'home_horiz/home.html';
+            }
+
+            return 'home_horiz/home.html';
+            //return 'home/home.html';
+        };
+
         self.showItem = function (item, options) {
 
             options = options || {};
@@ -280,7 +302,7 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
                 Emby.Page.show(url, { item: item });
                 return;
             }
-            else if (item.Type === 'GameGenre') {
+            if (item.Type === 'GameGenre') {
                 url = pluginManager.mapRoute(self, 'list/list.html') + '?gameGenreId=' + item.Id + '&serverId=' + item.ServerId;
                 if (options.parentId) {
                     url += '&parentId=' + options.parentId;
@@ -288,7 +310,7 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
                 Emby.Page.show(url, { item: item });
                 return;
             }
-            else if (item.Type === 'MusicGenre') {
+            if (item.Type === 'MusicGenre') {
                 url = pluginManager.mapRoute(self, 'list/list.html') + '?musicGenreId=' + item.Id + '&serverId=' + item.ServerId;
                 if (options.parentId) {
                     url += '&parentId=' + options.parentId;
@@ -296,11 +318,40 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
                 Emby.Page.show(url, { item: item });
                 return;
             }
-            else if (item.Type === 'Studio') {
+            if (item.Type === 'Studio') {
                 url = pluginManager.mapRoute(self, 'list/list.html') + '?studioId=' + item.Id + '&serverId=' + item.ServerId;
                 if (options.parentId) {
                     url += '&parentId=' + options.parentId;
                 }
+                Emby.Page.show(url, { item: item });
+                return;
+            }
+            if (item.CollectionType === 'movies') {
+                url = pluginManager.mapRoute(self, 'movies/movies.html') + '?serverId=' + item.ServerId + '&parentId=' + item.Id;
+                if (options.parentId) {
+                    url += '&parentId=' + options.parentId;
+                }
+                Emby.Page.show(url, { item: item });
+                return;
+            }
+            if (item.CollectionType === 'tvshows') {
+                url = pluginManager.mapRoute(self, 'tv/tv.html') + '?serverId=' + item.ServerId + '&parentId=' + item.Id;
+                if (options.parentId) {
+                    url += '&parentId=' + options.parentId;
+                }
+                Emby.Page.show(url, { item: item });
+                return;
+            }
+            if (item.CollectionType === 'music') {
+                url = pluginManager.mapRoute(self, 'music/music.html') + '?serverId=' + item.ServerId + '&parentId=' + item.Id;
+                if (options.parentId) {
+                    url += '&parentId=' + options.parentId;
+                }
+                Emby.Page.show(url, { item: item });
+                return;
+            }
+            if (item.CollectionType === 'livetv') {
+                url = pluginManager.mapRoute(self, 'livetv/livetv.html') + '?serverId=' + item.ServerId;
                 Emby.Page.show(url, { item: item });
                 return;
             }
@@ -316,7 +367,8 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
 
             if (showList) {
                 Emby.Page.show(pluginManager.mapRoute(self, 'list/list.html') + '?parentId=' + item.Id + '&serverId=' + item.ServerId, { item: item });
-            } else if (item.Type === 'SeriesTimer') {
+            }
+            else if (item.Type === 'SeriesTimer') {
                 Emby.Page.show(pluginManager.mapRoute(self, 'item/item.html') + '?seriesTimerId=' + item.Id + '&serverId=' + item.ServerId, { item: item });
             } else {
                 Emby.Page.show(pluginManager.mapRoute(self, 'item/item.html') + '?id=' + item.Id + '&serverId=' + item.ServerId, { item: item });
