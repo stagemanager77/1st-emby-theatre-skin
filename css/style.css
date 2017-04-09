@@ -2,18 +2,12 @@ a {
     text-decoration: none;
 }
 
-h1, h2 {
-    opacity: .7;
-}
-
 .headerLogo {
     background-position: left center;
     background-repeat: no-repeat;
     background-size: contain;
     width: 6em;
-    height: 1.8em;
-    min-height: 40px;
-    min-width: 74px;
+    height: 1.5em;
     vertical-align: middle;
     display: inline-block;
 }
@@ -31,7 +25,6 @@ h1, h2 {
     background-size: contain;
     background-repeat: no-repeat;
     width: 13.2em;
-    opacity: 1;
 }
 
 .headerAudioPlayerButton {
@@ -97,25 +90,27 @@ h1, h2 {
 }
 
 .pageContainer {
-    padding-top: 9vh;
     overflow: hidden;
     contain: layout style;
 }
 
     .pageContainer.flex {
-        padding-top: 9vh;
         overflow: hidden;
         display: flex;
         contain: strict;
     }
 
-    .pageContainer.vertical.centered {
-        flex-direction: column;
-        align-items: stretch;
-        justify-content: flex-start;
-        padding-left: 2.5%;
-        padding-right: 2.5%;
+    .pageContainerTopPadding, .pageContainer, .pageContainer.flex {
+        padding-top: 9vh;
     }
+
+        .pageContainer.vertical.centered {
+            flex-direction: column;
+            align-items: stretch;
+            justify-content: flex-start;
+            padding-left: 2.5%;
+            padding-right: 2.5%;
+        }
 
 @media all and (min-width: 1280px) {
 
@@ -229,9 +224,9 @@ h1, h2 {
     display: flex;
 }
 
-.selectedItemInfo h2 {
-    margin: 0;
-}
+    .selectedItemInfo h2 {
+        margin: 0;
+    }
 
 .selectedItemMediaInfo {
     display: flex;
@@ -320,19 +315,20 @@ h1, h2 {
 
 
 .verticalSection {
-    margin-bottom: 2em;
+    margin-bottom: 1.8em;
 }
 
 .sectionTitleContainer {
-    margin-bottom: .3em;
+    margin-bottom: .1em;
 }
 
 .sectionTitle {
-    margin-bottom: .2em;
+    margin-bottom: .07em;
 }
 
 .sectionTitleContainer > .sectionTitle {
-    margin: 0;
+    margin-top: 0;
+    margin-bottom: 0;
     display: inline-block;
     vertical-align: middle;
 }

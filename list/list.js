@@ -1,23 +1,5 @@
-define(['globalize', 'loading', 'scroller', 'playbackManager', 'alphaPicker', './../components/itemslist', 'emby-itemscontainer'], function (globalize, loading, scroller, playbackManager, alphaPicker, itemsList) {
+define(['globalize', 'loading', 'scroller', 'playbackManager', 'alphaPicker', './../components/itemslist', 'emby-itemscontainer', 'emby-scroller'], function (globalize, loading, scroller, playbackManager, alphaPicker, itemsList) {
     'use strict';
-
-    function createVerticalScroller(instance, view, item, loading) {
-
-        var scrollFrame = view.querySelector('.scrollFrame');
-
-        var options = {
-            horizontal: 0,
-            slidee: view.querySelector('.scrollSlider'),
-            scrollBy: 200,
-            speed: 270,
-            scrollWidth: 50000,
-            immediateSpeed: 160
-        };
-
-        instance.scroller = new scroller(scrollFrame, options);
-        instance.scroller.init();
-        loadChildren(instance, view, item, loading);
-    }
 
     function getItems(params, item, startIndex, limit) {
 
@@ -100,7 +82,6 @@ define(['globalize', 'loading', 'scroller', 'playbackManager', 'alphaPicker', '.
 
                 return getItems(instance.params, item, startIndex, limit);
             },
-            scroller: instance.scroller,
             cardOptions: {
                 coverImage: true,
                 shape: 'autoVertical',
@@ -135,7 +116,7 @@ define(['globalize', 'loading', 'scroller', 'playbackManager', 'alphaPicker', '.
                 currentItem = item;
 
                 if (!isRestored) {
-                    createVerticalScroller(self, view, item, loading);
+                    loadChildren(self, view, item, loading);
 
                     if (item.Type !== 'PhotoAlbum') {
                         initAlphaPicker();
@@ -165,6 +146,9 @@ define(['globalize', 'loading', 'scroller', 'playbackManager', 'alphaPicker', '.
         });
 
         function initAlphaPicker() {
+
+            self.scroller = view.querySelector('.scrollFrameY');
+
             self.alphaPicker = new alphaPicker({
                 element: view.querySelector('.alphaPicker'),
                 itemsContainer: view.querySelector('.scrollSlider'),
@@ -254,9 +238,6 @@ define(['globalize', 'loading', 'scroller', 'playbackManager', 'alphaPicker', '.
 
         view.addEventListener('viewdestroy', function () {
 
-            if (self.scroller) {
-                self.scroller.destroy();
-            }
             if (self.listController) {
                 self.listController.destroy();
             }
@@ -264,6 +245,7 @@ define(['globalize', 'loading', 'scroller', 'playbackManager', 'alphaPicker', '.
                 self.alphaPicker.off('alphavaluechanged', onAlphaPickerValueChanged);
                 self.alphaPicker.destroy();
             }
+            self.scroller = null;
         });
     };
 

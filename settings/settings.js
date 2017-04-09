@@ -1,4 +1,4 @@
-define(['loading', './../skinsettings', 'focusManager', 'globalize'], function (loading, skinSettings, focusManager, globalize) {
+define(['loading', './../skinsettings', './../skininfo', 'focusManager', 'globalize'], function (loading, skinSettings, skinInfo, focusManager, globalize) {
     'use strict';
 
     return function (view, params) {
@@ -9,7 +9,7 @@ define(['loading', './../skinsettings', 'focusManager', 'globalize'], function (
 
             var isRestored = e.detail.isRestored;
 
-            Emby.Page.setTitle(globalize.translate('SkinName'));
+            Emby.Page.setTitle(skinInfo.name);
 
             loading.hide();
 

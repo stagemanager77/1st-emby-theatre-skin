@@ -101,13 +101,14 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 're
             if (initialTabIndex == null) {
                 viewTabs.triggerBeforeTabChange();
             }
+
+            Emby.Page.setTitle(null);
         });
 
         view.addEventListener('viewshow', function (e) {
 
             isViewRestored = e.detail.isRestored;
 
-            Emby.Page.setTitle('');
             backdrop.clear();
 
             if (initialTabIndex != null) {

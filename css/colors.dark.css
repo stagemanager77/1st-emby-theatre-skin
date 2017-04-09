@@ -2,6 +2,10 @@ html {
     color: #fff;
 }
 
+h1, h2 {
+    color: #bbb;
+}
+
 a {
     color: #52B54B;
     outline: none !important;
@@ -23,13 +27,17 @@ a {
     }
 
 .backgroundContainer {
-    background: #141414;
-    background: linear-gradient(to right, #080808, #282828, #080808);
+    background: #181818;
+    /*background: linear-gradient(to right, #080808, #282828, #080808);*/
 }
 
-    .backgroundContainer.withBackdrop {
-        background: linear-gradient(rgba(6, 6, 6, .9), rgba(6, 6, 6, .6), rgba(6, 6, 6, .9));
-    }
+.skinHeader-withBackground {
+    background: #181818;
+}
+
+.backgroundContainer.withBackdrop {
+    background: linear-gradient(rgba(6, 6, 6, .9), rgba(6, 6, 6, .6), rgba(6, 6, 6, .9));
+}
 
 .detailBackgroundContainer.withBackdrop {
     background: linear-gradient(to right, rgba(0, 0, 0, .99), rgba(0, 0, 0, .94), rgba(0, 0, 0, .5)) !important;
@@ -81,7 +89,7 @@ a {
 
 
 .userViewNames button {
-    opacity: .25;
+    color: #666;
 }
 
 .userViewButtonText {
@@ -90,7 +98,6 @@ a {
 
 .userViewNames button.selected {
     color: inherit;
-    opacity: 1;
 }
 
 .dialog {
@@ -128,7 +135,6 @@ a {
 
 .userViewNames button:focus {
     color: #52B54B !important;
-    opacity: 1;
 }
 
     .userViewNames button:focus .userViewButtonText {

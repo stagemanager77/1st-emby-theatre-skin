@@ -190,13 +190,14 @@
 
         var container = section.querySelector('.itemsContainer');
         var supportsImageAnalysis = appHost.supports('imageanalysis');
+        var cardLayout = false;
 
         cardBuilder.buildCards(items, {
             parentContainer: section,
             itemsContainer: container,
             shape: getBackdropShape(),
-            cardLayout: true,
-            vibrant: true,
+            cardLayout: cardLayout,
+            vibrant: cardLayout && supportsImageAnalysis,
             showParentTitle: false,
             showParentTitleOrTitle: true,
             showTitle: false,
@@ -205,7 +206,8 @@
             showChannelName: true,
             preferThumb: true,
             coverImage: true,
-            overlayText: false
+            overlayText: false,
+            centerText: !cardLayout
 
         });
 
