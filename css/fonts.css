@@ -8,12 +8,12 @@ html {
 
 h1 {
     font-weight: normal;
-    font-size: 1.63em;
+    font-size: 1.72em;
 }
 
 h2 {
     font-weight: normal;
-    font-size: 1.34em;
+    font-size: 1.5em;
 }
 
 h3 {
@@ -24,3 +24,7 @@ h3 {
 .layout-tv {
     font-size: 2.5vh;
 }
+
+    .layout-tv h2 {
+        font-size: 1.35em;
+    }

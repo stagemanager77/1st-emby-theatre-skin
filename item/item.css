@@ -1,3 +1,9 @@
+.mainSection .raised {
+    padding: .7em 1.3em;
+    text-transform: none;
+    margin: 0 .35em 0 0;
+}
+
 .layout-tv .personCard {
     width: 14.285714285714285714285714285714%;
 }

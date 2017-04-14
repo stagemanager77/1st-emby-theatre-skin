@@ -195,14 +195,21 @@ define(['playbackManager', 'dom', 'inputmanager', 'datetime', 'itemHelper', 'med
                 return;
             }
 
-            require(['recordingButton'], function (RecordingButton) {
+            connectionManager.getApiClient(item.ServerId).getCurrentUser().then(function (user) {
 
-                recordingButtonManager = new RecordingButton({
-                    item: item,
-                    button: view.querySelector('.btnRecord')
+                if (!user.Policy.EnableLiveTvManagement) {
+                    return;
+                }
+
+                require(['recordingButton'], function (RecordingButton) {
+
+                    recordingButtonManager = new RecordingButton({
+                        item: item,
+                        button: view.querySelector('.btnRecord')
+                    });
+
+                    view.querySelector('.btnRecord').classList.remove('hide');
                 });
-
-                view.querySelector('.btnRecord').classList.remove('hide');
             });
         }
 

@@ -24,15 +24,14 @@ define(['loading', 'scroller', './focushandler', 'focusManager', 'scrollHelper',
 
         loading.hide();
 
-        var initialTab = initialTabId ? userViewNames.querySelector('.btnUserViewHeader[data-id=\'' + initialTabId + '\']') : null;
-
-        if (!initialTab) {
-            initialTab = userViewNames.querySelector('.btnUserViewHeader');
-        }
-
         // In Edge the web components aren't always immediately accessible
         setTimeout(function () {
-            instance.setFocusDelay(view, initialTab);
+            var initialTab = userViewNames.querySelector('.btnUserViewHeader');
+
+            if (initialTab) {
+                instance.setFocusDelay(view, initialTab);
+            }
+
         }, 0);
     }
 
@@ -115,7 +114,7 @@ define(['loading', 'scroller', './focushandler', 'focusManager', 'scrollHelper',
 
         var tagName = 'button';
 
-        self.renderTabs = function (tabs, initialTabId) {
+        self.renderTabs = function (tabs) {
 
             page.querySelector('.userViewNames').innerHTML = tabs.map(function (i) {
 
@@ -123,7 +122,7 @@ define(['loading', 'scroller', './focushandler', 'focusManager', 'scrollHelper',
 
             }).join('');
 
-            createHeaderScroller(page, self, initialTabId);
+            createHeaderScroller(page, self);
             createHorizontalScroller(page);
             initEvents(page, self);
         };

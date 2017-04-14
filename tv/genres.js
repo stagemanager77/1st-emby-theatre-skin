@@ -1,30 +1,10 @@
-﻿define(['cardBuilder', 'imageLoader', 'loading', 'connectionManager', 'apphost', 'layoutManager', 'scrollHelper', 'focusManager', 'lazyLoader', 'globalize', 'dom', 'emby-itemscontainer', 'emby-scroller'], function (cardBuilder, imageLoader, loading, connectionManager, appHost, layoutManager, scrollHelper, focusManager, lazyLoader, globalize, dom) {
+﻿define(['cardBuilder', 'imageLoader', 'loading', 'connectionManager', 'apphost', 'layoutManager', 'scrollHelper', 'focusManager', 'lazyLoader', 'globalize', 'dom', 'embyRouter', 'emby-linkbutton', 'emby-itemscontainer', 'emby-scroller'], function (cardBuilder, imageLoader, loading, connectionManager, appHost, layoutManager, scrollHelper, focusManager, lazyLoader, globalize, dom, embyRouter) {
     'use strict';
 
     function GenresTab(view, params) {
         this.view = view;
         this.params = params;
         this.apiClient = connectionManager.getApiClient(params.serverId);
-
-        initEvents(view, params, this.apiClient);
-    }
-
-    function initEvents(view, params, apiClient) {
-
-        dom.addEventListener(view, 'click', function (e) {
-
-            var btnMoreFromGenre = dom.parentWithClass(e.target, 'btnMoreFromGenre');
-            if (btnMoreFromGenre) {
-                var id = btnMoreFromGenre.getAttribute('data-id');
-
-                Emby.Page.showItem(id, apiClient.serverId(), {
-                    parentId: params.parentId
-                });
-            }
-
-        }, {
-            passive: true
-        });
     }
 
     function enableScrollX() {
@@ -39,7 +19,7 @@
         return enableScrollX() ? 'overflowPortrait' : 'portrait';
     }
 
-    function renderGenresAsVerticalCategories(instance, view, items) {
+    function renderGenresAsVerticalCategories(instance, view, items, parentId) {
 
         var html = '';
 
@@ -49,13 +29,16 @@
 
             html += '<div class="verticalSection">';
 
-            html += '<div class="flex align-items-center padded-left">';
+            html += '<div class="sectionTitleContainer padded-left">';
             html += '<h2 class="sectionTitle sectionTitle-cards">';
             html += item.Name;
             html += '</h2>';
-            html += '<button style="margin-left:1.5em;" is="emby-button" type="button" class="raised more raised-mini btnMoreFromGenre btnMoreFromGenre' + item.Id + '" data-id="' + item.Id + '">';
-            html += '<span>' + globalize.translate('More') + '</span>';
-            html += '</button>';
+            html += '<a is="emby-linkbutton" href="' + embyRouter.getRouteUrl(item, {
+                context: 'tvshows',
+                parentId: parentId
+            }) + '" class="raised more raised-mini sectionTitleButton btnMoreFromGenre' + item.Id + '">';
+            html += globalize.translate('More');
+            html += '</a>';
             html += '</div>';
 
             html += '<div is="emby-scroller" class="padded-top-focusscale padded-bottom-focusscale" data-mousewheel="false" data-centerfocus="card" data-horizontal="true">';
@@ -135,7 +118,7 @@
                     centerText: false,
                     cardLayout: true,
                     vibrant: supportsImageAnalysis,
-                    showSeriesYear: true
+                    showYear: true
                 });
             }
             else if (viewStyle === "PosterCard") {
@@ -147,7 +130,7 @@
                     centerText: false,
                     cardLayout: true,
                     vibrant: supportsImageAnalysis,
-                    showSeriesYear: true
+                    showYear: true
                 });
             }
             else if (viewStyle === "Poster") {
@@ -226,7 +209,7 @@
         promises[0].then(function (result) {
 
             if (enableScrollX()) {
-                return renderGenresAsVerticalCategories(instance, view, result.Items);
+                return renderGenresAsVerticalCategories(instance, view, result.Items, parentId);
             }
             return renderGenres(instance, view, result.Items, parentId);
         });

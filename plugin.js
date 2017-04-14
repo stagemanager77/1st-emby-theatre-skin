@@ -288,6 +288,88 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
             //return 'home/home.html';
         };
 
+        self.getRouteUrl = function (item, options) {
+
+            options = options || {};
+            var url;
+
+            if (item.Type === 'Genre') {
+
+                url = pluginManager.mapRoute(self, 'list/list.html') + '?genreId=' + item.Id + '&serverId=' + item.ServerId;
+                if (options.parentId) {
+                    url += '&parentId=' + options.parentId;
+                }
+                return url;
+            }
+            if (item.Type === 'GameGenre') {
+                url = pluginManager.mapRoute(self, 'list/list.html') + '?gameGenreId=' + item.Id + '&serverId=' + item.ServerId;
+                if (options.parentId) {
+                    url += '&parentId=' + options.parentId;
+                }
+                return url;
+            }
+            if (item.Type === 'MusicGenre') {
+                url = pluginManager.mapRoute(self, 'list/list.html') + '?musicGenreId=' + item.Id + '&serverId=' + item.ServerId;
+                if (options.parentId) {
+                    url += '&parentId=' + options.parentId;
+                }
+                return url;
+            }
+            if (item.Type === 'Studio') {
+                url = pluginManager.mapRoute(self, 'list/list.html') + '?studioId=' + item.Id + '&serverId=' + item.ServerId;
+                if (options.parentId) {
+                    url += '&parentId=' + options.parentId;
+                }
+                return url;
+            }
+            if (options.context !== 'folders') {
+                if (item.CollectionType === 'movies') {
+                    url = pluginManager.mapRoute(self, 'movies/movies.html') + '?serverId=' + item.ServerId + '&parentId=' + item.Id;
+                    if (options.parentId) {
+                        url += '&parentId=' + options.parentId;
+                    }
+                    Emby.Page.show(url, { item: item });
+                    return;
+                }
+                if (item.CollectionType === 'tvshows') {
+                    url = pluginManager.mapRoute(self, 'tv/tv.html') + '?serverId=' + item.ServerId + '&parentId=' + item.Id;
+                    if (options.parentId) {
+                        url += '&parentId=' + options.parentId;
+                    }
+                    return url;
+                }
+                if (item.CollectionType === 'music') {
+                    url = pluginManager.mapRoute(self, 'music/music.html') + '?serverId=' + item.ServerId + '&parentId=' + item.Id;
+                    if (options.parentId) {
+                        url += '&parentId=' + options.parentId;
+                    }
+                    return url;
+                }
+            }
+            if (item.CollectionType === 'livetv') {
+                url = pluginManager.mapRoute(self, 'livetv/livetv.html') + '?serverId=' + item.ServerId;
+                return url;
+            }
+
+            var showList;
+
+            if (item.IsFolder) {
+
+                if (item.Type !== 'Series' && item.Type !== 'Season' && item.Type !== 'MusicAlbum' && item.Type !== 'MusicArtist' && item.Type !== 'Playlist' && item.Type !== 'BoxSet') {
+                    showList = true;
+                }
+            }
+
+            if (showList) {
+                return pluginManager.mapRoute(self, 'list/list.html') + '?parentId=' + item.Id + '&serverId=' + item.ServerId;
+            }
+            else if (item.Type === 'SeriesTimer') {
+                return pluginManager.mapRoute(self, 'item/item.html') + '?seriesTimerId=' + item.Id + '&serverId=' + item.ServerId;
+            } else {
+                return pluginManager.mapRoute(self, 'item/item.html') + '?id=' + item.Id + '&serverId=' + item.ServerId;
+            }
+        };
+
         self.showItem = function (item, options) {
 
             options = options || {};
