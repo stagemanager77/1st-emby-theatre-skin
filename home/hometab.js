@@ -44,31 +44,6 @@
         });
     }
 
-    function loadSections(view, apiClient, user, userSettings) {
-
-        var i, length;
-        var sectionCount = 7;
-
-        var elem = view.querySelector('.sections');
-
-        var html = '';
-        for (i = 0, length = sectionCount; i < length; i++) {
-
-            html += '<div class="verticalSection section' + i + '"></div>';
-        }
-
-        elem.innerHTML = html;
-
-        var promises = [];
-
-        for (i = 0, length = sectionCount; i < length; i++) {
-
-            promises.push(homeSections.loadSection(view, apiClient, user, userSettings, i));
-        }
-
-        return Promise.all(promises);
-    }
-
     HomeTab.prototype.onBeforeShow = function (options) {
 
         this.refreshOnShow = options.refresh;
@@ -99,7 +74,7 @@
             var user = responses[0];
             var userSettings = responses[1];
 
-            loadSections(view, apiClient, user, userSettings).then(function () {
+            homeSections.loadSections(view.querySelector('.sections'), apiClient, user, userSettings).then(function () {
 
                 if (options.autoFocus) {
                     focusManager.autoFocus(view);

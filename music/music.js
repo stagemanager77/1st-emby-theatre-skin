@@ -1,7 +1,7 @@
 define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'alphaPicker', 'require', './../components/focushandler', 'emby-itemscontainer', 'emby-tabs', 'emby-button', 'emby-scroller'], function (loading, backdrop, connectionManager, scroller, globalize, AlphaPicker, require, focusHandler) {
     'use strict';
 
-    function trySelectValue(instance, view, value) {
+    function trySelectValue(instance, alphaPicker, view, value) {
 
         var card;
 
@@ -24,11 +24,11 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
         }
 
         // go to the previous letter
-        var values = instance.alphaPicker.values();
+        var values = alphaPicker.values();
         var index = values.indexOf(value);
 
         if (index < values.length - 2) {
-            trySelectValue(instance, view, values[index + 1]);
+            trySelectValue(instance, alphaPicker, view, values[index + 1]);
         } else {
             var all = view.querySelectorAll('.card');
             card = all.length ? all[all.length - 1] : null;
@@ -49,7 +49,7 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
 
         alphaPicker.on('alphavaluechanged', function () {
             var value = alphaPicker.value();
-            trySelectValue(instance, itemsContainerElement, value);
+            trySelectValue(instance, alphaPicker, itemsContainerElement, value);
         });
 
         instance.alphaPickers.push(alphaPicker);

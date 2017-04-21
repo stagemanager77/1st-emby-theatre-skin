@@ -73,7 +73,7 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
 
             var files = [];
 
-            var languages = ['de', 'en-GB', 'en-US', 'fr', 'hr', 'it', 'nl', 'pl', 'pt-BR', 'pt-PT', 'ru', 'sv', 'zh-CN'];
+            var languages = ['cs', 'de', 'en-GB', 'en-US', 'fr', 'hr', 'it', 'lt-LT', 'nl', 'pl', 'pt-BR', 'pt-PT', 'ru', 'sv', 'zh-CN'];
 
             return languages.map(function (i) {
                 return {
@@ -280,7 +280,11 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
 
         self.getHomeRoute = function () {
 
-            if (browser.operaTv || browser.web0s) {
+            if (!layoutManager.tv) {
+                return 'home/home.html';
+            }
+
+            if (browser.operaTv || browser.web0s || browser.tizen) {
                 return 'home_horiz/home.html';
             }
 
@@ -328,8 +332,7 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
                     if (options.parentId) {
                         url += '&parentId=' + options.parentId;
                     }
-                    Emby.Page.show(url, { item: item });
-                    return;
+                    return url;
                 }
                 if (item.CollectionType === 'tvshows') {
                     url = pluginManager.mapRoute(self, 'tv/tv.html') + '?serverId=' + item.ServerId + '&parentId=' + item.Id;

@@ -1,4 +1,4 @@
-define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'alphaPicker', 'require', './../components/focushandler', 'emby-itemscontainer', 'emby-tabs', 'emby-button', 'emby-scroller'], function (loading, backdrop, connectionManager, scroller, globalize, alphaPicker, require, focusHandler) {
+define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'alphaPicker', 'userSettings', 'require', './../components/focushandler', 'emby-itemscontainer', 'emby-tabs', 'emby-button', 'emby-scroller'], function (loading, backdrop, connectionManager, scroller, globalize, alphaPicker, userSettings, require, focusHandler) {
     'use strict';
 
     function trySelectValue(instance, view, value) {
@@ -55,6 +55,23 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
         });
     }
 
+    function getDefaultTabIndex(folderId) {
+
+        switch (userSettings.get('landing-' + folderId)) {
+
+            case 'movies':
+                return 1;
+            case 'favorites':
+                return 3;
+            case 'collections':
+                return 4;
+            case 'genres':
+                return 5;
+            default:
+                return 0;
+        }
+    }
+
     return function (view, params) {
 
         var self = this;
@@ -62,7 +79,11 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
         var tabControllers = [];
         var currentTabController;
 
-        function getTabController(page, index, callback) {
+        function getTabController(index, callback) {
+
+            if (index == null) {
+                throw new Error('index cannot be null');
+            }
 
             var depends = [];
 
@@ -97,6 +118,7 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
 
                 var controller = tabControllers[index];
                 if (!controller) {
+
                     var tabContent = view.querySelector('.tabContent[data-index=\'' + index + '\']');
                     controller = new controllerFactory(tabContent, params, view);
                     if (index === 2) {
@@ -116,10 +138,11 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
 
         var alphaPickerContainer = view.querySelector('.alphaPickerContainer');
         var viewTabs = view.querySelector('.viewTabs');
-        var initialTabIndex = parseInt(params.tab || '0');
+        var initialTabIndex = parseInt(params.tab || getDefaultTabIndex(params.parentId));
+
         var isViewRestored;
 
-        function preLoadTab(page, index) {
+        function preLoadTab(index) {
 
             if (index === 1) {
                 alphaPickerContainer.classList.remove('hide');
@@ -127,7 +150,7 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
                 alphaPickerContainer.classList.add('hide');
             }
 
-            getTabController(page, index, function (controller) {
+            getTabController(index, function (controller) {
                 if (controller.onBeforeShow) {
 
                     var refresh = isViewRestored !== true || !controller.refreshed;
@@ -141,9 +164,9 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
             });
         }
 
-        function loadTab(page, index) {
+        function loadTab(index) {
 
-            getTabController(page, index, function (controller) {
+            getTabController(index, function (controller) {
 
                 controller.onShow({
                     autoFocus: initialTabIndex != null
@@ -156,17 +179,18 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
         initAlphaPicker(this, view);
 
         viewTabs.addEventListener('beforetabchange', function (e) {
-            preLoadTab(view, parseInt(e.detail.selectedTabIndex));
+            preLoadTab(parseInt(e.detail.selectedTabIndex));
         });
 
         viewTabs.addEventListener('tabchange', function (e) {
 
-            var previousTabController = tabControllers[parseInt(e.detail.previousIndex)];
+            var newIndex = parseInt(e.detail.selectedTabIndex);
+            var previousTabController = tabControllers[newIndex];
             if (previousTabController && previousTabController.onHide) {
                 previousTabController.onHide();
             }
 
-            loadTab(view, parseInt(e.detail.selectedTabIndex));
+            loadTab(newIndex);
         });
 
         view.addEventListener('viewbeforehide', function (e) {
