@@ -231,6 +231,6 @@
     }
 }
 
-.itemVerticalSection {
-    margin-bottom: 3.4em;
+.layout-tv .itemVerticalSection {
+    margin-bottom: 3.4em !important;
 }

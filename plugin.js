@@ -1,4 +1,4 @@
-define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'events', 'datetime', 'mouseManager', 'dom', 'layoutManager'], function (playbackManager, pluginManager, browser, connectionManager, events, datetime, mouseManager, dom, layoutManager) {
+define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'events', 'datetime', 'mouseManager', 'dom', 'layoutManager', 'itemHelper'], function (playbackManager, pluginManager, browser, connectionManager, events, datetime, mouseManager, dom, layoutManager, itemHelper) {
     'use strict';
 
     function updateClock() {
@@ -326,7 +326,7 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
                 }
                 return url;
             }
-            if (options.context !== 'folders') {
+            if (options.context !== 'folders' && !itemHelper.isLocalItem(item)) {
                 if (item.CollectionType === 'movies') {
                     url = pluginManager.mapRoute(self, 'movies/movies.html') + '?serverId=' + item.ServerId + '&parentId=' + item.Id;
                     if (options.parentId) {
@@ -411,7 +411,7 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
                 Emby.Page.show(url, { item: item });
                 return;
             }
-            if (options.context !== 'folders') {
+            if (options.context !== 'folders' && !itemHelper.isLocalItem(item)) {
                 if (item.CollectionType === 'movies') {
                     url = pluginManager.mapRoute(self, 'movies/movies.html') + '?serverId=' + item.ServerId + '&parentId=' + item.Id;
                     if (options.parentId) {

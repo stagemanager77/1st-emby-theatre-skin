@@ -13,15 +13,6 @@ a {
     transition: all .15s ease-out;
 }
 
-    a:focus {
-        background: #52B54B;
-        color: #fff;
-        transform: scale(1.16);
-        padding-left: .3em;
-        padding-right: .3em;
-        border-radius: .15em;
-    }
-
     a:hover {
         text-decoration: underline;
     }

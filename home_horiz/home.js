@@ -22,7 +22,7 @@ define(['globalize', 'pluginManager', 'connectionManager', 'loading', './../comp
 
     function loadFocusScaleCards(elem) {
 
-        if (!layoutManager.tv || !(browser.animate || browser.edge)) {
+        if (!layoutManager.tv || browser.slow) {
             return;
         }
 
