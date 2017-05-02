@@ -193,7 +193,7 @@ define(['globalize', './spotlight', 'imageLoader', 'focusManager', 'pluginManage
         loadImages(element, parentId);
 
         element.querySelector('.allMoviesCard').addEventListener('click', function () {
-            Emby.Page.show(pluginManager.mapRoute(skinInfo.id, 'movies/movies.html?serverId=' + apiClient.serverId() + '&tab=1&parentId=' + parentId));
+            Emby.Page.show(pluginManager.mapRoute(skinInfo.id, 'movies/movies.html?serverId=' + apiClient.serverId() + '&tab=0&parentId=' + parentId));
         });
 
         element.querySelector('.movieCollectionsCard').addEventListener('click', function () {

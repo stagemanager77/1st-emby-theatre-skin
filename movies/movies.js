@@ -59,7 +59,7 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
 
         switch (userSettings.get('landing-' + folderId)) {
 
-            case 'movies':
+            case 'suggestions':
                 return 1;
             case 'favorites':
                 return 3;
@@ -90,10 +90,10 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
             switch (index) {
 
                 case 0:
-                    depends.push('./suggestions');
+                    depends.push('./moviestab');
                     break;
                 case 1:
-                    depends.push('./moviestab');
+                    depends.push('./suggestions');
                     break;
                 case 2:
                     depends.push('./moviestab');
@@ -144,7 +144,7 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
 
         function preLoadTab(index) {
 
-            if (index === 1) {
+            if (index === 0) {
                 alphaPickerContainer.classList.remove('hide');
             } else {
                 alphaPickerContainer.classList.add('hide');

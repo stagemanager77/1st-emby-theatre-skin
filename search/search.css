@@ -2,26 +2,6 @@
     display: none;
 }
 
-.searchFields {
-    text-align: center;
-}
-
-.searchFieldsInner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50%;
-    margin: 0 auto;
-}
-
-.iconSearch {
-    vertical-align: bottom;
-    opacity: .5;
-    margin-top: .5em;
-    margin-right: .5em;
-    font-size: 2em;
-}
-
-.searchResults .backdropCard {
-    width: 25%;
+.searchfields-icon {
+    color: #aaa;
 }

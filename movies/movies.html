@@ -11,10 +11,10 @@
             <div is="emby-tabs" class="viewTabs" data-index="-1">
                 <div class="emby-tabs-slider" style="text-align:center;">
                     <button is="emby-button" class="emby-tab-button" data-index="0">
-                        <div class="emby-button-foreground">${Suggestions}</div>
+                        <div class="emby-button-foreground">${All}</div>
                     </button>
                     <button is="emby-button" class="emby-tab-button" data-index="1">
-                        <div class="emby-button-foreground">${Movies}</div>
+                        <div class="emby-button-foreground">${Suggestions}</div>
                     </button>
                     <button is="emby-button" class="emby-tab-button" data-index="2">
                         <div class="emby-button-foreground">${Unwatched}</div>
@@ -34,7 +34,10 @@
                 </div>
             </div>
 
-            <div class="tabContent padded-top" data-index="0">
+            <div class="tabContent padded-left padded-left-withalphapicker padded-right padded-top" data-index="0">
+                <div is="emby-itemscontainer" class="movieItems itemsContainer vertical-wrap itemsContainer-withalphapicker  focuscontainer-right focuscontainer-down" data-alphanumericshortcuts="true"></div>
+            </div>
+            <div class="tabContent padded-top" data-index="1">
                 <div class="resumeSection hide verticalSection autoScrollSection">
                     <div>
                         <h2 class="sectionTitle sectionTitle-cards padded-left padded-right" style="display: inline-block; vertical-align: middle;">${ContinueWatching}</h2>
@@ -45,9 +48,6 @@
                         <h2 class="sectionTitle sectionTitle-cards padded-left padded-right" style="display: inline-block; vertical-align: middle;">${LatestMovies}</h2>
                     </div>
                 </div>
-            </div>
-            <div class="tabContent padded-left padded-left-withalphapicker padded-right padded-top" data-index="1">
-                <div is="emby-itemscontainer" class="movieItems itemsContainer vertical-wrap itemsContainer-withalphapicker  focuscontainer-right focuscontainer-down" data-alphanumericshortcuts="true"></div>
             </div>
             <div class="tabContent padded-left padded-right padded-top" data-index="2">
                 <div is="emby-itemscontainer" class="movieItems itemsContainer vertical-wrap focuscontainer-x" data-alphanumericshortcuts="true"></div>

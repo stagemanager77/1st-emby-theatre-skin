@@ -1,120 +1,12 @@
-<div class="pageContainer fullWidth vertical flex flex-direction-column" style="padding-top: 2vh;">
+<div is="emby-scroller" class="pageContainer fullWidth vertical flex flex-direction-column" data-horizontal="false" data-centerfocus="card" style="padding-top:5vh;">
 
-    <div is="emby-scroller" data-horizontal="false" data-centerfocus="card">
-        <div class="scrollSlider flex-grow tabs-container">
+    <div class="scrollSlider flex-grow tabs-container">
 
-            <div class="searchFields">
-                <div class="searchFieldsInner">
-                    <i class="iconSearch md-icon">&#xE8B6;</i>
-                    <div class="inputContainer flex-grow" style="margin-bottom: 0;">
-                        <input is="emby-input" class="txtSearch" type="text" data-keyboard="false" autofocus />
-                    </div>
-                </div>
-                <div class="alphaPicker align-items-center"></div>
-            </div>
+        <div class="searchFields">
+        </div>
 
-            <div class="searchResults">
+        <div class="searchResults">
 
-                <div class="hide verticalSection movieResults">
-                    <div>
-                        <h2 class="sectionTitle padded-left padded-right" style="display: inline-block; vertical-align: middle;">${Movies}</h2>
-                    </div>
-
-                    <div is="emby-scroller" data-horizontal="true" data-centerfocus="card" data-mousewheel="false" class="padded-top-focusscale padded-bottom-focusscale focuscontainer-x">
-                        <div is="emby-itemscontainer" class="padded-left padded-right itemsContainer scrollSlider"></div>
-                    </div>
-                </div>
-
-                <div class="hide verticalSection programResults">
-                    <div>
-                        <h2 class="sectionTitle padded-left padded-right" style="display: inline-block; vertical-align: middle;">${Programs}</h2>
-                    </div>
-
-                    <div is="emby-scroller" data-horizontal="true" data-centerfocus="card" data-mousewheel="false" class="padded-top-focusscale padded-bottom-focusscale focuscontainer-x">
-                        <div is="emby-itemscontainer" class="padded-left padded-right itemsContainer scrollSlider"></div>
-                    </div>
-                </div>
-
-                <div class="hide verticalSection seriesResults">
-                    <div>
-                        <h2 class="sectionTitle padded-left padded-right" style="display: inline-block; vertical-align: middle;">${Shows}</h2>
-                    </div>
-
-                    <div is="emby-scroller" data-horizontal="true" data-centerfocus="card" data-mousewheel="false" class="padded-top-focusscale padded-bottom-focusscale focuscontainer-x">
-                        <div is="emby-itemscontainer" class="padded-left padded-right itemsContainer scrollSlider"></div>
-                    </div>
-                </div>
-
-                <div class="hide verticalSection episodeResults">
-                    <div>
-                        <h2 class="sectionTitle padded-left padded-right" style="display: inline-block; vertical-align: middle;">${Episodes}</h2>
-                    </div>
-
-                    <div is="emby-scroller" data-horizontal="true" data-centerfocus="card" data-mousewheel="false" class="padded-top-focusscale padded-bottom-focusscale focuscontainer-x">
-                        <div is="emby-itemscontainer" class="padded-left padded-right itemsContainer scrollSlider"></div>
-                    </div>
-                </div>
-
-                <div class="hide verticalSection peopleResults">
-                    <div>
-                        <h2 class="sectionTitle padded-left padded-right" style="display: inline-block; vertical-align: middle;">${People}</h2>
-                    </div>
-
-                    <div is="emby-scroller" data-horizontal="true" data-centerfocus="card" data-mousewheel="false" class="padded-top-focusscale padded-bottom-focusscale focuscontainer-x">
-                        <div is="emby-itemscontainer" class="padded-left padded-right itemsContainer scrollSlider"></div>
-                    </div>
-                </div>
-
-                <div class="hide verticalSection artistResults">
-                    <div>
-                        <h2 class="sectionTitle padded-left padded-right" style="display: inline-block; vertical-align: middle;">${Artists}</h2>
-                    </div>
-
-                    <div is="emby-scroller" data-horizontal="true" data-centerfocus="card" data-mousewheel="false" class="padded-top-focusscale padded-bottom-focusscale focuscontainer-x">
-                        <div is="emby-itemscontainer" class="padded-left padded-right itemsContainer scrollSlider"></div>
-                    </div>
-                </div>
-
-                <div class="hide verticalSection albumResults">
-                    <div>
-                        <h2 class="sectionTitle padded-left padded-right" style="display: inline-block; vertical-align: middle;">${Albums}</h2>
-                    </div>
-
-                    <div is="emby-scroller" data-horizontal="true" data-centerfocus="card" data-mousewheel="false" class="padded-top-focusscale padded-bottom-focusscale focuscontainer-x">
-                        <div is="emby-itemscontainer" class="padded-left padded-right itemsContainer scrollSlider"></div>
-                    </div>
-                </div>
-
-                <div class="hide verticalSection songResults">
-                    <div>
-                        <h2 class="sectionTitle padded-left padded-right" style="display: inline-block; vertical-align: middle;">${Songs}</h2>
-                    </div>
-
-                    <div is="emby-scroller" data-horizontal="true" data-centerfocus="card" data-mousewheel="false" class="padded-top-focusscale padded-bottom-focusscale focuscontainer-x">
-                        <div is="emby-itemscontainer" class="padded-left padded-right itemsContainer scrollSlider"></div>
-                    </div>
-                </div>
-
-                <div class="hide verticalSection audioBookResults">
-                    <div>
-                        <h2 class="sectionTitle padded-left padded-right" style="display: inline-block; vertical-align: middle;">${HeaderAudioBooks}</h2>
-                    </div>
-
-                    <div is="emby-scroller" data-horizontal="true" data-centerfocus="card" data-mousewheel="false" class="padded-top-focusscale padded-bottom-focusscale focuscontainer-x">
-                        <div is="emby-itemscontainer" class="padded-left padded-right itemsContainer scrollSlider"></div>
-                    </div>
-                </div>
-
-                <div class="hide verticalSection bookResults">
-                    <div>
-                        <h2 class="sectionTitle padded-left padded-right" style="display: inline-block; vertical-align: middle;">${Books}</h2>
-                    </div>
-
-                    <div is="emby-scroller" data-horizontal="true" data-centerfocus="card" data-mousewheel="false" class="padded-top-focusscale padded-bottom-focusscale focuscontainer-x">
-                        <div is="emby-itemscontainer" class="padded-left padded-right itemsContainer scrollSlider"></div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
