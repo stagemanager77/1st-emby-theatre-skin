@@ -8,6 +8,10 @@
     }
 
     function enableScrollX() {
+        return !layoutManager.desktop;
+    }
+
+    function enableFlatLayout() {
         return !layoutManager.tv;
     }
 
@@ -208,7 +212,7 @@
 
         promises[0].then(function (result) {
 
-            if (enableScrollX()) {
+            if (enableFlatLayout()) {
                 return renderGenresAsVerticalCategories(instance, view, result.Items, parentId);
             }
             return renderGenres(instance, view, result.Items, parentId);

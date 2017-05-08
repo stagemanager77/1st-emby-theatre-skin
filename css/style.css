@@ -162,25 +162,6 @@ a {
     white-space: nowrap !important;
 }
 
-::-webkit-scrollbar {
-    width: .5em;
-    height: .5em;
-}
-
-::-webkit-scrollbar-button:start:decrement,
-::-webkit-scrollbar-button:end:increment {
-    display: none;
-}
-
-::-webkit-scrollbar-track-piece {
-    background-color: #3b3b3b;
-}
-
-::-webkit-scrollbar-thumb:vertical, ::-webkit-scrollbar-thumb:horizontal {
-    -webkit-border-radius: 2px;
-    background: #888 no-repeat center;
-}
-
 .cardColumn {
     display: inline-block;
     vertical-align: top;
