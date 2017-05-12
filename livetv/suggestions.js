@@ -218,6 +218,19 @@
 
         }));
 
+        promises.push(apiClient.getLiveTvRecommendedPrograms({
+
+            userId: apiClient.getCurrentUserId(),
+            IsAiring: false,
+            HasAired: false,
+            Limit: limit,
+            IsNews: true,
+            EnableTotalRecordCount: false,
+            Fields: "ChannelInfo",
+            EnableImageTypes: "Primary,Thumb"
+
+        }));
+
         // upcoming programs
         promises.push(apiClient.getLiveTvRecommendedPrograms({
 
@@ -228,6 +241,7 @@
             IsMovie: false,
             IsSports: false,
             IsKids: false,
+            IsNews: false,
             IsSeries: false,
             EnableTotalRecordCount: false,
             Fields: "ChannelInfo,PrimaryImageAspectRatio",
@@ -328,6 +342,11 @@
         });
 
         promises[6].then(function (result) {
+            renderItems(view, result.Items, 'upcomingNews');
+            return Promise.resolve();
+        });
+
+        promises[7].then(function (result) {
             renderItems(view, result.Items, 'upcomingPrograms');
             return Promise.resolve();
         });
