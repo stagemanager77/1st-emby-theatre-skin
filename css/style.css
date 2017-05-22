@@ -13,11 +13,11 @@ a {
 }
 
 .pageTitle {
-    display: inline-block;
+    display: inline-flex;
     vertical-align: middle;
     margin: 0;
     height: 1.7em;
-    text-transform: capitalize;
+    align-items: center;
 }
 
 .pageTitleWithLogo {
@@ -307,7 +307,7 @@ a {
 }
 
 .layout-tv .sectionTitleContainer {
-    margin-bottom: .1em;
+    margin-bottom: 0;
 }
 
 .sectionTitle {
@@ -345,7 +345,7 @@ a {
 }
 
 .sectionTitle-cards {
-    margin-left: .1em;
+    margin-left: .15em;
 }
 
 .verticalSection .sectionTitle {

@@ -57,7 +57,7 @@ define(['globalize', 'tvguide', 'events', 'datetime', 'imageLoader', 'backdrop',
             Emby.Models.item(currentItemId).then(function (item) {
 
                 setSelectedInfo(item);
-                backdrop.setBackdrop(item);
+                //backdrop.setBackdrop(item);
             });
         }
 

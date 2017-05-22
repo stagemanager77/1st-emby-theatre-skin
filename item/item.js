@@ -395,7 +395,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                 genresElem.innerHTML = genresHtml;
             }
 
-            if (item.IsFolder) {
+            if (item.IsFolder || item.Type === "MusicArtist") {
 
                 view.querySelector('.itemPageFixedLeft .btnPlayText').innerHTML = globalize.translate("PlayAll");
                 view.querySelector('.mainSection .btnPlayText').innerHTML = globalize.translate("PlayAll");
