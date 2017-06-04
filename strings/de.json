@@ -55,11 +55,11 @@
     "Suggestions": "Empfehlungen",
     "Schedule": "Zeitplan",
     "Shows": "Serien",
-    "HeaderUpcomingPrograms": "Folgende Sendungen",
-    "HeaderUpcomingMovies": "Folgende Filme",
-    "HeaderUpcomingSports": "Folgende Sportsendungen",
-    "HeaderUpcomingForKids": "Folgende Kindersendungen",
-    "HeaderUpcomingNews": "Folgende Nachrichtensendung",
+    "HeaderUpcomingPrograms": "Bevorstehende Sendungen",
+    "HeaderUpcomingMovies": "Bevorstehende Filme",
+    "HeaderUpcomingSports": "Bevorstehende Sportveranstaltungen",
+    "HeaderUpcomingForKids": "Bevorstehende Kindersendungen",
+    "HeaderUpcomingNews": "Bevorstehende Nachrichtensendung",
     "HeaderForKids": "F\u00fcr Kinder",
     "HeaderOnNow": "Gerade l\u00e4uft",
     "OptionSunday": "Sonntag",
@@ -111,5 +111,5 @@
     "PictureInPicture": "Bild in Bild",
     "HeaderActiveRecordings": "Aktive Aufnahmen",
     "Yesterday": "Gestern",
-    "HeaderUpcomingEpisodes": "N\u00e4chste Episoden"
+    "HeaderUpcomingEpisodes": "Bevorstehende Episoden"
 }

@@ -204,7 +204,8 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
                     'paper-icon-button-light',
                     icons
                 ],
-                supportsThemeMedia: true
+                supportsThemeMedia: true,
+                enableMediaControl: false
             });
 
             routes.push({
@@ -214,7 +215,8 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
                 dependencies: [
                     'css!' + pluginManager.mapPath(self, 'item/item.css')
                 ],
-                supportsThemeMedia: true
+                supportsThemeMedia: true,
+                enableMediaControl: false
             });
 
             routes.push({
@@ -228,7 +230,8 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
                     icons
                 ],
                 type: 'video-osd',
-                supportsThemeMedia: true
+                supportsThemeMedia: true,
+                enableMediaControl: false
             });
 
             routes.push({
