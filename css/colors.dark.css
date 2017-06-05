@@ -1,9 +1,5 @@
 html {
-    color: #fff;
-}
-
-h1, h2 {
-    color: #bbb;
+    color: #ccc;
 }
 
 a {
@@ -52,6 +48,10 @@ a {
 
 .checkboxOutline {
     border-color: #bbb;
+}
+
+.headerCastButton.active {
+    color: #4285F4;
 }
 
 .emby-button.raised {

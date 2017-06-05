@@ -27,10 +27,6 @@ a {
     width: 13.2em;
 }
 
-.headerAudioPlayerButton {
-    color: #52B54B;
-}
-
 .headerBackButton {
     margin-left: -1.4em;
 }
@@ -80,6 +76,14 @@ a {
     display: inline-block;
     vertical-align: middle;
     margin-left: 1em;
+}
+
+.headerSelectedPlayer {
+    font-weight: normal;
+    max-width: 10em;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 @media all and (max-width: 720px) {
