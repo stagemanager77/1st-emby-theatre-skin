@@ -11,13 +11,13 @@
             <div is="emby-tabs" class="viewTabs" data-index="-1">
                 <div class="emby-tabs-slider" style="text-align:center;">
                     <button is="emby-button" class="emby-tab-button" data-index="0">
-                        <div class="emby-button-foreground">${Suggestions}</div>
+                        <div class="emby-button-foreground">${Shows}</div>
                     </button>
                     <button is="emby-button" class="emby-tab-button" data-index="1">
-                        <div class="emby-button-foreground">${Latest}</div>
+                        <div class="emby-button-foreground">${Suggestions}</div>
                     </button>
                     <button is="emby-button" class="emby-tab-button" data-index="2">
-                        <div class="emby-button-foreground">${Shows}</div>
+                        <div class="emby-button-foreground">${Latest}</div>
                     </button>
                     <button is="emby-button" class="emby-tab-button" data-index="3">
                         <div class="emby-button-foreground">${Upcoming}</div>
@@ -34,7 +34,10 @@
                 </div>
             </div>
 
-            <div class="tabContent padded-top" data-index="0">
+            <div class="tabContent padded-left padded-left-withalphapicker padded-right padded-top" data-index="0">
+                <div is="emby-itemscontainer" class="seriesItems itemsContainer vertical-wrap itemsContainer-withalphapicker focuscontainer-right focuscontainer-down" data-alphanumericshortcuts="true"></div>
+            </div>
+            <div class="tabContent padded-top" data-index="1">
                 <div class="resumeSection hide verticalSection autoScrollSection" data-section="resume">
                     <div>
                         <h2 class="sectionTitle sectionTitle-cards padded-left padded-right" style="display: inline-block; vertical-align: middle;">${ContinueWatching}</h2>
@@ -46,11 +49,8 @@
                     </div>
                 </div>
             </div>
-            <div class="tabContent padded-left padded-right padded-top" data-index="1">
+            <div class="tabContent padded-left padded-right padded-top" data-index="2">
                 <div is="emby-itemscontainer" class="latestItems itemsContainer vertical-wrap focuscontainer-x"></div>
-            </div>
-            <div class="tabContent padded-left padded-left-withalphapicker padded-right padded-top" data-index="2">
-                <div is="emby-itemscontainer" class="seriesItems itemsContainer vertical-wrap itemsContainer-withalphapicker focuscontainer-right focuscontainer-down" data-alphanumericshortcuts="true"></div>
             </div>
             <div class="tabContent padded-left padded-right padded-top focuscontainer-x" data-index="3">
 

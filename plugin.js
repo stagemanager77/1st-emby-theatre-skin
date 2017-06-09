@@ -344,7 +344,7 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
                 url = pluginManager.mapRoute(this, 'tv/tv.html') + '?serverId=' + item.ServerId + '&parentId=' + item.Id;
 
                 if (options.section === 'latest') {
-                    url += '&tab=0';
+                    url += '&tab=2';
                 }
                 return url;
             }

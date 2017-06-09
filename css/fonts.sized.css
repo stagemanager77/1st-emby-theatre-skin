@@ -13,6 +13,10 @@ h3 {
     font-size: 1.17em;
 }
 
+.layout-tv h2 {
+    font-size: 1.35em;
+}
+
 @media all and (min-height: 720px) {
     html {
         font-size: 22px;

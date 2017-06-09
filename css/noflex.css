@@ -74,3 +74,10 @@
         height: 456px !important;
     }
 }
+
+.actionSheetScroller-tv {
+    /* Prevent list items from overlapping title
+       TODO: This belongs in the core, not here in the skin
+    */
+    margin: 2em 0;
+}

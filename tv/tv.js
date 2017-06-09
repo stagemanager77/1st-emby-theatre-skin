@@ -62,13 +62,13 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
         switch (index) {
 
             case 0:
-                depends.push('./suggestions');
+                depends.push('./series');
                 break;
             case 1:
-                depends.push('./latest');
+                depends.push('./suggestions');
                 break;
             case 2:
-                depends.push('./series');
+                depends.push('./latest');
                 break;
             case 3:
                 depends.push('./upcoming');
@@ -103,9 +103,9 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
 
         switch (userSettings.get('landing-' + folderId)) {
 
-            case 'latest':
+            case 'suggestions':
                 return 1;
-            case 'shows':
+            case 'latest':
                 return 2;
             case 'favorites':
                 return 4;
@@ -132,7 +132,7 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
 
         function preLoadTab(index) {
 
-            if (index === 2) {
+            if (index === 0) {
                 alphaPickerContainer.classList.remove('hide');
             } else {
                 alphaPickerContainer.classList.add('hide');
