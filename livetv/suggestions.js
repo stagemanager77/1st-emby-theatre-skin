@@ -94,22 +94,22 @@
             parentContainer: section,
             itemsContainer: container,
             items: items,
-            preferThumb: true,
+            preferThumb: 'auto',
             inheritThumb: false,
-            shape: (enableScrollX() ? 'overflowBackdrop' : 'backdrop'),
-            showParentTitleOrTitle: true,
-            showTitle: false,
-            centerText: !cardLayout,
+            shape: (enableScrollX() ? 'autooverflow' : 'auto'),
+            defaultShape: getBackdropShape(),
+            showParentTitle: true,
+            showTitle: true,
+            centerText: true,
             coverImage: true,
             overlayText: false,
             lazy: true,
-            overlayMoreButton: overlayButton !== 'play' && !cardLayout && !layoutManager.tv,
-            overlayPlayButton: overlayButton === 'play' && !layoutManager.tv,
+            overlayMoreButton: overlayButton !== 'play',
+            overlayPlayButton: overlayButton === 'play',
             allowBottomPadding: !enableScrollX(),
             showAirTime: true,
+            //showChannelName: true,
             showAirDateTime: true,
-            showChannelName: true,
-            cardLayout: cardLayout,
             trailingButtons: trailingButtons
 
         }, cardOptions));
@@ -187,7 +187,7 @@
             Limit: limit,
             IsMovie: true,
             EnableTotalRecordCount: false,
-            Fields: "ChannelInfo",
+            Fields: "ChannelInfo,PrimaryImageAspectRatio",
             EnableImageTypes: "Primary,Thumb"
 
         }));
@@ -200,7 +200,7 @@
             Limit: limit,
             IsSports: true,
             EnableTotalRecordCount: false,
-            Fields: "ChannelInfo",
+            Fields: "ChannelInfo,PrimaryImageAspectRatio",
             EnableImageTypes: "Primary,Thumb"
 
         }));
@@ -213,7 +213,7 @@
             Limit: limit,
             IsKids: true,
             EnableTotalRecordCount: false,
-            Fields: "ChannelInfo",
+            Fields: "ChannelInfo,PrimaryImageAspectRatio",
             EnableImageTypes: "Primary,Thumb"
 
         }));
@@ -226,26 +226,9 @@
             Limit: limit,
             IsNews: true,
             EnableTotalRecordCount: false,
-            Fields: "ChannelInfo",
-            EnableImageTypes: "Primary,Thumb"
-
-        }));
-
-        // upcoming programs
-        promises.push(apiClient.getLiveTvRecommendedPrograms({
-
-            UserId: apiClient.getCurrentUserId(),
-            IsAiring: false,
-            HasAired: false,
-            Limit: limit,
-            IsMovie: false,
-            IsSports: false,
-            IsKids: false,
-            IsNews: false,
-            IsSeries: false,
-            EnableTotalRecordCount: false,
             Fields: "ChannelInfo,PrimaryImageAspectRatio",
             EnableImageTypes: "Primary,Thumb"
+
         }));
 
         this.promises = promises;
@@ -343,11 +326,6 @@
 
         promises[6].then(function (result) {
             renderItems(view, result.Items, 'upcomingNews');
-            return Promise.resolve();
-        });
-
-        promises[7].then(function (result) {
-            renderItems(view, result.Items, 'upcomingPrograms');
             return Promise.resolve();
         });
 

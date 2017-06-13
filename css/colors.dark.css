@@ -1,5 +1,5 @@
 html {
-    color: #ccc;
+    color: #ddd;
 }
 
 a {
@@ -55,7 +55,7 @@ a {
 }
 
 .emby-button.raised {
-    background-color: rgba(170,170,190, .5);
+    background-color: #303030;
     color: #fff;
 }
 

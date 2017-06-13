@@ -238,12 +238,9 @@
             setTitle(displayItem, parentName);
 
             var osdTitle = view.querySelector('.osdTitle');
-            var osdTitleSmall = view.querySelector('.osdTitleSmall');
             var titleElement;
 
             titleElement = osdTitle;
-            osdTitleSmall.classList.add('hide');
-            osdTitleSmall.innerHTML = '';
 
             // Don't use this for live tv programs because this is contained in mediaInfo.getPrimaryMediaInfoHtml
             var displayName = itemHelper.getDisplayName(displayItem, {
@@ -297,7 +294,7 @@
                 secondaryMediaInfo.classList.add('hide');
             }
 
-            if (mediaInfoHtml || displayName) {
+            if (displayName) {
                 view.querySelector('.osdMainTextContainer').classList.remove('hide');
             } else {
                 view.querySelector('.osdMainTextContainer').classList.add('hide');
@@ -371,7 +368,6 @@
                 view.querySelector('.btnAudio').classList.add('hide');
 
                 view.querySelector('.osdTitle').innerHTML = '';
-                view.querySelector('.osdTitleSmall').innerHTML = '';
                 view.querySelector('.osdMediaInfo').innerHTML = '';
                 return;
             }

@@ -34,14 +34,14 @@
             html += '<div class="verticalSection">';
 
             html += '<div class="sectionTitleContainer padded-left">';
-            html += '<h2 class="sectionTitle sectionTitle-cards">';
-            html += item.Name;
-            html += '</h2>';
             html += '<a is="emby-linkbutton" href="' + embyRouter.getRouteUrl(item, {
                 context: 'tvshows',
                 parentId: parentId
-            }) + '" class="raised more raised-mini sectionTitleButton btnMoreFromGenre' + item.Id + '">';
-            html += globalize.translate('More');
+            }) + '" class="more button-flat button-flat-mini sectionTitleTextButton btnMoreFromGenre' + item.Id + '">';
+            html += '<h2 class="sectionTitle sectionTitle-cards">';
+            html += item.Name;
+            html += '</h2>';
+            html += '<i class="md-icon">&#xE5CC;</i>';
             html += '</a>';
             html += '</div>';
 

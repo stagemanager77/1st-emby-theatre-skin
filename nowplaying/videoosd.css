@@ -4,6 +4,8 @@
     background: linear-gradient(rgba(0, 0, 0, .6), rgba(0, 0, 0, 0));
     transition: transform 300ms ease-out, opacity 300ms ease-out;
     will-change: transform;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
 }
 
 .osdHeader-hidden {
@@ -15,9 +17,6 @@
     display: none;
 }
 
-.osdHeader .pageTitle {
-    color: #fff;
-}
 .osdHeader-hidden {
     transform: translate3d(0,-100%,0);
     opacity: 0;
@@ -87,7 +86,7 @@
     flex-direction: row;
     will-change: transform;
     transition: transform 300ms ease-out, opacity 300ms ease-out;
-    background: linear-gradient(rgba(0, 0, 0, .3), rgba(0, 0, 0, 1));
+    background: linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .8));
     color: #fff;
 }
 

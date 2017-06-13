@@ -25,15 +25,17 @@ define(['globalize', 'loading', 'scroller', 'playbackManager', 'connectionManage
         } else {
 
             if (params.IsMovie === 'true') {
-                setTitleInternal(globalize.translate('HeaderUpcomingMovies'));
+                setTitleInternal(globalize.translate('Movies'));
             } else if (params.IsSports === 'true') {
-                setTitleInternal(globalize.translate('HeaderUpcomingSports'));
+                setTitleInternal(globalize.translate('Sports'));
             } else if (params.IsKids === 'true') {
-                setTitleInternal(globalize.translate('HeaderUpcomingForKids'));
+                setTitleInternal(globalize.translate('HeaderForKids'));
             } else if (params.IsAiring === 'true') {
                 setTitleInternal(globalize.translate('HeaderOnNow'));
+            } else if (params.IsSeries === 'true') {
+                setTitleInternal(globalize.translate('Shows'));
             } else {
-                setTitleInternal(globalize.translate('HeaderUpcomingPrograms'));
+                setTitleInternal(globalize.translate('Programs'));
             }
         }
 
@@ -59,7 +61,7 @@ define(['globalize', 'loading', 'scroller', 'playbackManager', 'connectionManage
         var query = {
             UserId: connectionManager.getApiClient(params.serverId).getCurrentUserId(),
             StartIndex: 0,
-            Fields: "ChannelInfo",
+            Fields: "ChannelInfo,PrimaryImageAspectRatio",
             Limit: 300
         };
 
@@ -140,17 +142,18 @@ define(['globalize', 'loading', 'scroller', 'playbackManager', 'connectionManage
 
                 cardBuilder.buildCards(result.Items, {
                     itemsContainer: itemsContainer,
-                    shape: query.IsMovie || params.type === 'RecordingSeries' ? 'portrait' : "backdrop",
-                    preferThumb: !query.IsMovie && params.type !== 'RecordingSeries',
+                    shape: query.IsMovie || params.type === 'RecordingSeries' ? 'portrait' : "auto",
+                    preferThumb: query.IsMovie || params.type === 'RecordingSeries' ? false : "auto",
+                    defaultShape: query.IsMovie || params.type === 'RecordingSeries' ? 'portrait' : "backdrop",
                     inheritThumb: params.type === 'Recordings',
                     context: 'livetv',
                     centerText: true,
                     overlayText: false,
                     showTitle: true,
-                    showParentTitle: query.IsSeries !== false && !query.IsMovie,
+                    showParentTitle: !query.IsMovie,
                     showAirTime: params.type !== 'Recordings' && params.type !== 'RecordingSeries',
                     showAirDateTime: params.type !== 'Recordings' && params.type !== 'RecordingSeries',
-                    showChannelName: params.type !== 'Recordings' && params.type !== 'RecordingSeries',
+                    //showChannelName: params.type !== 'Recordings' && params.type != 'RecordingSeries',
                     overlayMoreButton: true,
                     showYear: query.IsMovie && params.type === 'Recordings',
                     showSeriesYear: params.type === 'RecordingSeries',

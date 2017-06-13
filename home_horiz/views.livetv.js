@@ -1,4 +1,4 @@
-define(['focusManager', 'cardBuilder', 'pluginManager', './../skininfo', 'browser', 'emby-itemscontainer'], function (focusManager, cardBuilder, pluginManager, skinInfo,  browser) {
+define(['focusManager', 'cardBuilder', 'pluginManager', './../skininfo', 'browser', 'emby-itemscontainer'], function (focusManager, cardBuilder, pluginManager, skinInfo, browser) {
     'use strict';
 
     function loadLatestRecordings(element, apiClient) {
@@ -50,6 +50,7 @@ define(['focusManager', 'cardBuilder', 'pluginManager', './../skininfo', 'browse
             cardBuilder.buildCards(result.Items, {
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
+                preferThumb: true,
                 shape: 'backdrop',
                 coverImage: true,
                 rows: {
@@ -73,6 +74,7 @@ define(['focusManager', 'cardBuilder', 'pluginManager', './../skininfo', 'browse
             cardBuilder.buildCards(result.Items, {
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
+                preferThumb: true,
                 shape: shape || 'backdrop',
                 coverImage: true,
                 rows: {
@@ -105,7 +107,6 @@ define(['focusManager', 'cardBuilder', 'pluginManager', './../skininfo', 'browse
 
                 loadUpcomingPrograms(element.querySelector('.upcomingProgramsSection'), apiClient, {
 
-                    IsAiring: false,
                     HasAired: false,
                     limit: 9,
                     IsMovie: false,
@@ -117,7 +118,6 @@ define(['focusManager', 'cardBuilder', 'pluginManager', './../skininfo', 'browse
 
                 loadUpcomingPrograms(element.querySelector('.upcomingMoviesSection'), apiClient, {
 
-                    IsAiring: false,
                     HasAired: false,
                     limit: 10,
                     IsMovie: true
@@ -126,7 +126,6 @@ define(['focusManager', 'cardBuilder', 'pluginManager', './../skininfo', 'browse
 
                 loadUpcomingPrograms(element.querySelector('.upcomingSportsSection'), apiClient, {
 
-                    IsAiring: false,
                     HasAired: false,
                     limit: 9,
                     IsSports: true
@@ -135,7 +134,6 @@ define(['focusManager', 'cardBuilder', 'pluginManager', './../skininfo', 'browse
 
                 loadUpcomingPrograms(element.querySelector('.upcomingKidsSection'), apiClient, {
 
-                    IsAiring: false,
                     HasAired: false,
                     limit: 9,
                     IsSports: false,

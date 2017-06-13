@@ -293,10 +293,20 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
             if (item === 'nextup') {
                 return pluginManager.mapRoute(this, 'list/list.html') + '?type=nextup&serverId=' + options.serverId;
             }
+            if (item === 'recordedtv') {
+
+                return pluginManager.mapRoute(this, 'livetv/livetv.html') + '?tab=3&serverId=' + options.serverId;
+            }
             if (item === 'livetv') {
 
                 if (options.section === 'guide') {
                     return pluginManager.mapRoute(this, 'livetv/guide.html') + '?serverId=' + options.serverId;
+                }
+                if (options.section === 'dvrschedule') {
+                    return pluginManager.mapRoute(this, 'livetv/livetv.html') + '?tab=4&serverId=' + options.serverId;
+                }
+                if (options.section === 'onnow') {
+                    return pluginManager.mapRoute(this, 'livetv/livetvitems.html') + '?type=Programs&IsAiring=true&serverId=' + options.serverId;
                 }
                 return pluginManager.mapRoute(this, 'livetv/livetv.html') + '?serverId=' + options.serverId;
             }

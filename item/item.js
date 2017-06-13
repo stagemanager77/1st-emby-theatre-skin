@@ -435,7 +435,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
         }
 
         function reloadPlayButtons(view, item) {
-            
+
             if (playbackManager.canPlay(item)) {
                 view.querySelector('.itemPageFixedLeft .btnPlay').classList.remove('hide');
 
@@ -1049,6 +1049,9 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                     UserId: userId,
                     Fields: fields
                 });
+                cardOptions.centerText = true;
+                cardOptions.overlayText = false;
+                cardOptions.showTitle = true;
             }
             else if (item.Type === "Season") {
 
@@ -1089,14 +1092,14 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                     section.classList.add('hide');
                     return;
                 }
-                
+
                 if (item.Type === "Episode" && result.Items.length < 2) {
                     section.classList.add('hide');
                     return;
                 }
 
                 section.classList.remove('hide');
-                
+
                 if (scrollX) {
                     itemsContainer.classList.add('smoothScrollX');
                     itemsContainer.classList.remove('vertical-wrap');
@@ -1462,7 +1465,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
             }
 
             function getItemPromise(apiClient) {
-                
+
                 if (params.seriesTimerId) {
                     return apiClient.getLiveTvSeriesTimer(params.seriesTimerId);
                 }
@@ -1701,7 +1704,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
 
                 var button = this;
 
-                connectionManager.getApiClient(currentItem.ServerId).getCurrentUser().then(function(user) {
+                connectionManager.getApiClient(currentItem.ServerId).getCurrentUser().then(function (user) {
                     itemContextMenu.show(getContextMenuOptions(currentItem, user, button)).then(function (result) {
 
                         if (result.deleted) {
