@@ -1038,7 +1038,8 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                 promise = Emby.Models.items({
                     IncludeItemTypes: 'MusicAlbum',
                     Recursive: true,
-                    ArtistIds: item.Id
+                    ArtistIds: item.Id,
+                    SortBy: 'ProductionYear,SortName'
                 });
             }
 
@@ -1220,7 +1221,8 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                 IncludeItemTypes: "MusicAlbum",
                 ArtistIds: item.AlbumArtists[0].Id,
                 Recursive: true,
-                ExcludeItemIds: item.Id
+                ExcludeItemIds: item.Id,
+                SortBy: 'ProductionYear,SortName'
 
             }).then(function (result) {
 

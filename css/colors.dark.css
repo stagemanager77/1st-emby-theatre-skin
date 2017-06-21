@@ -55,7 +55,7 @@ a {
 }
 
 .emby-button.raised {
-    background-color: #303030;
+    background-color: #404040;
     color: #fff;
 }
 
@@ -143,4 +143,20 @@ a {
 
 .listItemBody .secondary {
     color: #999 !important;
+}
+
+.playstatebutton-played i {
+    color: #cc3333;
+}
+
+.ratingbutton-withrating i {
+    color: #cc3333;
+}
+
+.downloadbutton-on i {
+    color: #4285F4;
+}
+
+.downloadbutton-complete i {
+    color: #4285F4;
 }

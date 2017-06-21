@@ -363,6 +363,7 @@ a {
 .sectionTitleTextButton {
     margin: 0 0 .1em !important;
     display: inline-flex !important;
+    color: inherit !important;
 }
 
     .sectionTitleTextButton:not(.padded-left) {
@@ -441,11 +442,11 @@ a {
 @media all and (min-width: 1280px) {
 
     .padded-left {
-        padding-left: 3%;
+        padding-left: 3.2%;
     }
 
     .padded-right {
-        padding-right: 3%;
+        padding-right: 3.2%;
     }
 
     .layout-tv .padded-left {
