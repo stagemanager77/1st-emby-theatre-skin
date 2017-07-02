@@ -407,12 +407,12 @@ a {
     padding-bottom: 1em;
 }
 
-.padded-top-focusscale {
+.layout-tv .padded-top-focusscale {
     padding-top: 1.6em;
     margin-top: -1.6em;
 }
 
-.padded-bottom-focusscale {
+.layout-tv .padded-bottom-focusscale {
     padding-bottom: 1.6em;
     margin-bottom: -1.6em;
 }
@@ -458,11 +458,11 @@ a {
     }
 
     .layout-tv .padded-left-withalphapicker {
-        padding-left: 4.4%;
+        padding-left: 5%;
     }
 
     .layout-tv .padded-right-withalphapicker {
-        padding-right: 4.4%;
+        padding-right: 5%;
     }
 }
 

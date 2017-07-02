@@ -2,7 +2,7 @@
     'use strict';
 
     function enableScrollX() {
-        return !layoutManager.desktop;
+        return true;
     }
 
     function MusicSuggestionsTab(view, params) {
@@ -22,7 +22,7 @@
             var html;
 
             if (enableScrollX()) {
-                html = '<div is="emby-scroller" class="padded-top-focusscale padded-bottom-focusscale" data-mousewheel="false" data-framesize="matchgrandparent" data-centerfocus="card"><div is="emby-itemscontainer" class="scrollSlider focuscontainer-x padded-left padded-right"></div></div>';
+                html = '<div is="emby-scroller" data-mousewheel="false" data-framesize="matchgrandparent" data-centerfocus="card"><div class="scrollerframe padded-top-focusscale padded-bottom-focusscale"><div is="emby-itemscontainer" class="scrollSlider focuscontainer-x padded-left padded-right"></div></div></div>';
             } else {
                 html = '<div is="emby-itemscontainer" class="itemsContainer padded-left padded-right vertical-wrap"></div>';
             }

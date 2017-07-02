@@ -116,6 +116,9 @@
         var osdBottomElement = document.querySelector('.videoOsdBottom');
         var supportsBrightnessChange;
 
+        var currentVisibleMenu;
+        var statsOverlay;
+
         function onVerticalSwipe(e, elem, data) {
             var player = currentPlayer;
             if (player) {
@@ -436,12 +439,6 @@
             osdPoster.innerHTML = '';
         }
 
-        var _osdOpen = true;
-
-        function isOsdOpen() {
-            return _osdOpen;
-        }
-
         function showOsd() {
 
             slideDownToShow(headerElement);
@@ -488,11 +485,11 @@
 
         function slideUpToShow(elem) {
 
-            if (_osdOpen) {
+            if (currentVisibleMenu === 'osd') {
                 return;
             }
 
-            _osdOpen = true;
+            currentVisibleMenu = 'osd';
 
             clearBottomPanelAnimationEventListeners(elem);
 
@@ -531,7 +528,7 @@
 
         function slideDownToHide(elem) {
 
-            if (!_osdOpen) {
+            if (currentVisibleMenu !== 'osd') {
                 return;
             }
 
@@ -546,7 +543,7 @@
                 once: true
             });
 
-            _osdOpen = false;
+            currentVisibleMenu = null;
         }
 
         var lastMouseMoveData;
@@ -581,7 +578,7 @@
             switch (e.detail.command) {
 
                 case 'left':
-                    if (isOsdOpen()) {
+                    if (currentVisibleMenu === 'osd') {
                         showOsd();
                     } else {
                         e.preventDefault();
@@ -589,7 +586,7 @@
                     }
                     break;
                 case 'right':
-                    if (isOsdOpen()) {
+                    if (currentVisibleMenu === 'osd') {
                         showOsd();
                     } else {
                         e.preventDefault();
@@ -613,6 +610,9 @@
                 case 'record':
                     onRecordingCommand();
                     showOsd();
+                    break;
+                case 'togglestats':
+                    toggleStats();
                     break;
                 default:
                     break;
@@ -663,6 +663,10 @@
         });
 
         view.addEventListener('viewbeforehide', function () {
+
+            if (statsOverlay) {
+                statsOverlay.enabled(false);
+            }
 
             dom.removeEventListener(window, 'keydown', onWindowKeyDown, {
                 passive: true
@@ -764,7 +768,6 @@
         function onPlaybackStopped(e, state) {
 
             currentRuntimeTicks = null;
-            comingUpNextDisplayed = false;
             hideComingUpNext();
 
             console.log('nowplaying event: ' + e.type);
@@ -808,6 +811,8 @@
         }
 
         function releaseCurrentPlayer() {
+
+            destroyStats();
 
             var player = currentPlayer;
 
@@ -866,14 +871,19 @@
 
         function showComingUpNext(player, currentTimeTicks, runtimeTicks) {
 
-            if (comingUpNextDisplayed) {
+            if (currentVisibleMenu) {
                 return;
             }
-            comingUpNextDisplayed = true;
+            currentVisibleMenu = 'upnext';
         }
 
         function hideComingUpNext() {
 
+            if (currentVisibleMenu !== 'upnext') {
+                return;
+            }
+
+            currentVisibleMenu = null;
         }
 
         function refreshProgramInfoIfNeeded(player) {
@@ -1112,12 +1122,44 @@
             var btn = this;
 
             require(['playerSettingsMenu'], function (playerSettingsMenu) {
+
                 playerSettingsMenu.show({
                     mediaType: 'Video',
                     player: currentPlayer,
-                    positionTo: btn
+                    positionTo: btn,
+                    stats: true,
+                    onOption: onSettingsOption
+
                 });
             });
+        }
+
+        function onSettingsOption(selectedOption) {
+
+            if (selectedOption === 'stats') {
+                toggleStats();
+            }
+        }
+
+        function toggleStats() {
+            require(['playerStats'], function (PlayerStats) {
+
+                if (statsOverlay) {
+                    statsOverlay.toggle();
+                } else {
+                    statsOverlay = new PlayerStats({
+                        player: currentPlayer
+                    });
+                }
+            });
+        }
+
+        function destroyStats() {
+
+            if (statsOverlay) {
+                statsOverlay.destroy();
+                statsOverlay = null;
+            }
         }
 
         function showAudioTrackSelection() {
@@ -1212,24 +1254,21 @@
             headerElement.classList.remove('hide');
         });
 
-        view.addEventListener('viewhide', function () {
+        view.addEventListener('viewdestroy', function () {
 
             if (self.touchHelper) {
                 self.touchHelper.destroy();
                 self.touchHelper = null;
             }
-        });
-
-        view.addEventListener('viewdestroy', function () {
-
             if (recordingButtonManager) {
                 recordingButtonManager.destroy();
                 recordingButtonManager = null;
             }
+            destroyStats();
         });
 
         function onWindowKeyDown(e) {
-            if (e.keyCode === 32 && !isOsdOpen()) {
+            if (e.keyCode === 32 && !currentVisibleMenu) {
                 playbackManager.playPause(currentPlayer);
                 showOsd();
             }
