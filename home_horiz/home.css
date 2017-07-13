@@ -26,23 +26,18 @@
 }
 
 .homePageContent .squareCard:not(.scalableCard) .cardImageContainer {
-    width: 21.85vh;
-    height: 21.85vh;
-}
-
-.homePageContent .bannerCard .cardImageContainer {
-    width: 56.32432vh;
-    height: 10.42vh;
+    width: 8.66em;
+    height: 8.66em;
 }
 
 .homePageContent .backdropCard .cardImageContainer {
-    width: 38.89vh;
-    height: 21.85vh;
+    width: 15.395555555555555555555555555556em;
+    height: 8.66em;
 }
 
 .homePageContent .portraitCard .cardImageContainer {
-    width: 21.94vh;
-    height: 32.96vh;
+    width: 8.8em;
+    height: 13.2em;
 }
 
 .wideSpotlightCard {
@@ -50,7 +45,7 @@
 }
 
     .wideSpotlightCard .cardImageContainer {
-        height: 44.7vh;
+        height: 17.85em;
     }
 
     .wideSpotlightCard.card-focusscale:focus > .cardBox {

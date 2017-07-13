@@ -127,7 +127,6 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
         var alphaPickerContainers = view.querySelectorAll('.alphaPickerContainer');
         var viewTabs = view.querySelector('.viewTabs');
         var initialTabIndex = parseInt(params.tab || '0');
-        var isViewRestored;
 
         function preLoadTab(page, index) {
 
@@ -142,7 +141,7 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
             getTabController(page, index, function (controller) {
                 if (controller.onBeforeShow) {
 
-                    var refresh = isViewRestored !== true || !controller.refreshed;
+                    var refresh = !controller.refreshed;
 
                     controller.onBeforeShow({
                         refresh: refresh
@@ -189,7 +188,6 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
         });
 
         view.addEventListener('viewbeforeshow', function (e) {
-            isViewRestored = e.detail.isRestored;
 
             if (initialTabIndex == null) {
                 viewTabs.triggerBeforeTabChange();
@@ -197,8 +195,6 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
         });
 
         view.addEventListener('viewshow', function (e) {
-
-            isViewRestored = e.detail.isRestored;
 
             Emby.Page.setTitle('');
             backdrop.clear();

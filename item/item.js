@@ -1,4 +1,4 @@
-define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper', 'playbackManager', 'connectionManager', 'imageLoader', 'userdataButtons', 'itemHelper', './../components/focushandler', 'backdrop', 'listView', 'mediaInfo', 'inputManager', 'focusManager', './../skinsettings', 'cardBuilder', 'indicators', 'layoutManager', 'browser', 'serverNotifications', 'events', 'dom', 'apphost', 'globalize', 'itemShortcuts', 'emby-itemscontainer'],
+define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper', 'playbackManager', 'connectionManager', 'imageLoader', 'userdataButtons', 'itemHelper', './../components/focushandler', 'backdrop', 'listView', 'mediaInfo', 'inputManager', 'focusManager', './../skinsettings', 'cardBuilder', 'indicators', 'layoutManager', 'browser', 'serverNotifications', 'events', 'dom', 'apphost', 'globalize', 'itemShortcuts', 'emby-itemscontainer', 'emby-scroller', 'emby-downloadbutton'],
     function (itemContextMenu, loading, skinInfo, datetime, scrollHelper, playbackManager, connectionManager, imageLoader, userdataButtons, itemHelper, focusHandler, backdrop, listView, mediaInfo, inputManager, focusManager, skinSettings, cardBuilder, indicators, layoutManager, browser, serverNotifications, events, dom, appHost, globalize, itemShortcuts) {
         'use strict';
 
@@ -943,7 +943,12 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                     showIndexNumber: item.Type === 'MusicAlbum',
                     enableOverview: true,
                     imageSize: 'large',
-                    enableSideMediaInfo: false
+                    enableSideMediaInfo: false,
+                    highlight: false,
+                    action: layoutManager.tv ? 'play' : 'none',
+                    infoButton: !layoutManager.tv,
+                    imagePlayButton: !layoutManager.tv,
+                    includeParentInfoInTitle: false
                 });
 
                 imageLoader.lazyChildren(section);
@@ -985,7 +990,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
             var section = view.querySelector('.childrenSection');
 
             if (item.Type !== 'MusicArtist') {
-                if ((!item.ChildCount && item.Type !== 'Episode') || enableTrackList(item)) {
+                if (!item.ChildCount || enableTrackList(item)) {
                     section.classList.add('hide');
                     return;
                 }
@@ -1006,10 +1011,6 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
 
             } else if (item.Type === "BoxSet") {
                 headerText.innerHTML = globalize.translate('Items');
-                headerText.classList.remove('hide');
-
-            } else if (item.Type === "Episode" && item.SeriesId && item.SeasonId) {
-                headerText.innerHTML = globalize.translate('MoreFrom', item.SeasonName);
                 headerText.classList.remove('hide');
 
             } else {
@@ -1067,22 +1068,6 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                 cardOptions.overlayText = true;
                 cardOptions.showTitle = true;
                 cardOptions.includeParentInfoInTitle = false;
-            }
-            else if (item.Type === "Episode" && item.SeriesId && item.SeasonId) {
-
-                // Use dedicated episodes endpoint
-                promise = apiClient.getEpisodes(item.SeriesId, {
-
-                    SeasonId: item.SeasonId,
-                    UserId: userId,
-                    Fields: fields
-                });
-
-                cardOptions.overlayText = true;
-                cardOptions.showTitle = true;
-                cardOptions.includeParentInfoInTitle = false;
-                scrollX = true;
-
             } else {
                 promise = Emby.Models.children(item, {});
             }
@@ -1090,11 +1075,6 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
             promise.then(function (result) {
 
                 if (!result.Items.length) {
-                    section.classList.add('hide');
-                    return;
-                }
-
-                if (item.Type === "Episode" && result.Items.length < 2) {
                     section.classList.add('hide');
                     return;
                 }
@@ -1111,14 +1091,6 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                 }
 
                 cardBuilder.buildCards(result.Items, cardOptions);
-
-                if (item.Type === 'Episode') {
-
-                    var card = itemsContainer.querySelector('.card[data-id="' + item.Id + '"]');
-                    if (card) {
-                        scrollHelper.toStart(itemsContainer, card.previousSibling || card, true);
-                    }
-                }
             });
         }
 
@@ -1128,7 +1100,8 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
 
             var people = item.People || [];
 
-            people.length = Math.min(people.length, 32);
+            var limit = browser.orsay ? 14 : 32;
+            people.length = Math.min(people.length, limit);
 
             if (!people.length) {
                 section.classList.add('hide');
@@ -1191,6 +1164,10 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                 chapters = [];
             }
 
+            if (browser.orsay) {
+                chapters = [];
+            }
+
             if (!chapters.length) {
                 section.classList.add('hide');
                 return;
@@ -1208,9 +1185,60 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
             });
         }
 
-        function renderMoreFrom(view, item, apiClient) {
+        function renderMoreFromSeason(view, item, apiClient) {
 
-            var section = view.querySelector('.moreFromSection');
+            var section = view.querySelector('.moreFromSeasonSection');
+            if (item.Type !== 'Episode' || !item.SeasonId || !item.SeriesId) {
+                section.classList.add('hide');
+                return;
+            }
+
+            var userId = apiClient.getCurrentUserId();
+            var fields = "ItemCounts,PrimaryImageAspectRatio,BasicSyncInfo,CanDelete";
+
+            apiClient.getEpisodes(item.SeriesId, {
+
+                SeasonId: item.SeasonId,
+                UserId: userId,
+                Fields: fields
+
+            }).then(function (result) {
+
+                if (result.Items.length < 2) {
+                    section.classList.add('hide');
+                    return;
+                }
+
+                section.classList.remove('hide');
+
+                section.querySelector('h2').innerHTML = globalize.translate('MoreFrom', item.SeasonName);
+
+                var itemsContainer = section.querySelector('.itemsContainer');
+
+                cardBuilder.buildCards(result.Items, extendVerticalCardOptions({
+                    parentContainer: section,
+                    itemsContainer: itemsContainer,
+                    shape: 'autoVertical',
+                    sectionTitleTagName: 'h2',
+                    scalable: true,
+                    showTitle: true,
+                    overlayText: false,
+                    centerText: true,
+                    includeParentInfoInTitle: false,
+                    allowBottomPadding: false
+                }));
+
+                var card = itemsContainer.querySelector('.card[data-id="' + item.Id + '"]');
+                if (card) {
+
+                    section.querySelector('.emby-scroller').toStart(card.previousSibling || card, true);
+                }
+            });
+        }
+
+        function renderMoreFromArtist(view, item, apiClient) {
+
+            var section = view.querySelector('.moreFromArtistSection');
             if (item.Type !== 'MusicAlbum' || !item.AlbumArtists || !item.AlbumArtists.length) {
                 section.classList.add('hide');
                 return;
@@ -1372,29 +1400,29 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
             var currentItem;
             var currentRecordingFields;
             var dataPromises;
-            var syncToggleInstance;
 
-            function onSynced() {
+            function onDownloadChange() {
                 reloadItem(true);
             }
 
             function renderSyncLocalContainer(user, item) {
 
-                if (syncToggleInstance) {
-                    syncToggleInstance.refresh(item);
+                if (!appHost.supports('sync')) {
                     return;
                 }
+                var canSync = itemHelper.canSync(user, item);
 
-                require(['syncToggle'], function (syncToggle) {
+                var buttons = view.querySelectorAll('.btnSyncDownload');
 
-                    syncToggleInstance = new syncToggle({
-                        user: user,
-                        item: item,
-                        container: view.querySelector('.syncLocalContainer')
-                    });
+                for (var i = 0, length = buttons.length; i < length; i++) {
+                    buttons[i].setItem(item);
 
-                    events.on(syncToggleInstance, 'sync', onSynced);
-                });
+                    if (canSync) {
+                        buttons[i].classList.remove('hide');
+                    } else {
+                        buttons[i].classList.add('hide');
+                    }
+                }
             }
 
             function onUserDataChanged(e, apiClient, userData) {
@@ -1541,7 +1569,8 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                         renderScenes(view, item);
                         renderExtras(view, item, apiClient);
                         renderSimilar(view, item, apiClient);
-                        renderMoreFrom(view, item, apiClient);
+                        renderMoreFromSeason(view, item, apiClient);
+                        renderMoreFromArtist(view, item, apiClient);
                         createVerticalScroller(view, self);
                         renderSyncLocalContainer(user, item);
 
@@ -1625,6 +1654,9 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                 }
             });
 
+            view.querySelector('.btnSyncDownload').addEventListener('download', onDownloadChange);
+            view.querySelector('.btnSyncDownload').addEventListener('download-cancel', onDownloadChange);
+
             view.querySelector('.trackList').addEventListener('needsrefresh', function () {
                 reloadItem(true);
             });
@@ -1643,12 +1675,6 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
             view.addEventListener('viewdestroy', function () {
 
                 events.off(serverNotifications, 'UserDataChanged', onUserDataChanged);
-
-                if (syncToggleInstance) {
-                    events.off(syncToggleInstance, 'sync', onSynced);
-                    syncToggleInstance.destroy();
-                    syncToggleInstance = null;
-                }
 
                 if (self.currentRecordingFields) {
                     self.currentRecordingFields.destroy();

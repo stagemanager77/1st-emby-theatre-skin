@@ -57,10 +57,6 @@
     display: none;
 }
 
-.mouseIdle .nowPlayingButtonsContainer .buttonMute, .mouseIdle .nowPlayingButtonsContainer .nowPlayingVolumeSlider {
-    visibility: hidden !important;
-}
-
 .nowPlayingSecondaryButtons {
     display: flex;
     align-items: center;

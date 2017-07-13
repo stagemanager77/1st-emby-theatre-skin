@@ -115,7 +115,7 @@
     .detailImageContainer .itemProgressBar {
         position: relative;
         /* Slightly higher than it's height' */
-        top: -.5em;
+        top: -.4em;
     }
 
 .detailImage {

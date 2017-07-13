@@ -14,12 +14,12 @@ a {
     }
 
 .backgroundContainer {
-    background: #181818;
+    background: #171717;
     /*background: linear-gradient(to right, #080808, #282828, #080808);*/
 }
 
 .skinHeader-withBackground {
-    background: #181818;
+    background: #171717;
 }
 
 .backgroundContainer.withBackdrop {

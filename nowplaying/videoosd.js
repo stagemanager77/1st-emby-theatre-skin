@@ -354,7 +354,27 @@
             elem.innerHTML = html || '';
         }
 
-        function updateNowPlayingInfo(state) {
+        function shouldEnableProgressByTimeOfDay(item) {
+
+            if (item.Type === 'TvChannel') {
+                return true;
+            }
+
+            if (item.Type === 'Recording' && item.StartDate && item.EndDate) {
+
+                var endDate = datetime.parseISO8601Date(item.EndDate).getTime();
+                var startDate = datetime.parseISO8601Date(item.StartDate).getTime();
+                var now = new Date().getTime();
+
+                if (now <= endDate && now >= startDate) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        function updateNowPlayingInfo(player, state) {
 
             var item = state.NowPlayingItem;
             currentItem = item;
@@ -375,7 +395,7 @@
                 return;
             }
 
-            enableProgressByTimeOfDay = item.Type === 'TvChannel';
+            enableProgressByTimeOfDay = shouldEnableProgressByTimeOfDay(item);
             getDisplayItem(item).then(updateDisplayItem);
 
             nowPlayingVolumeSlider.disabled = false;
@@ -383,13 +403,13 @@
             btnFastForward.disabled = false;
             btnRewind.disabled = false;
 
-            if (playbackManager.subtitleTracks(currentPlayer).length) {
+            if (playbackManager.subtitleTracks(player).length) {
                 view.querySelector('.btnSubtitles').classList.remove('hide');
             } else {
                 view.querySelector('.btnSubtitles').classList.add('hide');
             }
 
-            if (playbackManager.audioTracks(currentPlayer).length > 1) {
+            if (playbackManager.audioTracks(player).length > 1) {
                 view.querySelector('.btnAudio').classList.remove('hide');
             } else {
                 view.querySelector('.btnAudio').classList.add('hide');
@@ -407,6 +427,7 @@
                 var pageTitle = document.querySelector('.pageTitle');
                 pageTitle.style.backgroundImage = "url('" + url + "')";
                 pageTitle.classList.add('pageTitleWithLogo');
+                pageTitle.classList.remove('pageTitleWithDefaultLogo');
                 pageTitle.innerHTML = '';
                 document.querySelector('.headerLogo').classList.add('hide');
             } else {
@@ -753,7 +774,7 @@
 
             var player = this;
 
-            updatePlayerVolumeState(player.isMuted(), player.getVolume());
+            updatePlayerVolumeState(player, player.isMuted(), player.getVolume());
         }
 
         function onPlaybackStart(e, state) {
@@ -850,7 +871,7 @@
             currentRuntimeTicks = playbackManager.duration(player);
 
             var currentTime = playbackManager.currentTime(player);
-            updateTimeDisplay(currentTime, currentRuntimeTicks, playbackManager.playbackStartTime(player));
+            updateTimeDisplay(currentTime, currentRuntimeTicks, playbackManager.playbackStartTime(player), playbackManager.getBufferedRanges(player));
 
             refreshProgramInfoIfNeeded(player);
             showComingUpNextIfNeeded(player, currentTime, currentRuntimeTicks);
@@ -955,7 +976,7 @@
             //    toggleRepeatButton.classList.remove('repeatActive');
             //}
 
-            updatePlayerVolumeState(playState.IsMuted, playState.VolumeLevel);
+            updatePlayerVolumeState(player, playState.IsMuted, playState.VolumeLevel);
 
             if (nowPlayingPositionSlider && !nowPlayingPositionSlider.dragging) {
                 nowPlayingPositionSlider.disabled = !playState.CanSeek;
@@ -967,9 +988,9 @@
             var nowPlayingItem = state.NowPlayingItem || {};
 
             playbackStartTimeTicks = playState.PlaybackStartTimeTicks;
-            updateTimeDisplay(playState.PositionTicks, nowPlayingItem.RunTimeTicks, playState.PlaybackStartTimeTicks);
+            updateTimeDisplay(playState.PositionTicks, nowPlayingItem.RunTimeTicks, playState.PlaybackStartTimeTicks, playState.BufferedRanges);
 
-            updateNowPlayingInfo(state);
+            updateNowPlayingInfo(player, state);
 
             if (state.MediaSource && state.MediaSource.SupportsTranscoding && supportedCommands.indexOf('SetMaxStreamingBitrate') !== -1) {
                 view.querySelector('.btnVideoOsdSettings').classList.remove('hide');
@@ -992,7 +1013,12 @@
             updateFullscreenIcon();
         }
 
-        function updateTimeDisplay(positionTicks, runtimeTicks, playbackStartTimeTicks) {
+        function getDisplayPercentByTimeOfDay(programStartDateMs, programRuntimeMs, currentTimeMs) {
+
+            return ((currentTimeMs - programStartDateMs) / programRuntimeMs) * 100;
+        }
+
+        function updateTimeDisplay(positionTicks, runtimeTicks, playbackStartTimeTicks, bufferedRanges) {
 
             if (enableProgressByTimeOfDay) {
 
@@ -1003,10 +1029,26 @@
                         var currentTimeMs = (playbackStartTimeTicks + (positionTicks || 0)) / 10000;
                         var programRuntimeMs = programEndDateMs - programStartDateMs;
 
-                        nowPlayingPositionSlider.value = ((currentTimeMs - programStartDateMs) / programRuntimeMs) * 100;
+                        nowPlayingPositionSlider.value = getDisplayPercentByTimeOfDay(programStartDateMs, programRuntimeMs, currentTimeMs);
+                        console.log('buffered ranges: ' + JSON.stringify(bufferedRanges));
+                        if (bufferedRanges.length) {
+
+                            var rangeStart = getDisplayPercentByTimeOfDay(programStartDateMs, programRuntimeMs, (playbackStartTimeTicks + (bufferedRanges[0].start || 0)) / 10000);
+                            var rangeEnd = getDisplayPercentByTimeOfDay(programStartDateMs, programRuntimeMs, (playbackStartTimeTicks + (bufferedRanges[0].end || 0)) / 10000);
+
+                            nowPlayingPositionSlider.setBufferedRanges([
+                            {
+                                start: rangeStart,
+                                end: rangeEnd
+                            }]);
+
+                        } else {
+                            nowPlayingPositionSlider.setBufferedRanges([]);
+                        }
 
                     } else {
                         nowPlayingPositionSlider.value = 0;
+                        nowPlayingPositionSlider.setBufferedRanges([]);
                     }
                 }
 
@@ -1035,12 +1077,16 @@
                     }
                 }
 
+                if (nowPlayingPositionSlider) {
+                    nowPlayingPositionSlider.setBufferedRanges(bufferedRanges, runtimeTicks, positionTicks);
+                }
+
                 updateTimeText(nowPlayingPositionText, positionTicks);
                 updateTimeText(nowPlayingDurationText, runtimeTicks, true);
             }
         }
 
-        function updatePlayerVolumeState(isMuted, volumeLevel) {
+        function updatePlayerVolumeState(player, isMuted, volumeLevel) {
 
             var supportedCommands = currentPlayerSupportedCommands;
 
@@ -1055,7 +1101,7 @@
                 showVolumeSlider = false;
             }
 
-            if (currentPlayer.isLocalPlayer && appHost.supports('physicalvolumecontrol')) {
+            if (player.isLocalPlayer && appHost.supports('physicalvolumecontrol')) {
                 showMuteButton = false;
                 showVolumeSlider = false;
             }
@@ -1123,9 +1169,15 @@
 
             require(['playerSettingsMenu'], function (playerSettingsMenu) {
 
+                var player = currentPlayer;
+
+                if (!player) {
+                    return;
+                }
+
                 playerSettingsMenu.show({
                     mediaType: 'Video',
-                    player: currentPlayer,
+                    player: player,
                     positionTo: btn,
                     stats: true,
                     onOption: onSettingsOption
@@ -1142,13 +1194,20 @@
         }
 
         function toggleStats() {
+
             require(['playerStats'], function (PlayerStats) {
+
+                var player = currentPlayer;
+
+                if (!player) {
+                    return;
+                }
 
                 if (statsOverlay) {
                     statsOverlay.toggle();
                 } else {
                     statsOverlay = new PlayerStats({
-                        player: currentPlayer
+                        player: player
                     });
                 }
             });
@@ -1195,7 +1254,7 @@
                 }).then(function (id) {
                     var index = parseInt(id);
                     if (index !== currentIndex) {
-                        playbackManager.setAudioStreamIndex(index, currentPlayer);
+                        playbackManager.setAudioStreamIndex(index, player);
                     }
                 });
             });
@@ -1242,7 +1301,7 @@
                 }).then(function (id) {
                     var index = parseInt(id);
                     if (index !== currentIndex) {
-                        playbackManager.setSubtitleStreamIndex(index, currentPlayer);
+                        playbackManager.setSubtitleStreamIndex(index, player);
                     }
                 });
 
@@ -1296,7 +1355,8 @@
 
         nowPlayingPositionSlider.addEventListener('change', function () {
 
-            if (currentPlayer) {
+            var player = currentPlayer;
+            if (player) {
 
                 var newPercent = parseFloat(this.value);
 
@@ -1306,10 +1366,10 @@
                     seekAirTimeTicks += (programStartDateMs * 10000);
                     seekAirTimeTicks -= playbackStartTimeTicks;
 
-                    playbackManager.seek(seekAirTimeTicks, currentPlayer);
+                    playbackManager.seek(seekAirTimeTicks, player);
                 }
                 else {
-                    playbackManager.seekPercent(newPercent, currentPlayer);
+                    playbackManager.seekPercent(newPercent, player);
                 }
             }
         });

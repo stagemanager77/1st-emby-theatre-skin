@@ -50,8 +50,8 @@ define(['focusManager', 'cardBuilder', 'pluginManager', './../skininfo', 'browse
             cardBuilder.buildCards(result.Items, {
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
-                preferThumb: true,
-                shape: 'backdrop',
+                preferThumb: 'auto',
+                shape: 'auto',
                 coverImage: true,
                 rows: {
                     portrait: 2,
@@ -74,8 +74,8 @@ define(['focusManager', 'cardBuilder', 'pluginManager', './../skininfo', 'browse
             cardBuilder.buildCards(result.Items, {
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
-                preferThumb: true,
-                shape: shape || 'backdrop',
+                preferThumb: 'auto',
+                shape: shape || 'auto',
                 coverImage: true,
                 rows: {
                     portrait: 2,

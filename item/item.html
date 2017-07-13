@@ -77,8 +77,10 @@
                         </div>
                     </div>
 
-                    <div class="syncLocalContainer hide" style="margin: 1em 0;">
-                    </div>
+                    <button is="emby-downloadbutton" type="button" class="button-flat btnSyncDownload hide" style="margin: 0 0 0;">
+                        <i class="md-icon">&#xE2C4;</i>
+                        <span class="emby-downloadbutton-downloadtext">${Download}</span>
+                    </button>
 
                     <div class="recordingFields hide" style="margin:1em 0;"></div>
                     <p class="genres hide">
@@ -119,6 +121,16 @@
                 <h2 class="sectionTitle"></h2>
                 <div is="emby-itemscontainer" class="itemsContainer vertical-wrap childrenItemsContainer focuscontainer-x"></div>
             </div>
+            <div class="verticalSection itemVerticalSection moreFromSeasonSection hide">
+                <h2 class="sectionTitle padded-left padded-right"></h2>
+
+                <div is="emby-scroller" class="emby-scroller" data-mousewheel="false" data-centerfocus="true" data-horizontal="true">
+
+                    <div class="scrollerframe padded-top-focusscale padded-bottom-focusscale">
+                        <div is="emby-itemscontainer" class="scrollSlider focuscontainer-x itemsContainer padded-left padded-right"></div>
+                    </div>
+                </div>
+            </div>
             <div class="verticalSection itemVerticalSection peopleSection padded-left padded-right hide">
                 <h2 class="sectionTitle">${CastAndCrew}</h2>
                 <div is="emby-itemscontainer" class="itemsContainer vertical-wrap focuscontainer-x"></div>
@@ -127,7 +139,7 @@
                 <h2 class="sectionTitle">${Extras}</h2>
                 <div is="emby-itemscontainer" class="itemsContainer vertical-wrap focuscontainer-x"></div>
             </div>
-            <div class="verticalSection itemVerticalSection moreFromSection padded-left padded-right hide">
+            <div class="verticalSection itemVerticalSection moreFromArtistSection padded-left padded-right hide">
                 <h2 class="sectionTitle"></h2>
                 <div is="emby-itemscontainer" class="itemsContainer vertical-wrap focuscontainer-x"></div>
             </div>
