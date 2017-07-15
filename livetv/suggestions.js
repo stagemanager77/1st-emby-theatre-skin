@@ -110,7 +110,8 @@
             showAirTime: true,
             //showChannelName: true,
             showAirDateTime: true,
-            trailingButtons: trailingButtons
+            trailingButtons: trailingButtons,
+            lines: 3
 
         }, cardOptions));
 
@@ -141,14 +142,6 @@
 
         var limit = enableScrollX() ? 24 : 12;
 
-        promises.push(apiClient.getLiveTvRecordings({
-            UserId: apiClient.getCurrentUserId(),
-            IsInProgress: true,
-            Fields: 'CanDelete,PrimaryImageAspectRatio,BasicSyncInfo',
-            EnableTotalRecordCount: false,
-            EnableImageTypes: "Primary,Thumb,Backdrop"
-        }));
-
         // on now
         promises.push(apiClient.getLiveTvRecommendedPrograms({
 
@@ -166,7 +159,6 @@
         promises.push(apiClient.getLiveTvRecommendedPrograms({
 
             UserId: apiClient.getCurrentUserId(),
-            IsAiring: false,
             HasAired: false,
             Limit: limit,
             IsMovie: false,
@@ -182,7 +174,6 @@
         promises.push(apiClient.getLiveTvRecommendedPrograms({
 
             userId: apiClient.getCurrentUserId(),
-            IsAiring: false,
             HasAired: false,
             Limit: limit,
             IsMovie: true,
@@ -195,7 +186,6 @@
         promises.push(apiClient.getLiveTvRecommendedPrograms({
 
             userId: apiClient.getCurrentUserId(),
-            IsAiring: false,
             HasAired: false,
             Limit: limit,
             IsSports: true,
@@ -208,7 +198,6 @@
         promises.push(apiClient.getLiveTvRecommendedPrograms({
 
             userId: apiClient.getCurrentUserId(),
-            IsAiring: false,
             HasAired: false,
             Limit: limit,
             IsKids: true,
@@ -221,7 +210,6 @@
         promises.push(apiClient.getLiveTvRecommendedPrograms({
 
             userId: apiClient.getCurrentUserId(),
-            IsAiring: false,
             HasAired: false,
             Limit: limit,
             IsNews: true,
@@ -234,50 +222,8 @@
         this.promises = promises;
     };
 
-    function renderRecordings(section, items, cardOptions) {
-
-        var container = section.querySelector('.itemsContainer');
-        var cardLayout = false;
-
-        cardBuilder.buildCards(items, Object.assign({
-            parentContainer: section,
-            itemsContainer: container,
-            shape: (enableScrollX() ? 'autooverflow' : 'auto'),
-            showTitle: true,
-            showParentTitle: true,
-            coverImage: true,
-            lazy: true,
-            cardLayout: cardLayout,
-            allowBottomPadding: !enableScrollX(),
-            preferThumb: 'auto',
-            centerText: !cardLayout,
-            overlayText: false
-
-        }, cardOptions || {}));
-
-        if (enableScrollX()) {
-            section.querySelector('.emby-scroller').scrollToBeginning();
-        }
-    }
-
     function getBackdropShape() {
         return enableScrollX() ? 'overflowBackdrop' : 'backdrop';
-    }
-
-    function renderActiveRecordings(context, items) {
-
-        renderRecordings(context.querySelector('.activeRecordings'), items, {
-            shape: getBackdropShape(),
-            showParentTitle: false,
-            showParentTitleOrTitle: true,
-            showTitle: false,
-            showAirTime: true,
-            showAirEndTime: true,
-            showChannelName: true,
-            preferThumb: true,
-            coverImage: true,
-            overlayText: false
-        });
     }
 
     LiveTvSuggestionsTab.prototype.onShow = function (options) {
@@ -292,40 +238,38 @@
         var view = this.view;
 
         promises[0].then(function (result) {
-            renderActiveRecordings(view, result.Items);
-            return Promise.resolve();
-        });
-
-        promises[1].then(function (result) {
             renderItems(view, result.Items, 'activePrograms');
             return Promise.resolve();
         });
 
-        promises[2].then(function (result) {
+        promises[1].then(function (result) {
             renderItems(view, result.Items, 'upcomingEpisodes');
             return Promise.resolve();
         });
 
-        promises[3].then(function (result) {
+        promises[2].then(function (result) {
             renderItems(view, result.Items, 'upcomingTvMovies', null, {
                 shape: getPortraitShape(),
-                preferThumb: null
+                preferThumb: null,
+                lines: 2
             });
             return Promise.resolve();
         });
 
-        promises[4].then(function (result) {
+        promises[3].then(function (result) {
             renderItems(view, result.Items, 'upcomingSports');
             return Promise.resolve();
         });
 
-        promises[5].then(function (result) {
+        promises[4].then(function (result) {
             renderItems(view, result.Items, 'upcomingKids');
             return Promise.resolve();
         });
 
-        promises[6].then(function (result) {
-            renderItems(view, result.Items, 'upcomingNews');
+        promises[5].then(function (result) {
+            renderItems(view, result.Items, 'upcomingNews', {
+                lines: 2
+            });
             return Promise.resolve();
         });
 

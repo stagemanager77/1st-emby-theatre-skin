@@ -27,7 +27,8 @@
             showSeriesTimerTime: true,
             showSeriesTimerChannel: true,
             centerText: !cardLayout,
-            overlayMoreButton: !cardLayout
+            overlayMoreButton: !cardLayout,
+            lines: 3
 
         }, cardOptions));
 

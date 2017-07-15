@@ -445,8 +445,8 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
             return 'home_horiz/home.html';
         }
 
-        return 'home_horiz/home.html';
         //return 'home/home.html';
+        return 'home_horiz/home.html';
     };
 
     DefaultSkin.prototype.getTranslations = function () {
