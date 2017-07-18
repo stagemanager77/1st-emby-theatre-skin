@@ -37,7 +37,7 @@ define(['focusManager', 'cardBuilder', 'pluginManager', './../skininfo', 'browse
         return apiClient.getLiveTvRecommendedPrograms({
 
             IsAiring: true,
-            limit: 9,
+            limit: 10,
             EnableImageTypes: "Primary",
             ImageTypeLimit: 1,
             Fields: "PrimaryImageAspectRatio",
@@ -108,7 +108,7 @@ define(['focusManager', 'cardBuilder', 'pluginManager', './../skininfo', 'browse
                 loadUpcomingPrograms(element.querySelector('.upcomingProgramsSection'), apiClient, {
 
                     HasAired: false,
-                    limit: 9,
+                    limit: 10,
                     IsMovie: false,
                     IsSports: false,
                     IsKids: false,
@@ -127,7 +127,7 @@ define(['focusManager', 'cardBuilder', 'pluginManager', './../skininfo', 'browse
                 loadUpcomingPrograms(element.querySelector('.upcomingSportsSection'), apiClient, {
 
                     HasAired: false,
-                    limit: 9,
+                    limit: 10,
                     IsSports: true
 
                 }),
@@ -135,8 +135,7 @@ define(['focusManager', 'cardBuilder', 'pluginManager', './../skininfo', 'browse
                 loadUpcomingPrograms(element.querySelector('.upcomingKidsSection'), apiClient, {
 
                     HasAired: false,
-                    limit: 9,
-                    IsSports: false,
+                    limit: 10,
                     IsKids: true
                 })
             ]);

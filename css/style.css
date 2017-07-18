@@ -299,7 +299,7 @@ a {
 }
 
 .verticalSection {
-    margin-bottom: 2.5em;
+    margin-bottom: 2em;
 }
 
 .layout-tv .verticalSection {
@@ -349,7 +349,7 @@ a {
 }
 
 .sectionTitle-cards {
-    margin-left: .2em;
+    margin-left: .3em;
 }
 
 .verticalSection .sectionTitle {
@@ -388,17 +388,6 @@ a {
     padding-right: 2%;
 }
 
-@media all and (min-height: 500px) {
-
-    .padded-left-withalphapicker {
-        padding-left: 6%;
-    }
-
-    .padded-right-withalphapicker {
-        padding-right: 6%;
-    }
-}
-
 .padded-top {
     padding-top: 1em;
 }
@@ -415,6 +404,17 @@ a {
 .layout-tv .padded-bottom-focusscale {
     padding-bottom: 1.6em;
     margin-bottom: -1.6em;
+}
+
+@media all and (min-height: 500px) {
+
+    .padded-left-withalphapicker {
+        padding-left: 6%;
+    }
+
+    .padded-right-withalphapicker {
+        padding-right: 6%;
+    }
 }
 
 @media all and (min-width: 600px) {
@@ -437,6 +437,20 @@ a {
     .padded-right {
         padding-right: 3.2%;
     }
+}
+
+@media all and (min-width: 1280px) {
+
+    .padded-left {
+        padding-left: 3.4%;
+    }
+
+    .padded-right {
+        padding-right: 3.4%;
+    }
+}
+
+@media all and (min-width: 800px) {
 
     .layout-tv .padded-left-withalphapicker {
         padding-left: 4.4%;
@@ -448,14 +462,6 @@ a {
 }
 
 @media all and (min-width: 1280px) {
-
-    .padded-left {
-        padding-left: 3.8%;
-    }
-
-    .padded-right {
-        padding-right: 3.8%;
-    }
 
     .layout-tv .padded-left-withalphapicker {
         padding-left: 5%;

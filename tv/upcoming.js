@@ -93,10 +93,10 @@
                 preferThumb: true,
                 lazy: true,
                 showDetailsMenu: true,
-                overlayText: true,
+                overlayText: false,
                 allowBottomPadding: allowBottomPadding,
-                //showTitle: true,
-                //showParentTitle: true,
+                showParentTitle: true,
+                showTitle: true,
                 centerText: true
 
             });
