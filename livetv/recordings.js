@@ -1,4 +1,4 @@
-﻿define(['cardBuilder', 'loading', 'connectionManager', 'apphost', 'datetime', 'layoutManager', 'scrollHelper', 'focusManager', 'pluginManager', './../skininfo', 'embyRouter', 'globalize', 'dom', 'emby-itemscontainer', 'emby-scroller'], function (cardBuilder, loading, connectionManager, appHost, datetime, layoutManager, scrollHelper, focusManager, pluginManager, skinInfo, embyRouter, globalize, dom) {
+﻿define(['cardBuilder', 'loading', 'connectionManager', 'apphost', 'datetime', 'layoutManager', 'scrollHelper', 'focusManager', 'pluginManager', './../skininfo', 'appRouter', 'globalize', 'dom', 'emby-itemscontainer', 'emby-scroller'], function (cardBuilder, loading, connectionManager, appHost, datetime, layoutManager, scrollHelper, focusManager, pluginManager, skinInfo, appRouter, globalize, dom) {
     'use strict';
 
     function enableScrollX() {
@@ -199,7 +199,7 @@
 
         url += '&serverId=' + this.getAttribute('data-serverid');
 
-        embyRouter.show(pluginManager.mapRoute(skinInfo.id, url));
+        appRouter.show(pluginManager.mapRoute(skinInfo.id, url));
     }
 
     LiveTvRecordingsTab.prototype.onShow = function (options) {

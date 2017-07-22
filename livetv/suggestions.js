@@ -1,4 +1,4 @@
-﻿define(['embyRouter', 'cardBuilder', 'loading', 'connectionManager', 'apphost', 'layoutManager', 'focusManager', 'scrollHelper', 'pluginManager', './../skininfo', 'globalize', 'dom', 'emby-itemscontainer', 'emby-scroller'], function (embyRouter, cardBuilder, loading, connectionManager, appHost, layoutManager, focusManager, scrollHelper, pluginManager, skinInfo, globalize, dom) {
+﻿define(['appRouter', 'cardBuilder', 'loading', 'connectionManager', 'apphost', 'layoutManager', 'focusManager', 'scrollHelper', 'pluginManager', './../skininfo', 'globalize', 'dom', 'emby-itemscontainer', 'emby-scroller'], function (appRouter, cardBuilder, loading, connectionManager, appHost, layoutManager, focusManager, scrollHelper, pluginManager, skinInfo, globalize, dom) {
     'use strict';
 
     function enableScrollX() {
@@ -54,7 +54,7 @@
 
         url += '&serverId=' + this.getAttribute('data-serverid');
 
-        embyRouter.show(pluginManager.mapRoute(skinInfo.id, url));
+        appRouter.show(pluginManager.mapRoute(skinInfo.id, url));
     }
 
     function initMoreButtons(view, params) {

@@ -1,4 +1,4 @@
-﻿define(['cardBuilder', 'imageLoader', 'loading', 'connectionManager', 'apphost', 'layoutManager', 'scrollHelper', 'focusManager', 'lazyLoader', 'globalize', 'dom', 'embyRouter', 'emby-linkbutton', 'emby-itemscontainer', 'emby-scroller'], function (cardBuilder, imageLoader, loading, connectionManager, appHost, layoutManager, scrollHelper, focusManager, lazyLoader, globalize, dom, embyRouter) {
+﻿define(['cardBuilder', 'imageLoader', 'loading', 'connectionManager', 'apphost', 'layoutManager', 'scrollHelper', 'focusManager', 'lazyLoader', 'globalize', 'dom', 'appRouter', 'emby-linkbutton', 'emby-itemscontainer', 'emby-scroller'], function (cardBuilder, imageLoader, loading, connectionManager, appHost, layoutManager, scrollHelper, focusManager, lazyLoader, globalize, dom, appRouter) {
     'use strict';
 
     function GenresTab(view, params) {
@@ -34,7 +34,7 @@
             html += '<div class="verticalSection">';
 
             html += '<div class="sectionTitleContainer padded-left">';
-            html += '<a is="emby-linkbutton" href="' + embyRouter.getRouteUrl(item, {
+            html += '<a is="emby-linkbutton" href="' + appRouter.getRouteUrl(item, {
                 context: 'movies',
                 parentId: parentId
             }) + '" class="more button-flat button-flat-mini sectionTitleTextButton btnMoreFromGenre' + item.Id + '">';

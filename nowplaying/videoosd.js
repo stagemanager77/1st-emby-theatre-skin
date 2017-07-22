@@ -87,6 +87,7 @@
         var currentPlayerSupportedCommands = [];
         var currentRuntimeTicks = 0;
         var comingUpNextDisplayed;
+        var currentUpNextDialog;
         var lastUpdateTime = 0;
         var isEnabled;
         var currentItem;
@@ -113,7 +114,7 @@
         var transitionEndEventName = dom.whichTransitionEvent();
 
         var headerElement = document.querySelector('.skinHeader');
-        var osdBottomElement = document.querySelector('.videoOsdBottom');
+        var osdBottomElement = document.querySelector('.videoOsdBottom-maincontrols');
         var supportsBrightnessChange;
 
         var currentVisibleMenu;
@@ -123,13 +124,15 @@
             var player = currentPlayer;
             if (player) {
 
+                var deltaY = data.currentDeltaY;
+
                 var windowSize = dom.getWindowSize();
 
                 if (supportsBrightnessChange && data.clientX < (windowSize.innerWidth / 2)) {
-                    doBrightnessTouch(data.deltaY, player, windowSize.innerHeight);
+                    doBrightnessTouch(deltaY, player, windowSize.innerHeight);
                     return;
                 }
-                doVolumeTouch(data.deltaY, player, windowSize.innerHeight);
+                doVolumeTouch(deltaY, player, windowSize.innerHeight);
             }
         }
 
@@ -463,27 +466,26 @@
         function showOsd() {
 
             slideDownToShow(headerElement);
-            slideUpToShow(osdBottomElement);
-            startHideTimer();
+            showMainOsdControls();
+            startOsdHideTimer();
         }
 
         function hideOsd() {
 
             slideUpToHide(headerElement);
-            slideDownToHide(osdBottomElement);
+            hideMainOsdControls();
         }
 
-        var hideTimeout;
-
-        function startHideTimer() {
-            stopHideTimer();
-            hideTimeout = setTimeout(hideOsd, 5000);
+        var osdHideTimeout;
+        function startOsdHideTimer() {
+            stopOsdHideTimer();
+            osdHideTimeout = setTimeout(hideOsd, 5000);
         }
 
-        function stopHideTimer() {
-            if (hideTimeout) {
-                clearTimeout(hideTimeout);
-                hideTimeout = null;
+        function stopOsdHideTimer() {
+            if (osdHideTimeout) {
+                clearTimeout(osdHideTimeout);
+                osdHideTimeout = null;
             }
         }
 
@@ -497,22 +499,35 @@
             elem.classList.add('osdHeader-hidden');
         }
 
-        function clearBottomPanelAnimationEventListeners(elem) {
+        function clearHideAnimationEventListeners(elem) {
 
-            dom.removeEventListener(elem, transitionEndEventName, onSlideDownComplete, {
+            dom.removeEventListener(elem, transitionEndEventName, onHideAnimationComplete, {
                 once: true
             });
         }
 
-        function slideUpToShow(elem) {
+        function onHideAnimationComplete(e) {
 
-            if (currentVisibleMenu === 'osd') {
+            var elem = e.target;
+
+            elem.classList.add('hide');
+
+            dom.removeEventListener(elem, transitionEndEventName, onHideAnimationComplete, {
+                once: true
+            });
+        }
+
+        function showMainOsdControls() {
+
+            if (currentVisibleMenu) {
                 return;
             }
 
+            var elem = osdBottomElement;
+
             currentVisibleMenu = 'osd';
 
-            clearBottomPanelAnimationEventListeners(elem);
+            clearHideAnimationEventListeners(elem);
 
             elem.classList.remove('hide');
 
@@ -524,43 +539,24 @@
             setTimeout(function () {
                 focusManager.focus(elem.querySelector('.btnPause'));
             }, 50);
-
-            view.dispatchEvent(new CustomEvent('video-osd-show', {
-                bubbles: true,
-                cancelable: false
-            }));
         }
 
-        function onSlideDownComplete(e) {
-
-            var elem = e.target;
-
-            elem.classList.add('hide');
-
-            dom.removeEventListener(elem, transitionEndEventName, onSlideDownComplete, {
-                once: true
-            });
-
-            view.dispatchEvent(new CustomEvent('video-osd-hide', {
-                bubbles: true,
-                cancelable: false
-            }));
-        }
-
-        function slideDownToHide(elem) {
+        function hideMainOsdControls() {
 
             if (currentVisibleMenu !== 'osd') {
                 return;
             }
 
-            clearBottomPanelAnimationEventListeners(elem);
+            var elem = osdBottomElement;
+
+            clearHideAnimationEventListeners(elem);
 
             // trigger a reflow to force it to animate again
             void elem.offsetWidth;
 
             elem.classList.add('videoOsdBottom-hidden');
 
-            dom.addEventListener(elem, transitionEndEventName, onSlideDownComplete, {
+            dom.addEventListener(elem, transitionEndEventName, onHideAnimationComplete, {
                 once: true
             });
 
@@ -601,7 +597,7 @@
                 case 'left':
                     if (currentVisibleMenu === 'osd') {
                         showOsd();
-                    } else {
+                    } else if (!currentVisibleMenu) {
                         e.preventDefault();
                         playbackManager.rewind();
                     }
@@ -609,7 +605,7 @@
                 case 'right':
                     if (currentVisibleMenu === 'osd') {
                         showOsd();
-                    } else {
+                    } else if (!currentVisibleMenu) {
                         e.preventDefault();
                         playbackManager.fastForward();
                     }
@@ -693,7 +689,7 @@
                 passive: true
             });
 
-            stopHideTimer();
+            stopOsdHideTimer();
             headerElement.classList.remove('osdHeader');
             headerElement.classList.remove('osdHeader-hidden');
             dom.removeEventListener(document, 'mousemove', onMouseMove, {
@@ -784,12 +780,24 @@
             var player = this;
 
             onStateChanged.call(player, e, state);
+            resetUpNextDialog();
+        }
+
+        function resetUpNextDialog() {
+
+            comingUpNextDisplayed = false;
+            var dlg = currentUpNextDialog;
+
+            if (dlg) {
+                dlg.destroy();
+                currentUpNextDialog = null;
+            }
         }
 
         function onPlaybackStopped(e, state) {
 
             currentRuntimeTicks = null;
-            hideComingUpNext();
+            resetUpNextDialog();
 
             console.log('nowplaying event: ' + e.type);
 
@@ -828,12 +836,13 @@
             events.on(player, 'timeupdate', onTimeUpdate);
             events.on(player, 'fullscreenchange', updateFullscreenIcon);
 
-            hideComingUpNext();
+            resetUpNextDialog();
         }
 
         function releaseCurrentPlayer() {
 
             destroyStats();
+            resetUpNextDialog();
 
             var player = currentPlayer;
 
@@ -849,8 +858,6 @@
 
                 currentPlayer = null;
             }
-
-            hideComingUpNext();
         }
 
         function onTimeUpdate(e) {
@@ -874,37 +881,63 @@
             updateTimeDisplay(currentTime, currentRuntimeTicks, playbackManager.playbackStartTime(player), playbackManager.getBufferedRanges(player));
 
             refreshProgramInfoIfNeeded(player);
-            showComingUpNextIfNeeded(player, currentTime, currentRuntimeTicks);
+            showComingUpNextIfNeeded(player, currentItem, currentTime, currentRuntimeTicks);
         }
 
-        function showComingUpNextIfNeeded(player, currentTimeTicks, runtimeTicks) {
+        function showComingUpNextIfNeeded(player, currentItem, currentTimeTicks, runtimeTicks) {
 
-            if (runtimeTicks && currentTimeTicks) {
+            if (runtimeTicks && currentTimeTicks && !comingUpNextDisplayed && !currentVisibleMenu) {
 
-                var showAtSecondsLeft = 45;
+                var minRuntimeTicks = 600 * 1000 * 10000;
+
+                var fiftyMinuteTicks = 3000 * 1000 * 10000;
+                var fortyMinuteTicks = 2400 * 1000 * 10000;
+
+                var showAtSecondsLeft = runtimeTicks >= fiftyMinuteTicks ? 45 : (runtimeTicks >= fortyMinuteTicks ? 40 : 35);
                 var showAtTicks = runtimeTicks - (showAtSecondsLeft * 1000 * 10000);
 
-                if (currentTimeTicks >= showAtTicks) {
-                    showComingUpNext(player, currentTimeTicks, runtimeTicks);
+                var timeRemainingTicks = runtimeTicks - currentTimeTicks;
+                var minTimeRemainingTicks = (20 * 1000 * 10000);
+
+                var endTime = new Date().getTime() + Math.floor(timeRemainingTicks / 10000);
+
+                if (currentTimeTicks >= showAtTicks && runtimeTicks >= minRuntimeTicks && timeRemainingTicks >= minTimeRemainingTicks) {
+                    showComingUpNext(player, timeRemainingTicks, endTime);
                 }
             }
         }
 
-        function showComingUpNext(player, currentTimeTicks, runtimeTicks) {
+        function onUpNextHidden() {
 
-            if (currentVisibleMenu) {
-                return;
-            }
-            currentVisibleMenu = 'upnext';
+            setTimeout(function () {
+                if (currentVisibleMenu === 'upnext') {
+                    currentVisibleMenu = null;
+                }
+            }, 500);
         }
 
-        function hideComingUpNext() {
+        function showComingUpNext(player, timeRemainingTicks, endTimeMs) {
 
-            if (currentVisibleMenu !== 'upnext') {
-                return;
-            }
+            require(['upNextDialog'], function (UpNextDialog) {
 
-            currentVisibleMenu = null;
+                if (currentVisibleMenu || currentUpNextDialog) {
+                    return;
+                }
+
+                currentVisibleMenu = 'upnext';
+                comingUpNextDisplayed = true;
+
+                var countdownTicks = Math.min(timeRemainingTicks, (11 * 1000 * 10000));
+
+                currentUpNextDialog = new UpNextDialog({
+                    parent: view.querySelector('.upNextContainer'),
+                    player: player,
+                    countdownMs: Math.floor(countdownTicks / 10000),
+                    endTimeMs: endTimeMs
+                });
+
+                events.on(currentUpNextDialog, 'hide', onUpNextHidden);
+            });
         }
 
         function refreshProgramInfoIfNeeded(player) {
