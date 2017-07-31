@@ -1,4 +1,4 @@
-define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'events', 'datetime', 'mouseManager', 'dom', 'layoutManager', 'itemHelper', 'apphost'], function (playbackManager, pluginManager, browser, connectionManager, events, datetime, mouseManager, dom, layoutManager, itemHelper, appHost) {
+define(['playbackManager', 'skinManager', 'pluginManager', 'browser', 'connectionManager', 'events', 'datetime', 'mouseManager', 'dom', 'layoutManager', 'itemHelper', 'apphost'], function (playbackManager, skinManager, pluginManager, browser, connectionManager, events, datetime, mouseManager, dom, layoutManager, itemHelper, appHost) {
     'use strict';
 
     function updateClock() {
@@ -35,6 +35,8 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
             bindEvents();
 
             setRemoteControlVisibility();
+
+            return skinManager.setTheme('dark');
         };
 
         self.unload = function () {
@@ -403,15 +405,20 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
             'flexStyles'
         ];
 
-        if (browser.android) {
-            // on android we can't just use Roboto by name, it has to be sans-serif, which we don't want on other platforms
-            list.push('css!' + pluginManager.mapPath(this, 'css/fonts'));
-        } else if (browser.tv) {
+        if (browser.tv && !browser.android) {
+
             console.log("Using system fonts with explicit sizes");
-            list.push('css!' + pluginManager.mapPath(this, 'css/fonts.sized'));
+
+            // This is a stylesheet in shared components designed to rely on system default fonts
+            // It also provides font sizes at various resolutions because the system default sizes may not be appropiate
+            list.push('systemFontsSizedCss');
+
         } else {
+
             console.log("Using default fonts");
-            list.push('css!' + pluginManager.mapPath(this, 'css/fonts'));
+
+            // This is a stylesheet in shared components designed to use system default fonts
+            list.push('systemFontsCss');
         }
 
         if (browser.noFlex || browser.operaTv) {

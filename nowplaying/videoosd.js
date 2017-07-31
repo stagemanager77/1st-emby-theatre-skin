@@ -1,4 +1,4 @@
-﻿define(['playbackManager', 'dom', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo', 'focusManager', 'imageLoader', 'scrollHelper', 'events', 'connectionManager', 'browser', 'globalize', 'apphost', 'layoutManager', 'scrollStyles', 'emby-slider', 'paper-icon-button-light'], function (playbackManager, dom, inputManager, datetime, itemHelper, mediaInfo, focusManager, imageLoader, scrollHelper, events, connectionManager, browser, globalize, appHost, layoutManager) {
+﻿define(['playbackManager', 'dom', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo', 'focusManager', 'imageLoader', 'scrollHelper', 'events', 'connectionManager', 'browser', 'globalize', 'apphost', 'layoutManager', 'userSettings', 'scrollStyles', 'emby-slider', 'paper-icon-button-light'], function (playbackManager, dom, inputManager, datetime, itemHelper, mediaInfo, focusManager, imageLoader, scrollHelper, events, connectionManager, browser, globalize, appHost, layoutManager, userSettings) {
     'use strict';
 
     function seriesImageUrl(item, options) {
@@ -886,14 +886,14 @@
 
         function showComingUpNextIfNeeded(player, currentItem, currentTimeTicks, runtimeTicks) {
 
-            if (runtimeTicks && currentTimeTicks && !comingUpNextDisplayed && !currentVisibleMenu) {
+            if (runtimeTicks && currentTimeTicks && !comingUpNextDisplayed && !currentVisibleMenu && currentItem.Type === 'Episode' && userSettings.enableNextVideoInfoOverlay()) {
 
                 var minRuntimeTicks = 600 * 1000 * 10000;
 
                 var fiftyMinuteTicks = 3000 * 1000 * 10000;
                 var fortyMinuteTicks = 2400 * 1000 * 10000;
 
-                var showAtSecondsLeft = runtimeTicks >= fiftyMinuteTicks ? 45 : (runtimeTicks >= fortyMinuteTicks ? 40 : 35);
+                var showAtSecondsLeft = runtimeTicks >= fiftyMinuteTicks ? 40 : (runtimeTicks >= fortyMinuteTicks ? 35 : 30);
                 var showAtTicks = runtimeTicks - (showAtSecondsLeft * 1000 * 10000);
 
                 var timeRemainingTicks = runtimeTicks - currentTimeTicks;
@@ -902,7 +902,7 @@
                 var endTime = new Date().getTime() + Math.floor(timeRemainingTicks / 10000);
 
                 if (currentTimeTicks >= showAtTicks && runtimeTicks >= minRuntimeTicks && timeRemainingTicks >= minTimeRemainingTicks) {
-                    showComingUpNext(player, timeRemainingTicks, endTime);
+                    showComingUpNext(player, endTime);
                 }
             }
         }
@@ -916,7 +916,7 @@
             }, 500);
         }
 
-        function showComingUpNext(player, timeRemainingTicks, endTimeMs) {
+        function showComingUpNext(player, endTimeMs) {
 
             require(['upNextDialog'], function (UpNextDialog) {
 
@@ -927,12 +927,9 @@
                 currentVisibleMenu = 'upnext';
                 comingUpNextDisplayed = true;
 
-                var countdownTicks = Math.min(timeRemainingTicks, (11 * 1000 * 10000));
-
                 currentUpNextDialog = new UpNextDialog({
                     parent: view.querySelector('.upNextContainer'),
                     player: player,
-                    countdownMs: Math.floor(countdownTicks / 10000),
                     endTimeMs: endTimeMs
                 });
 

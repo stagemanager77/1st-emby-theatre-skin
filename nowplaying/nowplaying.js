@@ -146,6 +146,13 @@ define(['playbackManager', 'datetime', 'backdrop', 'userdataButtons', 'cardBuild
             }
         }
 
+        function onRepeatModeChange(e) {
+
+            var player = this;
+
+            updateRepeatModeDisplay(playbackManager.getRepeatMode(player));
+        }
+
         function bindToPlayer(player) {
 
             if (player === currentPlayer) {
@@ -171,6 +178,7 @@ define(['playbackManager', 'datetime', 'backdrop', 'userdataButtons', 'cardBuild
             events.on(player, 'pause', onPlayPauseStateChanged);
             events.on(player, 'unpause', onPlayPauseStateChanged);
             events.on(player, 'timeupdate', onTimeUpdate);
+            events.on(player, 'repeatmodechange', onRepeatModeChange);
         }
 
         function releaseCurrentPlayer() {
@@ -185,6 +193,7 @@ define(['playbackManager', 'datetime', 'backdrop', 'userdataButtons', 'cardBuild
                 events.off(player, 'pause', onPlayPauseStateChanged);
                 events.off(player, 'unpause', onPlayPauseStateChanged);
                 events.off(player, 'timeupdate', onTimeUpdate);
+                events.off(player, 'repeatmodechange', onRepeatModeChange);
 
                 currentPlayer = null;
             }
@@ -258,24 +267,13 @@ define(['playbackManager', 'datetime', 'backdrop', 'userdataButtons', 'cardBuild
             var supportedCommands = playerInfo.supportedCommands;
             currentPlayerSupportedCommands = supportedCommands;
 
-            //if (supportedCommands.indexOf('SetRepeatMode') == -1) {
-            //    toggleRepeatButton.classList.add('hide');
-            //} else {
-            //    toggleRepeatButton.classList.remove('hide');
-            //}
+            if (supportedCommands.indexOf('SetRepeatMode') === -1) {
+                btnRepeat.classList.add('hide');
+            } else {
+                btnRepeat.classList.remove('hide');
+            }
 
-            //if (playState.RepeatMode == 'RepeatAll') {
-            //    toggleRepeatButtonIcon.innerHTML = "repeat";
-            //    toggleRepeatButton.classList.add('repeatActive');
-            //}
-            //else if (playState.RepeatMode == 'RepeatOne') {
-            //    toggleRepeatButtonIcon.innerHTML = "repeat_one";
-            //    toggleRepeatButton.classList.add('repeatActive');
-            //} else {
-            //    toggleRepeatButtonIcon.innerHTML = "repeat";
-            //    toggleRepeatButton.classList.remove('repeatActive');
-            //}
-
+            updateRepeatModeDisplay(playState.RepeatMode);
             updatePlayerVolumeState(playState.IsMuted, playState.VolumeLevel);
 
             if (nowPlayingPositionSlider && !nowPlayingPositionSlider.dragging) {
@@ -286,6 +284,21 @@ define(['playbackManager', 'datetime', 'backdrop', 'userdataButtons', 'cardBuild
             updateTimeDisplay(playState.PositionTicks, nowPlayingItem.RunTimeTicks);
 
             updateNowPlayingInfo(state);
+        }
+
+        function updateRepeatModeDisplay(repeatMode) {
+
+            if (repeatMode === 'RepeatAll') {
+                btnRepeat.querySelector('i').innerHTML = "&#xE040;";
+                btnRepeat.classList.add('repeatActive');
+            }
+            else if (repeatMode === 'RepeatOne') {
+                btnRepeat.querySelector('i').innerHTML = "&#xE041;";
+                btnRepeat.classList.add('repeatActive');
+            } else {
+                btnRepeat.querySelector('i').innerHTML = "&#xE040;";
+                btnRepeat.classList.remove('repeatActive');
+            }
         }
 
         function updateTimeDisplay(positionTicks, runtimeTicks) {
@@ -438,7 +451,7 @@ define(['playbackManager', 'datetime', 'backdrop', 'userdataButtons', 'cardBuild
 
         btnRepeat.addEventListener('click', function () {
 
-            switch (playbackManager.getRepeatMode()) {
+            switch (playbackManager.getRepeatMode(currentPlayer)) {
                 case 'RepeatAll':
                     playbackManager.setRepeatMode('RepeatOne', currentPlayer);
                     break;
