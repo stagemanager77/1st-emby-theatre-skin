@@ -86,6 +86,10 @@ a {
     white-space: nowrap;
 }
 
+.nowPlayingBackgroundContainer.withBackdrop {
+    background: rgba(6,6,6,.8) !important;
+}
+
 @media all and (max-width: 720px) {
 
     .headerClock {
@@ -152,6 +156,8 @@ a {
 
 .horizontalSectionsContainer {
     display: flex;
+    /* Needed to prevent images from flickering in tizen and orsay */
+    transform-style: preserve-3d;
 }
 
 .horizontalPageContent h1 {

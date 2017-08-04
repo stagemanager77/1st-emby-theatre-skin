@@ -172,6 +172,24 @@
             });
         }
 
+        function onDoubleClick(e) {
+
+            var clientX = e.clientX;
+            if (clientX != null) {
+
+                var windowSize = dom.getWindowSize();
+
+                if (clientX < (windowSize.innerWidth / 2)) {
+                    playbackManager.rewind(currentPlayer);
+                } else {
+                    playbackManager.fastForward(currentPlayer);
+                }
+
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        }
+
         function getDisplayItem(item) {
 
             if (item.Type === 'TvChannel') {
@@ -893,7 +911,7 @@
                 var fiftyMinuteTicks = 3000 * 1000 * 10000;
                 var fortyMinuteTicks = 2400 * 1000 * 10000;
 
-                var showAtSecondsLeft = runtimeTicks >= fiftyMinuteTicks ? 40 : (runtimeTicks >= fortyMinuteTicks ? 35 : 30);
+                var showAtSecondsLeft = runtimeTicks >= fiftyMinuteTicks ? 35 : (runtimeTicks >= fortyMinuteTicks ? 30 : 25);
                 var showAtTicks = runtimeTicks - (showAtSecondsLeft * 1000 * 10000);
 
                 var timeRemainingTicks = runtimeTicks - currentTimeTicks;
@@ -1372,6 +1390,10 @@
         });
 
         view.addEventListener('click', showOsd);
+
+        if (browser.touch) {
+            view.addEventListener('dblclick', onDoubleClick);
+        }
 
         view.querySelector('.buttonMute').addEventListener('click', function () {
 

@@ -390,12 +390,19 @@ define(['playbackManager', 'datetime', 'backdrop', 'userdataButtons', 'cardBuild
 
         view.addEventListener('viewshow', function (e) {
 
+            document.body.querySelector('.backgroundContainer').classList.add('nowPlayingBackgroundContainer');
+
             getHeaderElement().classList.add('nowPlayingHeader');
 
             Emby.Page.setTitle('');
 
             events.on(playbackManager, 'playerchange', onPlayerChange);
             bindToPlayer(playbackManager.getCurrentPlayer());
+        });
+
+        view.addEventListener('viewbeforehide', function () {
+
+            document.body.querySelector('.backgroundContainer').classList.remove('nowPlayingBackgroundContainer');
         });
 
         view.addEventListener('viewhide', function () {

@@ -17,11 +17,11 @@
 
         var html = cardBuilder.getCardsHtml(Object.assign({
             items: items,
-            shape: 'backdrop',
+            shape: 'auto',
+            defaultShape: 'portrait',
             showTitle: true,
             cardLayout: cardLayout,
-            vibrant: cardLayout && supportsImageAnalysis,
-            preferThumb: true,
+            preferThumb: 'auto',
             coverImage: true,
             overlayText: false,
             showSeriesTimerTime: true,

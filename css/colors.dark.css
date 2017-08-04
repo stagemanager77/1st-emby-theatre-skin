@@ -2,16 +2,8 @@
     background-color: #191919 !important;
 }
 
-.detailBackgroundContainer.withBackdrop {
-    background: linear-gradient(to right, rgba(0, 0, 0, .99), rgba(0, 0, 0, .94), rgba(0, 0, 0, .5)) !important;
-}
-
 .headerLogo {
     background-image: url(images/logowhite.png);
-}
-
-.headerCastButton.active, .repeatActive {
-    color: #4285F4;
 }
 
 .emby-button:focus:not(.btnUserViewHeader):not(.emby-tab-button) {
@@ -63,10 +55,6 @@
     background-color: #009688 !important;
 }
 
-.emptyStar {
-    color: #bbb !important;
-}
-
 .userViewNames button:focus {
     color: #52B54B !important;
 }
@@ -74,24 +62,3 @@
     .userViewNames button:focus .userViewButtonText {
         border-bottom-color: #52B54B;
     }
-
-.listItem:focus {
-    background-color: #333 !important;
-    border-radius: .25em;
-}
-
-.playstatebutton-played i {
-    color: #cc3333;
-}
-
-.ratingbutton-withrating i {
-    color: #cc3333;
-}
-
-.downloadbutton-on i {
-    color: #4285F4;
-}
-
-.downloadbutton-complete i {
-    color: #4285F4;
-}

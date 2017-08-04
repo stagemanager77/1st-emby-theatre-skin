@@ -682,5 +682,22 @@ define(['playbackManager', 'skinManager', 'pluginManager', 'browser', 'connectio
         return showBackMenuInternal(false);
     };
 
+    DefaultSkin.prototype.getThemes = function () {
+
+        return [
+                    { name: 'Apple TV', id: 'appletv' },
+                    { name: 'Dark', id: 'dark', isDefault: true },
+                    { name: 'Dark (green accent)', id: 'dark-green' },
+                    { name: 'Dark (red accent)', id: 'dark-red' },
+                    { name: 'Light', id: 'light', isDefaultServerDashboard: true },
+                    { name: 'Light (blue accent)', id: 'light-blue' },
+                    { name: 'Light (green accent)', id: 'light-green' },
+                    { name: 'Light (pink accent)', id: 'light-pink' },
+                    { name: 'Light (purple accent)', id: 'light-purple' },
+                    { name: 'Light (red accent)', id: 'light-red' },
+                    { name: 'Windows Media Center', id: 'wmc' }
+        ];
+    };
+
     return DefaultSkin;
 });
