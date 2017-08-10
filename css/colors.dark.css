@@ -11,10 +11,6 @@
     color: #fff !important;
 }
 
-.card:focus:not(.card-round) .card-focuscontent {
-    border-color: #52B54B;
-}
-
 .card[data-cardtype='embyconnect'] .cardImageContainer {
     background-color: #52B54B!important;
 }

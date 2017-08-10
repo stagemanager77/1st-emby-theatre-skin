@@ -184,10 +184,6 @@ a {
     right: 1.5%;
 }
 
-    .listNumbers .selectedIndex {
-        color: #4CAF50;
-    }
-
 .horizontalSection {
     margin-right: 1.25em;
     flex-shrink: 0;
@@ -198,10 +194,6 @@ a {
         padding-left: .1em;
     }
 
-.listItemMediaInfo {
-    color: #bbb !important;
-}
-
 .selectedItemInfo {
     position: fixed;
     bottom: .5%;
@@ -209,7 +201,6 @@ a {
     right: 10%;
     max-width: 70%;
     font-size: 84%;
-    color: #ccc;
     /*position: relative;
     margin: auto;*/
     display: flex;
@@ -277,27 +268,6 @@ a {
     text-transform: uppercase;
     min-width: initial;
     margin-left: auto;
-}
-
-.selectedItemPanel {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 18%;
-    background-color: rgb(20, 20, 20);
-    z-index: 1;
-}
-
-.selectedItemPanelImage {
-    height: 18%;
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-}
-
-.selectedItemPanelContent {
-    padding: 1em;
 }
 
 .listPageButtons button {
