@@ -290,14 +290,14 @@ define(['playbackManager', 'datetime', 'backdrop', 'userdataButtons', 'cardBuild
 
             if (repeatMode === 'RepeatAll') {
                 btnRepeat.querySelector('i').innerHTML = "&#xE040;";
-                btnRepeat.classList.add('repeatActive');
+                btnRepeat.classList.add('repeatButton-active');
             }
             else if (repeatMode === 'RepeatOne') {
                 btnRepeat.querySelector('i').innerHTML = "&#xE041;";
-                btnRepeat.classList.add('repeatActive');
+                btnRepeat.classList.add('repeatButton-active');
             } else {
                 btnRepeat.querySelector('i').innerHTML = "&#xE040;";
-                btnRepeat.classList.remove('repeatActive');
+                btnRepeat.classList.remove('repeatButton-active');
             }
         }
 
