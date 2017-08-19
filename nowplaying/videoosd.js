@@ -911,30 +911,26 @@
                 var fiftyMinuteTicks = 3000 * 1000 * 10000;
                 var fortyMinuteTicks = 2400 * 1000 * 10000;
 
-                var showAtSecondsLeft = runtimeTicks >= fiftyMinuteTicks ? 35 : (runtimeTicks >= fortyMinuteTicks ? 30 : 25);
+                var showAtSecondsLeft = runtimeTicks >= fiftyMinuteTicks ? 40 : (runtimeTicks >= fortyMinuteTicks ? 35 : 30);
                 var showAtTicks = runtimeTicks - (showAtSecondsLeft * 1000 * 10000);
 
                 var timeRemainingTicks = runtimeTicks - currentTimeTicks;
                 var minTimeRemainingTicks = (20 * 1000 * 10000);
 
-                var endTime = new Date().getTime() + Math.floor(timeRemainingTicks / 10000);
-
                 if (currentTimeTicks >= showAtTicks && runtimeTicks >= minRuntimeTicks && timeRemainingTicks >= minTimeRemainingTicks) {
-                    showComingUpNext(player, endTime);
+                    showComingUpNext(player);
                 }
             }
         }
 
         function onUpNextHidden() {
 
-            setTimeout(function () {
-                if (currentVisibleMenu === 'upnext') {
-                    currentVisibleMenu = null;
-                }
-            }, 500);
+            if (currentVisibleMenu === 'upnext') {
+                currentVisibleMenu = null;
+            }
         }
 
-        function showComingUpNext(player, endTimeMs) {
+        function showComingUpNext(player) {
 
             require(['upNextDialog'], function (UpNextDialog) {
 
@@ -947,8 +943,7 @@
 
                 currentUpNextDialog = new UpNextDialog({
                     parent: view.querySelector('.upNextContainer'),
-                    player: player,
-                    endTimeMs: endTimeMs
+                    player: player
                 });
 
                 events.on(currentUpNextDialog, 'hide', onUpNextHidden);
