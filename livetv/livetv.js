@@ -1,5 +1,24 @@
-define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'require', './../components/focushandler', 'emby-itemscontainer', 'emby-tabs', 'emby-button', 'emby-scroller', 'cardStyle'], function (loading, backdrop, connectionManager, scroller, globalize, require, focusHandler) {
+define(['loading', 'mainTabsManager', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'require', './../components/focushandler', 'emby-itemscontainer', 'emby-tabs', 'emby-button', 'emby-scroller', 'cardStyle'], function (loading, mainTabsManager, backdrop, connectionManager, scroller, globalize, require, focusHandler) {
     'use strict';
+
+    function getTabs() {
+        return [
+            {
+                name: globalize.translate('Programs')
+            },
+            {
+                name: globalize.translate('Channels')
+            },
+            {
+                name: globalize.translate('Recordings')
+            },
+            {
+                name: globalize.translate('Schedule')
+            },
+            {
+                name: globalize.translate('Series')
+            }];
+    }
 
     return function (view, params) {
 
@@ -18,18 +37,15 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 're
                     depends.push('./suggestions');
                     break;
                 case 1:
-                    depends.push('./suggestions');
-                    break;
-                case 2:
                     depends.push('./channels');
                     break;
-                case 3:
+                case 2:
                     depends.push('./recordings');
                     break;
-                case 4:
+                case 3:
                     depends.push('./schedule');
                     break;
-                case 5:
+                case 4:
                     depends.push('./series');
                     break;
                 default:
@@ -49,13 +65,13 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 're
             });
         }
 
-        var viewTabs = view.querySelector('.viewTabs');
-        var initialTabIndex = parseInt(params.tab || '0');
+        var currentTabIndex = parseInt(params.tab || '0');
+        var initialTabIndex = currentTabIndex;
         var isViewRestored;
 
-        function preLoadTab(page, index) {
+        function preLoadTab(index) {
 
-            getTabController(page, index, function (controller) {
+            getTabController(view, index, function (controller) {
                 if (controller.onBeforeShow) {
 
                     var refresh = isViewRestored !== true || !controller.refreshed;
@@ -69,31 +85,37 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 're
             });
         }
 
-        function loadTab(page, index) {
+        function loadTab(index) {
 
-            getTabController(page, index, function (controller) {
+            getTabController(view, index, function (controller) {
 
                 controller.onShow({
                     autoFocus: initialTabIndex != null
                 });
                 initialTabIndex = null;
+                currentTabIndex = index;
                 currentTabController = controller;
             });
         }
 
-        viewTabs.addEventListener('beforetabchange', function (e) {
-            preLoadTab(view, parseInt(e.detail.selectedTabIndex));
-        });
+        function getTabContainers() {
+            return view.querySelectorAll('.tabContent');
+        }
 
-        viewTabs.addEventListener('tabchange', function (e) {
+        function onBeforeTabChange(e) {
 
-            var previousTabController = tabControllers[parseInt(e.detail.previousIndex)];
+            preLoadTab(parseInt(e.detail.selectedTabIndex));
+        }
+
+        function onTabChange(e) {
+            var newIndex = parseInt(e.detail.selectedTabIndex);
+            var previousTabController = tabControllers[newIndex];
             if (previousTabController && previousTabController.onHide) {
                 previousTabController.onHide();
             }
 
-            loadTab(view, parseInt(e.detail.selectedTabIndex));
-        });
+            loadTab(newIndex);
+        }
 
         view.addEventListener('viewbeforehide', function (e) {
 
@@ -103,11 +125,10 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 're
         });
 
         view.addEventListener('viewbeforeshow', function (e) {
+
             isViewRestored = e.detail.isRestored;
 
-            if (initialTabIndex == null) {
-                viewTabs.triggerBeforeTabChange();
-            }
+            mainTabsManager.setTabs(view, currentTabIndex, getTabs, getTabContainers, onBeforeTabChange, onTabChange);
         });
 
         view.addEventListener('viewshow', function (e) {
@@ -117,10 +138,8 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 're
             Emby.Page.setTitle('');
             backdrop.clear();
 
-            if (initialTabIndex != null) {
-                viewTabs.selectedIndex(initialTabIndex);
-            } else {
-                viewTabs.triggerTabChange();
+            if (!isViewRestored) {
+                mainTabsManager.selectedTabIndex(initialTabIndex);
             }
         });
 

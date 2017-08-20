@@ -146,11 +146,11 @@ define(['focusManager', 'cardBuilder', 'pluginManager', './../skininfo', 'browse
         });
 
         element.querySelector('.recordingsCard').addEventListener('click', function () {
-            gotoTvView('3', parentId, apiClient.serverId());
+            gotoTvView('2', parentId, apiClient.serverId());
         });
 
         element.querySelector('.channelsLiveTvCard').addEventListener('click', function () {
-            gotoTvView('2', parentId, apiClient.serverId());
+            gotoTvView('1', parentId, apiClient.serverId());
         });
 
         self.destroy = function () {

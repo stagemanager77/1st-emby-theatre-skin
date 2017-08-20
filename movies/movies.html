@@ -4,40 +4,14 @@
         <div class="alphaPicker alphaPicker-vertical flex-grow"></div>
     </div>
 
-    <div is="emby-scroller" data-horizontal="false" data-centerfocus="true" data-navcommands="card" class="scrollFrameY flex flex-grow focuscontainer-down pageContainerTopPadding" data-bindheader="true">
+    <div is="emby-scroller" data-horizontal="false" data-centerfocus="true" data-navcommands="card" class="scrollFrameY flex flex-grow focuscontainer-down" data-bindheader="true">
 
-        <div class="scrollSlider flex-grow tabs-container">
+        <div class="scrollSlider flex-grow pageContainerTopPadding">
 
-            <div is="emby-tabs" class="viewTabs" data-index="-1">
-                <div class="emby-tabs-slider" style="text-align:center;">
-                    <button is="emby-button" class="emby-tab-button" data-index="0">
-                        <div class="emby-button-foreground">${All}</div>
-                    </button>
-                    <button is="emby-button" class="emby-tab-button" data-index="1">
-                        <div class="emby-button-foreground">${Suggestions}</div>
-                    </button>
-                    <button is="emby-button" class="emby-tab-button" data-index="2">
-                        <div class="emby-button-foreground">${Unwatched}</div>
-                    </button>
-                    <button is="emby-button" class="emby-tab-button" data-index="3">
-                        <div class="emby-button-foreground">${Favorites}</div>
-                    </button>
-                    <button is="emby-button" class="emby-tab-button" data-index="4">
-                        <div class="emby-button-foreground">${Collections}</div>
-                    </button>
-                    <button is="emby-button" class="emby-tab-button" data-index="5">
-                        <div class="emby-button-foreground">${Genres}</div>
-                    </button>
-                    <button is="emby-button" class="emby-tab-button" data-index="6">
-                        <div class="emby-button-foreground">${Years}</div>
-                    </button>
-                </div>
-            </div>
-
-            <div class="tabContent padded-left padded-left-withalphapicker padded-right padded-top" data-index="0">
+            <div class="tabContent padded-left padded-left-withalphapicker padded-right" data-index="0">
                 <div is="emby-itemscontainer" class="movieItems itemsContainer vertical-wrap itemsContainer-withalphapicker  focuscontainer-right focuscontainer-down" data-alphanumericshortcuts="true"></div>
             </div>
-            <div class="tabContent padded-top" data-index="1">
+            <div class="tabContent" data-index="1">
                 <div class="resumeSection hide verticalSection autoScrollSection">
                     <div>
                         <h2 class="sectionTitle sectionTitle-cards padded-left padded-right" style="display: inline-block; vertical-align: middle;">${ContinueWatching}</h2>
@@ -49,19 +23,16 @@
                     </div>
                 </div>
             </div>
-            <div class="tabContent padded-left padded-right padded-top" data-index="2">
+            <div class="tabContent padded-left padded-right" data-index="2">
                 <div is="emby-itemscontainer" class="movieItems itemsContainer vertical-wrap focuscontainer-x" data-alphanumericshortcuts="true"></div>
             </div>
-            <div class="tabContent padded-left padded-right padded-top" data-index="3">
+            <div class="tabContent padded-left padded-right" data-index="3">
                 <div is="emby-itemscontainer" class="movieItems itemsContainer vertical-wrap focuscontainer-x" data-alphanumericshortcuts="true"></div>
             </div>
-            <div class="tabContent padded-left padded-right padded-top" data-index="4">
+            <div class="tabContent padded-left padded-right" data-index="4">
                 <div is="emby-itemscontainer" class="movieItems itemsContainer vertical-wrap focuscontainer-x" data-alphanumericshortcuts="true"></div>
             </div>
-            <div class="tabContent padded-top" data-index="5">
-            </div>
-            <div class="tabContent padded-top" data-index="6">
-
+            <div class="tabContent" data-index="5">
             </div>
         </div>
     </div>

@@ -1,4 +1,4 @@
-define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'alphaPicker', 'userSettings', 'require', './../components/focushandler', 'emby-itemscontainer', 'emby-tabs', 'emby-button', 'emby-scroller'], function (loading, backdrop, connectionManager, scroller, globalize, alphaPicker, userSettings, require, focusHandler) {
+define(['loading', 'backdrop', 'mainTabsManager', 'connectionManager', 'scroller', 'globalize', 'alphaPicker', 'userSettings', 'require', './../components/focushandler', 'emby-itemscontainer', 'emby-tabs', 'emby-button', 'emby-scroller'], function (loading, backdrop, mainTabsManager, connectionManager, scroller, globalize, alphaPicker, userSettings, require, focusHandler) {
     'use strict';
 
     function trySelectValue(instance, view, value) {
@@ -116,6 +116,31 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
         }
     }
 
+    function getTabs() {
+        return [
+            {
+                name: globalize.translate('Shows')
+            },
+            {
+                name: globalize.translate('Suggestions')
+            },
+            {
+                name: globalize.translate('Latest')
+            },
+            {
+                name: globalize.translate('Upcoming')
+            },
+            {
+                name: globalize.translate('Favorites')
+            },
+            {
+                name: globalize.translate('Genres')
+            },
+            {
+                name: globalize.translate('Networks')
+            }];
+    }
+
     return function (view, params) {
 
         var self = this;
@@ -126,8 +151,10 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
         self.scroller = view.querySelector('.scrollFrameY');
 
         var alphaPickerContainer = view.querySelector('.alphaPickerContainer');
-        var viewTabs = view.querySelector('.viewTabs');
-        var initialTabIndex = parseInt(params.tab || getDefaultTabIndex(params.parentId));
+        var currentTabIndex = parseInt(params.tab || getDefaultTabIndex(params.parentId));
+        var initialTabIndex = currentTabIndex;
+
+        var isViewRestored;
 
         function preLoadTab(index) {
 
@@ -140,7 +167,7 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
             getTabController(view, params, tabControllers, index, function (controller) {
                 if (controller.onBeforeShow) {
 
-                    var refresh = !controller.refreshed;
+                    var refresh = isViewRestored !== true || !controller.refreshed;
 
                     controller.onBeforeShow({
                         refresh: refresh
@@ -158,6 +185,7 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
                 controller.onShow({
                     autoFocus: initialTabIndex != null
                 });
+                currentTabIndex = index;
                 initialTabIndex = null;
                 currentTabController = controller;
             });
@@ -165,20 +193,25 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
 
         initAlphaPicker(this, view);
 
-        viewTabs.addEventListener('beforetabchange', function (e) {
+        function getTabContainers() {
+            return view.querySelectorAll('.tabContent');
+        }
+
+        function onBeforeTabChange(e) {
+
             preLoadTab(parseInt(e.detail.selectedTabIndex));
-        });
+        }
 
-        viewTabs.addEventListener('tabchange', function (e) {
-
+        function onTabChange(e) {
             var newIndex = parseInt(e.detail.selectedTabIndex);
+
             var previousTabController = tabControllers[newIndex];
             if (previousTabController && previousTabController.onHide) {
                 previousTabController.onHide();
             }
 
             loadTab(newIndex);
-        });
+        }
 
         view.addEventListener('viewbeforehide', function (e) {
 
@@ -188,21 +221,20 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'al
         });
 
         view.addEventListener('viewbeforeshow', function (e) {
+            isViewRestored = e.detail.isRestored;
 
-            if (initialTabIndex == null) {
-                viewTabs.triggerBeforeTabChange();
-            }
+            mainTabsManager.setTabs(view, currentTabIndex, getTabs, getTabContainers, onBeforeTabChange, onTabChange);
         });
 
         view.addEventListener('viewshow', function (e) {
 
+            isViewRestored = e.detail.isRestored;
+
             Emby.Page.setTitle('');
             backdrop.clear();
 
-            if (initialTabIndex != null) {
-                viewTabs.selectedIndex(initialTabIndex);
-            } else {
-                viewTabs.triggerTabChange();
+            if (!isViewRestored) {
+                mainTabsManager.selectedTabIndex(initialTabIndex);
             }
         });
 

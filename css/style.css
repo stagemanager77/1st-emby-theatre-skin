@@ -53,22 +53,38 @@ a {
     top: 0;
     left: 0;
     right: 0;
-    height: 9%;
-    padding-left: 2.3%;
-    padding-right: 2.3%;
+    min-height: 9%;
     flex-direction: column;
+}
+
+.headerTop {
+    padding: 1em 0;
+}
+
+@media all and (max-width: 84em) {
+
+    .withSectionTabs .headerTop {
+        padding-bottom: .2em;
+    }
 }
 
 .headerLeft {
     display: flex;
+    padding-left: 2.3%;
     align-items: center;
 }
 
 .headerRight {
+    padding-right: 2.3%;
     display: flex;
     align-items: center;
     flex-grow: 1;
     justify-content: flex-end;
+}
+
+.sectionTabs {
+    width: 100%;
+    text-align: center;
 }
 
 .headerClock {
@@ -84,6 +100,13 @@ a {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+}
+
+@media all and (max-width: 84em) and (max-height: 36em) {
+
+    .sectionTabs {
+        font-size: 88%;
+    }
 }
 
 .nowPlayingBackgroundContainer.withBackdrop {
@@ -109,16 +132,37 @@ a {
     }
 
     .pageContainerTopPadding, .pageContainer, .pageContainer.flex {
-        padding-top: 9vh;
+        padding-top: 3.6em;
     }
 
-        .pageContainer.vertical.centered {
-            flex-direction: column;
-            align-items: stretch;
-            justify-content: flex-start;
-            padding-left: 2.5%;
-            padding-right: 2.5%;
-        }
+.withSectionTabs .pageContainerTopPadding {
+    padding-top: 9.2em;
+}
+
+@media all and (min-width: 84em) {
+
+    .headerTabs {
+        align-self: center;
+        width: auto;
+        align-items: center;
+        justify-content: center;
+        margin-top: -3.34em;
+        position: relative;
+        top: -.55em;
+    }
+
+    .withSectionTabs .pageContainerTopPadding {
+        padding-top: 7.6em;
+    }
+}
+
+.pageContainer.vertical.centered {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+}
 
 @media all and (min-width: 1280px) {
 
@@ -272,6 +316,13 @@ a {
 
 .verticalSection {
     margin-bottom: 1.9em;
+}
+
+@media all and (max-width: 500px), (max-height: 720px) {
+
+    .verticalSection {
+        margin-bottom: 1.3em;
+    }
 }
 
 .layout-tv .verticalSection {

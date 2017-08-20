@@ -144,6 +144,7 @@ define(['playbackManager', 'skinManager', 'pluginManager', 'browser', 'connectio
 
             events.on(connectionManager, 'localusersignedin', onLocalUserSignedIn);
             events.on(connectionManager, 'localusersignedout', onLocalUserSignedOut);
+            document.addEventListener('viewbeforeshow', onViewBeforeShow);
             document.addEventListener('viewshow', onViewShow);
 
             events.on(playbackManager, 'playerchange', updateCastIcon);
@@ -157,6 +158,7 @@ define(['playbackManager', 'skinManager', 'pluginManager', 'browser', 'connectio
 
             events.off(connectionManager, 'localusersignedin', onLocalUserSignedIn);
             events.off(connectionManager, 'localusersignedout', onLocalUserSignedOut);
+            document.removeEventListener('viewbeforeshow', onViewBeforeShow);
             document.removeEventListener('viewshow', onViewShow);
 
             events.off(mouseManager, 'mouseactive', onMouseActive);
@@ -255,12 +257,27 @@ define(['playbackManager', 'skinManager', 'pluginManager', 'browser', 'connectio
                 path.indexOf('livetvitems.html') !== -1;
         }
 
-        function onViewShow(e) {
+        function viewSupportsHeaderTabs(e) {
 
-            if (Emby.Page.canGoBack()) {
-                getBackButton().classList.remove('hide');
-            } else {
-                getBackButton().classList.add('hide');
+            var path = e.detail.state.path;
+
+            return path.indexOf('tv.html') !== -1 ||
+                path.indexOf('movies.html') !== -1 ||
+                path.indexOf('livetv.html') !== -1 ||
+                path.indexOf('music.html') !== -1;
+        }
+
+        function clearTabs() {
+
+            require(['mainTabsManager'], function (mainTabsManager) {
+                mainTabsManager.setTabs(null);
+            });
+        }
+
+        function onViewBeforeShow(e) {
+
+            if (!viewSupportsHeaderTabs(e)) {
+                clearTabs();
             }
 
             var skinHeader = document.querySelector('.skinHeader');
@@ -270,6 +287,15 @@ define(['playbackManager', 'skinManager', 'pluginManager', 'browser', 'connectio
                 skinHeader.classList.add('skinHeader-withBackground');
             } else {
                 skinHeader.classList.remove('skinHeader-withBackground');
+            }
+        }
+
+        function onViewShow(e) {
+
+            if (Emby.Page.canGoBack()) {
+                getBackButton().classList.remove('hide');
+            } else {
+                getBackButton().classList.add('hide');
             }
         }
     }
