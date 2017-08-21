@@ -1,5 +1,12 @@
-define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'require', 'emby-itemscontainer', 'emby-tabs', 'emby-button', 'emby-scroller'], function (loading, backdrop, connectionManager, scroller, globalize, require) {
+define(['loading', 'backdrop', 'mainTabsManager', 'connectionManager', 'scroller', 'globalize', 'require', 'emby-itemscontainer', 'emby-tabs', 'emby-button', 'emby-scroller'], function (loading, backdrop, mainTabsManager, connectionManager, scroller, globalize, require) {
     'use strict';
+
+    function getTabs() {
+        return [
+            {
+                name: globalize.translate('Home')
+            }];
+    }
 
     return function (view, params) {
 
@@ -8,7 +15,11 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 're
         var tabControllers = [];
         var currentTabController;
 
-        function getTabController(page, index, callback) {
+        function getTabController(index, callback) {
+
+            if (index == null) {
+                throw new Error('index cannot be null');
+            }
 
             var depends = [];
 
@@ -20,9 +31,6 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 're
                 case 1:
                     depends.push('./hometab');
                     break;
-                case 2:
-                    depends.push('./hometab');
-                    break;
                 default:
                     break;
             }
@@ -31,6 +39,7 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 're
 
                 var controller = tabControllers[index];
                 if (!controller) {
+
                     var tabContent = view.querySelector('.tabContent[data-index=\'' + index + '\']');
                     controller = new controllerFactory(tabContent, params, view);
                     tabControllers[index] = controller;
@@ -40,15 +49,16 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 're
             });
         }
 
+
         self.scroller = view.querySelector('.scrollFrameY');
 
-        var viewTabs = view.querySelector('.viewTabs');
-        var initialTabIndex = parseInt(params.tab || '0');
+        var currentTabIndex = parseInt(params.tab || '0');
+        var initialTabIndex = currentTabIndex;
         var isViewRestored;
 
-        function preLoadTab(page, index) {
+        function preLoadTab(index) {
 
-            getTabController(page, index, function (controller) {
+            getTabController(index, function (controller) {
                 if (controller.onBeforeShow) {
 
                     var refresh = isViewRestored !== true || !controller.refreshed;
@@ -62,9 +72,9 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 're
             });
         }
 
-        function loadTab(page, index) {
+        function loadTab(index) {
 
-            getTabController(page, index, function (controller) {
+            getTabController(index, function (controller) {
 
                 controller.onShow({
                     autoFocus: initialTabIndex != null
@@ -74,19 +84,24 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 're
             });
         }
 
-        viewTabs.addEventListener('beforetabchange', function (e) {
-            preLoadTab(view, parseInt(e.detail.selectedTabIndex));
-        });
+        function getTabContainers() {
+            return view.querySelectorAll('.tabContent');
+        }
 
-        viewTabs.addEventListener('tabchange', function (e) {
+        function onBeforeTabChange(e) {
 
-            var previousTabController = tabControllers[parseInt(e.detail.previousIndex)];
+            preLoadTab(parseInt(e.detail.selectedTabIndex));
+        }
+
+        function onTabChange(e) {
+            var newIndex = parseInt(e.detail.selectedTabIndex);
+            var previousTabController = tabControllers[newIndex];
             if (previousTabController && previousTabController.onHide) {
                 previousTabController.onHide();
             }
 
-            loadTab(view, parseInt(e.detail.selectedTabIndex));
-        });
+            loadTab(newIndex);
+        }
 
         view.addEventListener('viewbeforehide', function (e) {
 
@@ -96,13 +111,11 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 're
         });
 
         view.addEventListener('viewbeforeshow', function (e) {
-            isViewRestored = e.detail.isRestored;
-
-            if (initialTabIndex == null) {
-                viewTabs.triggerBeforeTabChange();
-            }
 
             Emby.Page.setTitle(null);
+            isViewRestored = e.detail.isRestored;
+
+            mainTabsManager.setTabs(view, currentTabIndex, getTabs, getTabContainers, onBeforeTabChange, onTabChange);
         });
 
         view.addEventListener('viewshow', function (e) {
@@ -111,10 +124,8 @@ define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 're
 
             backdrop.clear();
 
-            if (initialTabIndex != null) {
-                viewTabs.selectedIndex(initialTabIndex);
-            } else {
-                viewTabs.triggerTabChange();
+            if (!isViewRestored) {
+                mainTabsManager.selectedTabIndex(initialTabIndex);
             }
         });
 

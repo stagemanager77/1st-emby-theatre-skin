@@ -254,7 +254,8 @@ define(['playbackManager', 'skinManager', 'pluginManager', 'browser', 'connectio
                 path.indexOf('livetv.html') !== -1 ||
                 path.indexOf('music.html') !== -1 ||
                 path.indexOf('list.html') !== -1 ||
-                path.indexOf('livetvitems.html') !== -1;
+                path.indexOf('livetvitems.html') !== -1 ||
+                path.indexOf('home/home.html') !== -1;
         }
 
         function viewSupportsHeaderTabs(e) {
@@ -264,7 +265,8 @@ define(['playbackManager', 'skinManager', 'pluginManager', 'browser', 'connectio
             return path.indexOf('tv.html') !== -1 ||
                 path.indexOf('movies.html') !== -1 ||
                 path.indexOf('livetv.html') !== -1 ||
-                path.indexOf('music.html') !== -1;
+                path.indexOf('music.html') !== -1 ||
+                path.indexOf('home/home.html') !== -1;
         }
 
         function clearTabs() {
