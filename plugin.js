@@ -1,4 +1,4 @@
-define(['playbackManager', 'skinManager', 'pluginManager', 'browser', 'connectionManager', 'events', 'datetime', 'mouseManager', 'dom', 'layoutManager', 'itemHelper', 'apphost'], function (playbackManager, skinManager, pluginManager, browser, connectionManager, events, datetime, mouseManager, dom, layoutManager, itemHelper, appHost) {
+define(['playbackManager', 'skinManager', 'userSettings', 'pluginManager', 'browser', 'connectionManager', 'events', 'datetime', 'mouseManager', 'dom', 'layoutManager', 'itemHelper', 'apphost'], function (playbackManager, skinManager, userSettings, pluginManager, browser, connectionManager, events, datetime, mouseManager, dom, layoutManager, itemHelper, appHost) {
     'use strict';
 
     function updateClock() {
@@ -36,7 +36,7 @@ define(['playbackManager', 'skinManager', 'pluginManager', 'browser', 'connectio
 
             setRemoteControlVisibility();
 
-            return skinManager.setTheme('dark');
+            return skinManager.setTheme(userSettings.appTheme());
         };
 
         self.unload = function () {
@@ -204,6 +204,8 @@ define(['playbackManager', 'skinManager', 'pluginManager', 'browser', 'connectio
         }
 
         function onLocalUserSignedIn(e, user) {
+
+            skinManager.setTheme(userSettings.appTheme());
 
             document.querySelector('.headerLogo').classList.add('hide');
 
