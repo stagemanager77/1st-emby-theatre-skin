@@ -377,20 +377,20 @@
 
         function shouldEnableProgressByTimeOfDay(item) {
 
-            if (item.Type === 'TvChannel') {
+            if (item.Type === 'TvChannel' && item.CurrentProgram) {
                 return true;
             }
 
-            if (item.Type === 'Recording' && item.StartDate && item.EndDate) {
+            //if (item.Type === 'Recording' && item.StartDate && item.EndDate) {
 
-                var endDate = datetime.parseISO8601Date(item.EndDate).getTime();
-                var startDate = datetime.parseISO8601Date(item.StartDate).getTime();
-                var now = new Date().getTime();
+            //    var endDate = datetime.parseISO8601Date(item.EndDate).getTime();
+            //    var startDate = datetime.parseISO8601Date(item.StartDate).getTime();
+            //    var now = new Date().getTime();
 
-                if (now <= endDate && now >= startDate) {
-                    return true;
-                }
-            }
+            //    if (now <= endDate && now >= startDate) {
+            //        return true;
+            //    }
+            //}
 
             return false;
         }
@@ -1113,7 +1113,9 @@
                         nowPlayingPositionSlider.value = 0;
                     }
 
-                    if (runtimeTicks && positionTicks != null && currentRuntimeTicks && !enableProgressByTimeOfDay) {
+                    // Check currentItem.RunTimeTicks as well to avoid showing endsAt for live streams
+                    // Also check for recordings because they'll have a runtime which equals the amount recorded
+                    if (runtimeTicks && positionTicks != null && currentRuntimeTicks && !enableProgressByTimeOfDay && currentItem.RunTimeTicks && currentItem.Type !== 'Recording') {
                         endsAtText.innerHTML = '&nbsp;&nbsp;-&nbsp;&nbsp;' + mediaInfo.getEndsAtFromPosition(runtimeTicks, positionTicks, true);
                     } else {
                         endsAtText.innerHTML = '';

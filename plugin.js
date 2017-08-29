@@ -327,7 +327,7 @@ define(['playbackManager', 'skinManager', 'userSettings', 'pluginManager', 'brow
             }
             if (item === 'recordedtv') {
 
-                return pluginManager.mapRoute(this, 'livetv/livetv.html') + '?tab=3&serverId=' + options.serverId;
+                return pluginManager.mapRoute(this, 'livetv/livetv.html') + '?tab=2&serverId=' + options.serverId;
             }
             if (item === 'livetv') {
 
@@ -335,7 +335,7 @@ define(['playbackManager', 'skinManager', 'userSettings', 'pluginManager', 'brow
                     return pluginManager.mapRoute(this, 'livetv/guide.html') + '?serverId=' + options.serverId;
                 }
                 if (options.section === 'dvrschedule') {
-                    return pluginManager.mapRoute(this, 'livetv/livetv.html') + '?tab=4&serverId=' + options.serverId;
+                    return pluginManager.mapRoute(this, 'livetv/livetv.html') + '?tab=3&serverId=' + options.serverId;
                 }
                 if (options.section === 'onnow') {
                     return pluginManager.mapRoute(this, 'livetv/livetvitems.html') + '?type=Programs&IsAiring=true&serverId=' + options.serverId;

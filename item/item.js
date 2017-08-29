@@ -57,7 +57,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                     slidee: view.querySelector('.scrollSlider'),
                     scrollBy: 200,
                     speed: 270,
-                    scrollWidth: 50000,
+                    scrollWidth: 500000,
                     immediateSpeed: 160
                 };
 
