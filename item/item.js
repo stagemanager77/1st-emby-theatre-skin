@@ -1041,7 +1041,8 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                     IncludeItemTypes: 'MusicAlbum',
                     Recursive: true,
                     ArtistIds: item.Id,
-                    SortBy: 'ProductionYear,SortName'
+                    SortBy: 'ProductionYear,SortName',
+                    SortOrder: 'Descending'
                 });
             }
 
@@ -1251,7 +1252,8 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                 ArtistIds: item.AlbumArtists[0].Id,
                 Recursive: true,
                 ExcludeItemIds: item.Id,
-                SortBy: 'ProductionYear,SortName'
+                SortBy: 'ProductionYear,SortName',
+                SortOrder: 'Descending'
 
             }).then(function (result) {
 

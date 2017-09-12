@@ -104,7 +104,7 @@
             coverImage: true,
             overlayText: false,
             lazy: true,
-            overlayMoreButton: overlayButton !== 'play',
+            overlayMoreButton: overlayButton === 'more',
             overlayPlayButton: overlayButton === 'play',
             allowBottomPadding: !enableScrollX(),
             showAirTime: true,
@@ -238,7 +238,7 @@
         var view = this.view;
 
         promises[0].then(function (result) {
-            renderItems(view, result.Items, 'activePrograms');
+            renderItems(view, result.Items, 'activePrograms', 'play');
             return Promise.resolve();
         });
 

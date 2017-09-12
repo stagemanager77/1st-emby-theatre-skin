@@ -7,7 +7,7 @@
         this.apiClient = connectionManager.getApiClient(params.serverId);
     }
 
-    function renderMovies(view, items) {
+    function renderMovies(view, items, mode) {
 
         var container = view.querySelector('.movieItems');
 
@@ -17,8 +17,8 @@
             shape: "portrait",
             centerText: true,
             overlayMoreButton: !layoutManager.tv,
-            //showTitle: true,
-            //showYear: true
+            showTitle: true,
+            showYear: mode === 'unwatched' || mode === 'favorites'
         });
     }
 
@@ -68,9 +68,10 @@
         this.promises = [];
 
         var view = this.view;
+        var mode = this.mode;
 
         promises[0].then(function (result) {
-            renderMovies(view, result.Items);
+            renderMovies(view, result.Items, mode);
             return Promise.resolve();
         });
 

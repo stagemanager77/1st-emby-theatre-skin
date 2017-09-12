@@ -58,7 +58,7 @@ a {
 }
 
 .headerTop {
-    padding: 1em 0;
+    padding: 1.2em 0;
 }
 
 @media all and (max-width: 84em) {
@@ -148,11 +148,11 @@ a {
         justify-content: center;
         margin-top: -3.34em;
         position: relative;
-        top: -.55em;
+        top: -.7em;
     }
 
     .withSectionTabs .pageContainerTopPadding {
-        padding-top: 7.2em;
+        padding-top: 7.8em;
     }
 }
 
@@ -330,7 +330,7 @@ a {
 }
 
 .sectionTitleContainer {
-    margin-bottom: .3em;
+    margin-bottom: .7em;
 }
 
 .layout-tv .sectionTitleContainer {
@@ -356,9 +356,9 @@ a {
     vertical-align: middle;
 }
 
-    .sectionTitleButton + .sectionTitleButton {
-        margin-left: .5em !important;
-    }
+.sectionTitleButton + .sectionTitleButton {
+    margin-left: .5em !important;
+}
 
 .sectionTitleIconButton {
     margin-left: 1.5em !important;
@@ -372,7 +372,11 @@ a {
 }
 
 .sectionTitle-cards {
-    margin-left: .3em;
+    margin-left: .1em;
+}
+
+.layout-tv .sectionTitle-cards {
+    margin-left: .4em;
 }
 
 .verticalSection .sectionTitle {
@@ -384,24 +388,24 @@ a {
 }
 
 .sectionTitleTextButton {
-    margin: 0 0 .1em !important;
+    margin: 0 !important;
     display: inline-flex !important;
     color: inherit !important;
 }
 
-    .sectionTitleTextButton:not(.padded-left) {
-        padding: 0 !important;
-    }
+.sectionTitleTextButton:not(.padded-left) {
+    padding: 0 !important;
+}
 
-    .sectionTitleTextButton.padded-left {
-        padding-bottom: 0 !important;
-        padding-right: 0 !important;
-        padding-top: 0 !important;
-    }
+.sectionTitleTextButton.padded-left {
+    padding-bottom: 0 !important;
+    padding-right: 0 !important;
+    padding-top: 0 !important;
+}
 
-    .sectionTitleTextButton > .sectionTitle {
-        margin-bottom: 0;
-    }
+.sectionTitleTextButton > .sectionTitle {
+    margin-bottom: 0;
+}
 
 .padded-left {
     padding-left: 2%;

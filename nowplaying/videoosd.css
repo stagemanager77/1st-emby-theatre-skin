@@ -5,6 +5,7 @@
     transition: opacity 300ms ease-out;
     -webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
+    color: #eee;
 }
 
 .osdHeader-hidden {
