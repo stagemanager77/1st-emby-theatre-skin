@@ -172,19 +172,6 @@ a {
     }
 }
 
-.itemScrollFrame.scrollFrameX .scrollSlider {
-    padding-left: 4.5%;
-}
-
-.itemScrollFrame.scrollFrameX .scrollSlider {
-    padding-bottom: 1.2em;
-    padding-top: 1.2em;
-}
-
-.itemScrollFrame.scrollFrameX.noTopPadding .scrollSlider {
-    padding-top: 1.1em;
-}
-
 .itemScrollFrameY {
     height: 100%;
     /* Needed for native scroll */
@@ -198,12 +185,6 @@ a {
     width: 100%;
 }
 
-.horizontalSectionsContainer {
-    display: flex;
-    /* Needed to prevent images from flickering in tizen and orsay */
-    transform-style: preserve-3d;
-}
-
 .horizontalPageContent h1 {
     margin-top: 0;
 }
@@ -211,32 +192,6 @@ a {
 .scrollFrameY {
     overflow: hidden;
 }
-
-.scrollFrameX .scrollSlider {
-    white-space: nowrap !important;
-}
-
-.cardColumn {
-    display: inline-block;
-    vertical-align: top;
-    flex-shrink: 0;
-}
-
-.listNumbers {
-    position: fixed;
-    bottom: 2.5%;
-    right: 1.5%;
-}
-
-.horizontalSection {
-    margin-right: 1.25em;
-    flex-shrink: 0;
-}
-
-    .horizontalSection .sectionTitle {
-        font-size: 90%;
-        padding-left: .1em;
-    }
 
 .selectedItemInfo {
     position: fixed;

@@ -1,3 +1,44 @@
+.itemScrollFrame.scrollFrameX .scrollSlider {
+    padding-left: 4.5%;
+}
+
+.itemScrollFrame.scrollFrameX .scrollSlider {
+    padding-bottom: 1.2em;
+    padding-top: .5em;
+}
+
+.horizontalSectionsContainer {
+    display: flex;
+    /* Needed to prevent images from flickering in tizen and orsay */
+    transform-style: preserve-3d;
+}
+
+.scrollFrameX .scrollSlider {
+    white-space: nowrap !important;
+}
+
+.cardColumn {
+    display: inline-block;
+    vertical-align: top;
+    flex-shrink: 0;
+}
+
+.listNumbers {
+    position: fixed;
+    bottom: 2.5%;
+    right: 1.5%;
+}
+
+.horizontalSection {
+    margin-right: 1.25em;
+    flex-shrink: 0;
+}
+
+.horizontalSection .sectionTitle {
+    font-size: 90%;
+    padding-left: .1em;
+}
+
 .userViewNames {
     padding-left: 3.75%;
 }
@@ -16,8 +57,24 @@
     min-width: initial;
     text-transform: none !important;
     margin-top: 0;
-    padding-top: 0;
-    padding-bottom: .2em;
+    background: transparent;
+    box-shadow: none;
+    cursor: pointer;
+    outline: none !important;
+    width: auto;
+    font-family: inherit;
+    font-size: inherit;
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
+    margin: 0;
+    padding: 1em .9em;
+    position: relative;
+    height: auto;
+    min-width: initial;
+    line-height: initial;
+    border-radius: 0 !important;
+    overflow: hidden;
 }
 
 .homePageContainer .selectedItemInfo {
