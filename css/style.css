@@ -311,9 +311,9 @@ a {
     vertical-align: middle;
 }
 
-.sectionTitleButton + .sectionTitleButton {
-    margin-left: .5em !important;
-}
+    .sectionTitleButton + .sectionTitleButton {
+        margin-left: .5em !important;
+    }
 
 .sectionTitleIconButton {
     margin-left: 1.5em !important;
@@ -348,19 +348,19 @@ a {
     color: inherit !important;
 }
 
-.sectionTitleTextButton:not(.padded-left) {
-    padding: 0 !important;
-}
+    .sectionTitleTextButton:not(.padded-left) {
+        padding: 0 !important;
+    }
 
-.sectionTitleTextButton.padded-left {
-    padding-bottom: 0 !important;
-    padding-right: 0 !important;
-    padding-top: 0 !important;
-}
+    .sectionTitleTextButton.padded-left {
+        padding-bottom: 0 !important;
+        padding-right: 0 !important;
+        padding-top: 0 !important;
+    }
 
-.sectionTitleTextButton > .sectionTitle {
-    margin-bottom: 0;
-}
+    .sectionTitleTextButton > .sectionTitle {
+        margin-bottom: 0;
+    }
 
 .padded-left {
     padding-left: 2%;
@@ -424,11 +424,19 @@ a {
 @media all and (min-width: 1280px) {
 
     .padded-left {
-        padding-left: 3.3%;
+        padding-left: 3.5%;
     }
 
     .padded-right {
-        padding-right: 3.3%;
+        padding-right: 3.5%;
+    }
+
+    .layout-tv .padded-left {
+        padding-left: 3.2%;
+    }
+
+    .layout-tv .padded-right {
+        padding-right: 3.2%;
     }
 }
 
