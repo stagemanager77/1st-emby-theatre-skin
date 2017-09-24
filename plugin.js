@@ -690,7 +690,7 @@ define(['playbackManager', 'skinManager', 'userSettings', 'pluginManager', 'brow
     };
 
     DefaultSkin.prototype.showLiveTV = function () {
-        Emby.Page.show(pluginManager.mapRoute(this, 'livetv/guide.html'));
+        Emby.Page.show(pluginManager.mapRoute(this, 'livetv/livetv.html'));
     };
 
     DefaultSkin.prototype.showGuide = function () {

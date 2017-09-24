@@ -37,6 +37,7 @@
 .horizontalSection .sectionTitle {
     font-size: 90%;
     padding-left: .1em;
+    margin-bottom: 0;
 }
 
 .userViewNames {

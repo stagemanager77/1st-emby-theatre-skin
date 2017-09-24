@@ -610,6 +610,9 @@
 
         function onInputCommand(e) {
 
+            var player = currentPlayer;
+
+            // support netflix commands: https://help.netflix.com/en/node/24855
             switch (e.detail.command) {
 
                 case 'left':
@@ -617,7 +620,7 @@
                         showOsd();
                     } else if (!currentVisibleMenu) {
                         e.preventDefault();
-                        playbackManager.rewind();
+                        playbackManager.rewind(player);
                     }
                     break;
                 case 'right':
@@ -625,8 +628,14 @@
                         showOsd();
                     } else if (!currentVisibleMenu) {
                         e.preventDefault();
-                        playbackManager.fastForward();
+                        playbackManager.fastForward(player);
                     }
+                    break;
+                case 'pageup':
+                    playbackManager.unpause(player);
+                    break;
+                case 'pagedown':
+                    playbackManager.pause(player);
                     break;
                 case 'up':
                 case 'down':
@@ -841,10 +850,8 @@
                 return;
             }
 
-            playbackManager.getPlayerState(player).then(function (state) {
-
-                onStateChanged.call(player, { type: 'init' }, state);
-            });
+            var state = playbackManager.getPlayerState(player);
+            onStateChanged.call(player, { type: 'init' }, state);
 
             events.on(player, 'playbackstart', onPlaybackStart);
             events.on(player, 'playbackstop', onPlaybackStopped);
@@ -970,10 +977,8 @@
 
                     console.log('program info needs to be refreshed');
 
-                    playbackManager.getPlayerState(player).then(function (state) {
-
-                        onStateChanged.call(player, { type: 'init' }, state);
-                    });
+                    var state = playbackManager.getPlayerState(player);
+                    onStateChanged.call(player, { type: 'init' }, state);
                 }
             }
             catch (e) {
@@ -1080,10 +1085,10 @@
                             var rangeEnd = getDisplayPercentByTimeOfDay(programStartDateMs, programRuntimeMs, (playbackStartTimeTicks + (bufferedRanges[0].end || 0)) / 10000);
 
                             nowPlayingPositionSlider.setBufferedRanges([
-                            {
-                                start: rangeStart,
-                                end: rangeEnd
-                            }]);
+                                {
+                                    start: rangeStart,
+                                    end: rangeEnd
+                                }]);
 
                         } else {
                             nowPlayingPositionSlider.setBufferedRanges([]);
@@ -1375,6 +1380,42 @@
             if (e.keyCode === 32 && !currentVisibleMenu) {
                 playbackManager.playPause(currentPlayer);
                 showOsd();
+            }
+
+            switch (e.key) {
+
+                case 'f':
+                    playbackManager.toggleFullscreen(currentPlayer);
+                    break;
+                case 'm':
+                    playbackManager.toggleMute(currentPlayer);
+                    break;
+                case 'ArrowLeft':
+                case 'Left':
+                case 'NavigationLeft':
+                case 'GamepadDPadLeft':
+                case 'GamepadLeftThumbstickLeft':
+                {
+                    if (!!e.shiftKey) {
+                        // shift-left
+                        playbackManager.rewind(currentPlayer);
+                    }
+                    break;
+                }
+                case 'ArrowRight':
+                case 'Right':
+                case 'NavigationRight':
+                case 'GamepadDPadRight':
+                case 'GamepadLeftThumbstickRight':
+                {
+                    if (!!e.shiftKey) {
+                        // shift-left
+                        playbackManager.fastForward(currentPlayer);
+                    }
+                    break;
+                }
+                default:
+                    break;
             }
         }
 

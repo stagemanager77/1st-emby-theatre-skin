@@ -142,7 +142,7 @@ define(['focusManager', 'cardBuilder', 'pluginManager', './../skininfo', 'browse
         };
 
         element.querySelector('.guideCard').addEventListener('click', function () {
-            Emby.Page.show(pluginManager.mapRoute(skinInfo.id, 'livetv/guide.html'));
+            Emby.Page.show(pluginManager.mapRoute(skinInfo.id, 'livetv/guide.html?serverId=' + apiClient.serverId()));
         });
 
         element.querySelector('.recordingsCard').addEventListener('click', function () {

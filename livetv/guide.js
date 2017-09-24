@@ -144,7 +144,8 @@ define(['globalize', 'tvguide', 'events', 'datetime', 'imageLoader', 'backdrop',
         function initGuide() {
 
             guideInstance = new tvguide({
-                element: view.querySelector('.guidePageContainer')
+                element: view.querySelector('.guidePageContainer'),
+                serverId: params.serverId
             });
 
             events.on(guideInstance, 'focus', onGuideFocus);

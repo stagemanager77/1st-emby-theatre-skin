@@ -167,10 +167,8 @@ define(['playbackManager', 'datetime', 'backdrop', 'userdataButtons', 'cardBuild
                 return;
             }
 
-            playbackManager.getPlayerState(player).then(function (state) {
-
-                onStateChanged.call(player, { type: 'init' }, state);
-            });
+            var state = playbackManager.getPlayerState(player);
+            onStateChanged.call(player, { type: 'init' }, state);
 
             events.on(player, 'playbackstart', onPlaybackStart);
             events.on(player, 'playbackstop', onPlaybackStopped);
