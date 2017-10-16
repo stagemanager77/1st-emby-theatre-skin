@@ -21,8 +21,6 @@ define(['playbackManager', 'skinManager', 'userSettings', 'pluginManager', 'brow
         self.type = 'skin';
         self.id = 'defaultskin';
 
-        var settingsObjectName = self.id + '/skinsettings';
-
         var clockInterval;
         self.load = function () {
 
@@ -36,26 +34,19 @@ define(['playbackManager', 'skinManager', 'userSettings', 'pluginManager', 'brow
 
             setRemoteControlVisibility();
 
-            return skinManager.setTheme(userSettings.appTheme());
+            return skinManager.setTheme(userSettings.theme());
         };
 
         self.unload = function () {
 
-            return new Promise(function (resolve, reject) {
+            unbindEvents();
 
-                unbindEvents();
+            if (clockInterval) {
+                clearInterval(clockInterval);
+                clockInterval = null;
+            }
 
-                if (clockInterval) {
-                    clearInterval(clockInterval);
-                    clockInterval = null;
-                }
-
-                require([settingsObjectName], function (skinSettings) {
-
-                    skinSettings.unload();
-                    resolve();
-                });
-            });
+            return Promise.resolve();
         };
 
         var headerBackButton;
@@ -205,7 +196,7 @@ define(['playbackManager', 'skinManager', 'userSettings', 'pluginManager', 'brow
 
         function onLocalUserSignedIn(e, user) {
 
-            skinManager.setTheme(userSettings.appTheme());
+            skinManager.setTheme(userSettings.theme());
 
             document.querySelector('.headerLogo').classList.add('hide');
 
@@ -226,19 +217,9 @@ define(['playbackManager', 'skinManager', 'userSettings', 'pluginManager', 'brow
             }
 
             document.querySelector('.headerUserButton').classList.remove('hide');
-
-            require([settingsObjectName], function (skinSettings) {
-
-                skinSettings.apply();
-            });
         }
 
         function onLocalUserSignedOut(e) {
-
-            require([settingsObjectName], function (skinSettings) {
-
-                skinSettings.unload();
-            });
 
             // Put the logo back in the page title
             document.querySelector('.headerLogo').classList.remove('hide');
@@ -649,18 +630,18 @@ define(['playbackManager', 'skinManager', 'userSettings', 'pluginManager', 'brow
             enableMediaControl: false
         });
 
-        routes.push({
-            path: 'settings/settings.html',
-            transition: 'slide',
-            controller: this.id + '/settings/settings',
-            dependencies: [
-                'emby-checkbox'
-            ],
-            type: 'settings',
-            category: 'Display',
-            thumbImage: '',
-            title: this.name
-        });
+        //routes.push({
+        //    path: 'settings/settings.html',
+        //    transition: 'slide',
+        //    controller: this.id + '/settings/settings',
+        //    dependencies: [
+        //        'emby-checkbox'
+        //    ],
+        //    type: 'settings',
+        //    category: 'Display',
+        //    thumbImage: '',
+        //    title: this.name
+        //});
 
         return routes;
     };
@@ -689,12 +670,12 @@ define(['playbackManager', 'skinManager', 'userSettings', 'pluginManager', 'brow
         Emby.Page.show(pluginManager.mapRoute(this, 'search/search.html'));
     };
 
-    DefaultSkin.prototype.showLiveTV = function () {
-        Emby.Page.show(pluginManager.mapRoute(this, 'livetv/livetv.html'));
+    DefaultSkin.prototype.showLiveTV = function (options) {
+        Emby.Page.show(pluginManager.mapRoute(this, 'livetv/livetv.html?serverId=' + options.serverId));
     };
 
-    DefaultSkin.prototype.showGuide = function () {
-        Emby.Page.show(pluginManager.mapRoute(this, 'livetv/guide.html'));
+    DefaultSkin.prototype.showGuide = function (options) {
+        Emby.Page.show(pluginManager.mapRoute(this, 'livetv/guide.html?serverId=' + options.serverId));
     };
 
     DefaultSkin.prototype.showNowPlaying = function () {
@@ -715,17 +696,18 @@ define(['playbackManager', 'skinManager', 'userSettings', 'pluginManager', 'brow
     DefaultSkin.prototype.getThemes = function () {
 
         return [
-                    { name: 'Apple TV', id: 'appletv' },
-                    { name: 'Dark', id: 'dark', isDefault: true },
-                    { name: 'Dark (green accent)', id: 'dark-green' },
-                    { name: 'Dark (red accent)', id: 'dark-red' },
-                    { name: 'Light', id: 'light', isDefaultServerDashboard: true },
-                    { name: 'Light (blue accent)', id: 'light-blue' },
-                    { name: 'Light (green accent)', id: 'light-green' },
-                    { name: 'Light (pink accent)', id: 'light-pink' },
-                    { name: 'Light (purple accent)', id: 'light-purple' },
-                    { name: 'Light (red accent)', id: 'light-red' },
-                    { name: 'Windows Media Center', id: 'wmc' }
+            { name: 'Apple TV', id: 'appletv' },
+            { name: 'Dark', id: 'dark', isDefault: true },
+            { name: 'Dark (green accent)', id: 'dark-green' },
+            { name: 'Dark (red accent)', id: 'dark-red' },
+            { name: 'Halloween', id: 'halloween' },
+            { name: 'Light', id: 'light', isDefaultServerDashboard: true },
+            { name: 'Light (blue accent)', id: 'light-blue' },
+            { name: 'Light (green accent)', id: 'light-green' },
+            { name: 'Light (pink accent)', id: 'light-pink' },
+            { name: 'Light (purple accent)', id: 'light-purple' },
+            { name: 'Light (red accent)', id: 'light-red' },
+            { name: 'Windows Media Center', id: 'wmc' }
         ];
     };
 

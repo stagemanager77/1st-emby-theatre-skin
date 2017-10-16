@@ -21,7 +21,8 @@
             lazy: true,
             cardLayout: true,
             showDetailsMenu: true,
-            showCurrentProgram: true
+            showCurrentProgram: true,
+            showCurrentProgramTime: true
 
         }, cardOptions));
 

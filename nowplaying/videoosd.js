@@ -1036,7 +1036,7 @@
             var nowPlayingItem = state.NowPlayingItem || {};
 
             playbackStartTimeTicks = playState.PlaybackStartTimeTicks;
-            updateTimeDisplay(playState.PositionTicks, nowPlayingItem.RunTimeTicks, playState.PlaybackStartTimeTicks, playbackManager.getBufferedRanges(player));
+            updateTimeDisplay(playState.PositionTicks, nowPlayingItem.RunTimeTicks, playState.PlaybackStartTimeTicks, playState.BufferedRanges || []);
 
             updateNowPlayingInfo(player, state);
 
@@ -1046,7 +1046,7 @@
                 view.querySelector('.btnVideoOsdSettings').classList.add('hide');
             }
 
-            if (supportedCommands.indexOf('ToggleFullscreen') === -1) {
+            if (supportedCommands.indexOf('ToggleFullscreen') === -1 || (player.isLocalPlayer && layoutManager.tv && playbackManager.isFullscreen(player))) {
                 view.querySelector('.btnFullscreen').classList.add('hide');
             } else {
                 view.querySelector('.btnFullscreen').classList.remove('hide');
@@ -1078,7 +1078,7 @@
                         var programRuntimeMs = programEndDateMs - programStartDateMs;
 
                         nowPlayingPositionSlider.value = getDisplayPercentByTimeOfDay(programStartDateMs, programRuntimeMs, currentTimeMs);
-                        console.log('buffered ranges: ' + JSON.stringify(bufferedRanges));
+
                         if (bufferedRanges.length) {
 
                             var rangeStart = getDisplayPercentByTimeOfDay(programStartDateMs, programRuntimeMs, (playbackStartTimeTicks + (bufferedRanges[0].start || 0)) / 10000);
@@ -1385,7 +1385,9 @@
             switch (e.key) {
 
                 case 'f':
-                    playbackManager.toggleFullscreen(currentPlayer);
+                    if (!e.ctrlKey) {
+                        playbackManager.toggleFullscreen(currentPlayer);
+                    }
                     break;
                 case 'm':
                     playbackManager.toggleMute(currentPlayer);
@@ -1395,25 +1397,25 @@
                 case 'NavigationLeft':
                 case 'GamepadDPadLeft':
                 case 'GamepadLeftThumbstickLeft':
-                {
-                    if (!!e.shiftKey) {
-                        // shift-left
-                        playbackManager.rewind(currentPlayer);
+                    {
+                        if (!!e.shiftKey) {
+                            // shift-left
+                            playbackManager.rewind(currentPlayer);
+                        }
+                        break;
                     }
-                    break;
-                }
                 case 'ArrowRight':
                 case 'Right':
                 case 'NavigationRight':
                 case 'GamepadDPadRight':
                 case 'GamepadLeftThumbstickRight':
-                {
-                    if (!!e.shiftKey) {
-                        // shift-left
-                        playbackManager.fastForward(currentPlayer);
+                    {
+                        if (!!e.shiftKey) {
+                            // shift-left
+                            playbackManager.fastForward(currentPlayer);
+                        }
+                        break;
                     }
-                    break;
-                }
                 default:
                     break;
             }
@@ -1568,7 +1570,7 @@
 
         view.querySelector('.btnPreviousTrack').addEventListener('click', function () {
 
-            playbackManager.previousChapter(currentPlayer);
+            playbackManager.previousTrack(currentPlayer);
         });
 
         view.querySelector('.btnPause').addEventListener('click', function () {
@@ -1578,7 +1580,7 @@
 
         view.querySelector('.btnNextTrack').addEventListener('click', function () {
 
-            playbackManager.nextChapter(currentPlayer);
+            playbackManager.nextTrack(currentPlayer);
         });
 
         btnRewind.addEventListener('click', function () {

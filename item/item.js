@@ -1,5 +1,5 @@
-define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper', 'playbackManager', 'connectionManager', 'imageLoader', 'userdataButtons', 'itemHelper', './../components/focushandler', 'backdrop', 'listView', 'mediaInfo', 'inputManager', 'focusManager', './../skinsettings', 'cardBuilder', 'indicators', 'layoutManager', 'browser', 'serverNotifications', 'events', 'dom', 'apphost', 'globalize', 'itemShortcuts', 'emby-itemscontainer', 'emby-scroller', 'emby-downloadbutton'],
-    function (itemContextMenu, loading, skinInfo, datetime, scrollHelper, playbackManager, connectionManager, imageLoader, userdataButtons, itemHelper, focusHandler, backdrop, listView, mediaInfo, inputManager, focusManager, skinSettings, cardBuilder, indicators, layoutManager, browser, serverNotifications, events, dom, appHost, globalize, itemShortcuts) {
+define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper', 'playbackManager', 'connectionManager', 'imageLoader', 'userdataButtons', 'itemHelper', './../components/focushandler', 'backdrop', 'listView', 'mediaInfo', 'inputManager', 'focusManager', 'cardBuilder', 'indicators', 'layoutManager', 'browser', 'serverNotifications', 'events', 'dom', 'apphost', 'globalize', 'itemShortcuts', 'emby-itemscontainer', 'emby-scroller', 'emby-downloadbutton'],
+    function (itemContextMenu, loading, skinInfo, datetime, scrollHelper, playbackManager, connectionManager, imageLoader, userdataButtons, itemHelper, focusHandler, backdrop, listView, mediaInfo, inputManager, focusManager, cardBuilder, indicators, layoutManager, browser, serverNotifications, events, dom, appHost, globalize, itemShortcuts) {
         'use strict';
 
         function focusMainSection() {
@@ -761,7 +761,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
 
                 html += '<div class="verticalSection personSection" data-type="' + section.type + '">';
 
-                html += '<h2 class="sectionTitle padded-left">';
+                html += '<h2 class="sectionTitle sectionTitle-cards padded-left">';
                 html += section.name;
                 html += '</h2>';
 
@@ -923,21 +923,6 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                 }
 
                 section.classList.remove('hide');
-
-                if (skinSettings.enableAntiSpoliers()) {
-
-                    var isFirstUnseen = true;
-                    result.Items.forEach(function (item) {
-
-                        if (item.UserData && !item.UserData.Played) {
-
-                            if (!isFirstUnseen) {
-                                item.Overview = null;
-                            }
-                            isFirstUnseen = false;
-                        }
-                    });
-                }
 
                 section.innerHTML = listView.getListViewHtml({
                     items: result.Items,
@@ -1217,7 +1202,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
 
                 var itemsContainer = section.querySelector('.itemsContainer');
 
-                cardBuilder.buildCards(result.Items, extendVerticalCardOptions({
+                cardBuilder.buildCards(result.Items, {
                     parentContainer: section,
                     itemsContainer: itemsContainer,
                     shape: 'autoVertical',
@@ -1228,7 +1213,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                     centerText: true,
                     includeParentInfoInTitle: false,
                     allowBottomPadding: false
-                }));
+                });
 
                 var card = itemsContainer.querySelector('.card[data-id="' + item.Id + '"]');
                 if (card) {
@@ -1266,14 +1251,14 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
 
                 section.querySelector('h2').innerHTML = globalize.translate('MoreFrom', item.AlbumArtists[0].Name);
 
-                cardBuilder.buildCards(result.Items, extendVerticalCardOptions({
+                cardBuilder.buildCards(result.Items, {
                     parentContainer: section,
                     itemsContainer: section.querySelector('.itemsContainer'),
                     shape: 'autoVertical',
                     sectionTitleTagName: 'h2',
                     scalable: true,
                     coverImage: item.Type === 'MusicArtist' || item.Type === 'MusicAlbum'
-                }));
+                });
             });
         }
 

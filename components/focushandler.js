@@ -1,5 +1,5 @@
-define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 'scrollHelper', 'browser', 'layoutManager', 'dom'],
-    function (imageLoader, itemHelper, backdrop, mediaInfo, focusManager, scrollHelper, browser, layoutManager, dom) {
+define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 'scrollHelper', 'browser', 'layoutManager', 'dom', 'userSettings'],
+    function (imageLoader, itemHelper, backdrop, mediaInfo, focusManager, scrollHelper, browser, layoutManager, dom, userSettings) {
         'use strict';
 
         var enableAnimations = browser.animate || browser.edge;
@@ -111,10 +111,10 @@ define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 's
 
                     Emby.Models.item(id).then(function (item) {
 
-                        if (options.enableBackdrops) {
+                        if (options.enableBackdrops !== false && userSettings.enableBackdrops()) {
                             // The focus backdrops are too slow on xbox
                             if (!browser.slow && !browser.edge) {
-                                //backdrop.setBackdrop(item);
+                                backdrop.setBackdrop(item);
                             }
                         }
                         setSelectedInfo(card, item);

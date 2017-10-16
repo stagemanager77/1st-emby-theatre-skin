@@ -58,7 +58,7 @@ a {
 }
 
 .headerTop {
-    padding: 1.2em 0;
+    padding: 1.3em 0;
 }
 
 @media all and (max-width: 84em) {
@@ -109,10 +109,6 @@ a {
     }
 }
 
-.nowPlayingBackgroundContainer.withBackdrop {
-    background: rgba(6,6,6,.8) !important;
-}
-
 @media all and (max-width: 720px) {
 
     .headerClock {
@@ -148,11 +144,11 @@ a {
         justify-content: center;
         margin-top: -3.34em;
         position: relative;
-        top: -.7em;
+        top: -.9em;
     }
 
     .withSectionTabs .pageContainerTopPadding {
-        padding-top: 7.8em;
+        padding-top: 8em;
     }
 }
 
@@ -270,22 +266,18 @@ a {
 }
 
 .verticalSection {
-    margin-bottom: 1.9em;
+    margin-bottom: 1.3em;
 }
 
 @media all and (max-width: 500px), (max-height: 720px) {
 
     .verticalSection {
-        margin-bottom: 1.3em;
+        margin-bottom: 1em;
     }
 }
 
-.layout-tv .verticalSection {
-    margin-bottom: 1.7em;
-}
-
 .sectionTitleContainer {
-    margin-bottom: .6em;
+    margin-bottom: .5em;
 }
 
 .sectionTitle {
@@ -293,7 +285,7 @@ a {
 }
 
 .sectionTitle-cards {
-    margin-bottom: .6em;
+    margin-bottom: .3em;
 }
 
 .sectionTitleContainer > .sectionTitle {
@@ -327,7 +319,7 @@ a {
 }
 
 .sectionTitle-cards {
-    margin-left: .1em;
+    margin-left: .12em;
     margin-top: 0;
 }
 
@@ -360,11 +352,11 @@ a {
     }
 
 .padded-left {
-    padding-left: 2%;
+    padding-left: 1.7%;
 }
 
 .padded-right {
-    padding-right: 2%;
+    padding-right: 1.7%;
 }
 
 .padded-top {

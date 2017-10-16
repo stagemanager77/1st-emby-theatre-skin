@@ -34,11 +34,11 @@
     flex-shrink: 0;
 }
 
-.horizontalSection .sectionTitle {
-    font-size: 90%;
-    padding-left: .1em;
-    margin-bottom: 0;
-}
+    .horizontalSection .sectionTitle {
+        font-size: 90%;
+        padding-left: .1em;
+        margin-bottom: 0;
+    }
 
 .userViewNames {
     padding-left: 3.75%;
@@ -78,24 +78,26 @@
     overflow: hidden;
 }
 
+.homePageContainer .cardImageContainer {
+    animation: none !important;
+    opacity: 1 !important;
+}
+
 .homePageContainer .selectedItemInfo {
     right: 2%;
     bottom: 2.5%;
 }
 
-.homePageContent .squareCard:not(.scalableCard) .cardImageContainer {
-    width: 8.66em;
-    height: 8.66em;
+.homePageContent .squareCard {
+    width: 9.08em;
 }
 
-.homePageContent .backdropCard .cardImageContainer {
-    width: 15.395555555555555555555555555556em;
-    height: 8.66em;
+.homePageContent .backdropCard {
+    width: 15.7em;
 }
 
-.homePageContent .portraitCard .cardImageContainer {
-    width: 8.8em;
-    height: 13.2em;
+.homePageContent .portraitCard {
+    width: 9.3em;
 }
 
 .wideSpotlightCard {
@@ -103,7 +105,7 @@
 }
 
     .wideSpotlightCard .cardImageContainer {
-        height: 17.85em;
+        height: 17.59em;
     }
 
     .wideSpotlightCard.card-focusscale:focus > .cardBox {
@@ -112,4 +114,8 @@
 
 .homePageContainer .cardBox {
     margin: 4px !important;
+}
+
+.homePageContainer .cardContent {
+    border-radius: 0 !important;
 }

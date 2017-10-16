@@ -77,10 +77,10 @@ define(['loading', 'mainTabsManager', 'backdrop', 'connectionManager', 'scroller
                 name: globalize.translate('Albums')
             },
             {
-                name: globalize.translate('Artists')
+                name: globalize.translate('AlbumArtists')
             },
             {
-                name: globalize.translate('AlbumArtists')
+                name: globalize.translate('Artists')
             },
             {
                 name: globalize.translate('Playlists')
