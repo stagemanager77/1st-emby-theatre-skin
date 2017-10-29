@@ -1,6 +1,17 @@
 <div class="pageContainer fullWidth vertical flex flex-direction-column" style="padding-top:0;">
 
-    <div is="emby-scroller" data-horizontal="false" data-centerfocus="true" data-navcommands="card" class="scrollFrameY flex flex-grow focuscontainer-down" data-bindheader="true">
+    <div class="unlockContainer hide padded-left padded-right pageContainerTopPadding">
+
+        <div class="padded-left padded-right">
+            <p class="unlockText" style="text-align:center;margin-top:0;"></p>
+
+            <button is="emby-button" type="button" class="raised button-submit block btnUnlock">
+                <span class="btnUnlockText">${HeaderBecomeProjectSupporter}</span>
+            </button>
+        </div>
+    </div>
+
+    <div is="emby-scroller" data-horizontal="false" data-centerfocus="true" data-navcommands="card" class="scrollFrameY flex flex-grow focuscontainer-down hide liveTvContainer" data-bindheader="true">
 
         <div class="scrollSlider flex-grow pageContainerTopPadding">
 

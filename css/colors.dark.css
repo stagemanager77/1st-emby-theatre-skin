@@ -1,26 +1,14 @@
-.headerLogo {
-    background-image: url(images/logowhite.png);
-}
-
 .emby-button:focus:not(.btnUserViewHeader):not(.emby-tab-button) {
     background: #52B54B;
     color: #fff !important;
 }
 
 .card[data-cardtype='embyconnect'] .cardImageContainer {
-    background-color: #52B54B!important;
-}
-
-.userViewNames button {
-    color: #666;
+    background-color: #52B54B !important;
 }
 
 .userViewButtonText {
     border-bottom: 2px solid transparent;
-}
-
-.userViewNames button.selected {
-    color: inherit;
 }
 
 .albumsCard .cardImageContainer, .recordingsCard .cardImageContainer {
@@ -47,10 +35,16 @@
     background-color: #009688 !important;
 }
 
-.userViewNames button:focus {
-    color: #52B54B !important;
+.btnUserViewHeader.selected {
+    opacity: 1 !important;
+    color: inherit;
 }
 
-    .userViewNames button:focus .userViewButtonText {
+.btnUserViewHeader:focus {
+    color: #52B54B;
+    opacity: 1 !important;
+}
+
+    .btnUserViewHeader:focus .userViewButtonText {
         border-bottom-color: #52B54B;
     }

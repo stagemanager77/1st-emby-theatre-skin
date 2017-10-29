@@ -2,16 +2,6 @@ a {
     text-decoration: none;
 }
 
-.headerLogo {
-    background-position: left center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    width: 6em;
-    height: 1.5em;
-    vertical-align: middle;
-    display: inline-block;
-}
-
 .pageTitle {
     display: inline-flex;
     vertical-align: middle;
@@ -58,7 +48,7 @@ a {
 }
 
 .headerTop {
-    padding: 1.3em 0;
+    padding: 1.4em 0;
 }
 
 @media all and (max-width: 84em) {
@@ -144,11 +134,11 @@ a {
         justify-content: center;
         margin-top: -3.34em;
         position: relative;
-        top: -.9em;
+        top: -1em;
     }
 
     .withSectionTabs .pageContainerTopPadding {
-        padding-top: 8em;
+        padding-top: 8.2em;
     }
 }
 
@@ -266,7 +256,7 @@ a {
 }
 
 .verticalSection {
-    margin-bottom: 1.3em;
+    margin-bottom: 1em;
 }
 
 @media all and (max-width: 500px), (max-height: 720px) {
@@ -274,6 +264,10 @@ a {
     .verticalSection {
         margin-bottom: 1em;
     }
+}
+
+.verticalSection-extrabottompadding {
+    margin-bottom: 3em;
 }
 
 .sectionTitleContainer {

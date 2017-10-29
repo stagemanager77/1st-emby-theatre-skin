@@ -198,8 +198,6 @@ define(['playbackManager', 'skinManager', 'userSettings', 'pluginManager', 'brow
 
             skinManager.setTheme(userSettings.theme());
 
-            document.querySelector('.headerLogo').classList.add('hide');
-
             if (!browser.operaTv && !browser.web0s) {
                 document.querySelector('.headerSearchButton').classList.remove('hide');
             }
@@ -222,8 +220,6 @@ define(['playbackManager', 'skinManager', 'userSettings', 'pluginManager', 'brow
         function onLocalUserSignedOut(e) {
 
             // Put the logo back in the page title
-            document.querySelector('.headerLogo').classList.remove('hide');
-
             document.querySelector('.headerSearchButton').classList.add('hide');
             document.querySelector('.headerUserButton').classList.add('hide');
         }
@@ -652,18 +648,20 @@ define(['playbackManager', 'skinManager', 'userSettings', 'pluginManager', 'brow
 
     DefaultSkin.prototype.setTitle = function (title) {
 
-        if (title == null) {
-            document.querySelector('.headerLogo').classList.remove('hide');
-        } else {
-            document.querySelector('.headerLogo').classList.add('hide');
-        }
-
-        title = title || '&nbsp;';
+        var isDefault = title == null;
 
         var pageTitle = document.querySelector('.pageTitle');
-        pageTitle.classList.remove('pageTitleWithLogo');
+
+        if (isDefault) {
+            pageTitle.classList.add('pageTitleWithLogo');
+            pageTitle.classList.add('pageTitleWithDefaultLogo');
+        } else {
+            pageTitle.classList.remove('pageTitleWithLogo');
+            pageTitle.classList.remove('pageTitleWithDefaultLogo');
+        }
+
         pageTitle.style.backgroundImage = null;
-        pageTitle.innerHTML = title;
+        pageTitle.innerHTML = title || '&nbsp;';
     };
 
     DefaultSkin.prototype.search = function () {
@@ -697,9 +695,10 @@ define(['playbackManager', 'skinManager', 'userSettings', 'pluginManager', 'brow
 
         return [
             { name: 'Apple TV', id: 'appletv' },
-            { name: 'Dark', id: 'dark', isDefault: true },
+            { name: 'Dark', id: 'dark' },
             { name: 'Dark (green accent)', id: 'dark-green' },
             { name: 'Dark (red accent)', id: 'dark-red' },
+            { name: 'Very dark', id: 'verydark', isDefault: true },
             { name: 'Halloween', id: 'halloween' },
             { name: 'Light', id: 'light', isDefaultServerDashboard: true },
             { name: 'Light (blue accent)', id: 'light-blue' },

@@ -18,7 +18,7 @@
 
 .mainSection {
     display: flex;
-    margin-top: 2em;
+    margin-top: 2.5em;
 }
 
 .smallBottomMargin {
@@ -43,7 +43,7 @@
 }
 
 .albumMainSection {
-    margin-top: 0;
+    margin-top: 2em;
 }
 
 .seasonMainSection {
@@ -135,7 +135,7 @@
 
 .itemPageFixedLeft {
     position: absolute;
-    top: 10%;
+    top: 12%;
     left: 0;
     width: 25%;
     padding: 1.25em 2em 0;

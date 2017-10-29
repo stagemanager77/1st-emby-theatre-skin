@@ -450,7 +450,6 @@
                 pageTitle.classList.add('pageTitleWithLogo');
                 pageTitle.classList.remove('pageTitleWithDefaultLogo');
                 pageTitle.innerHTML = '';
-                document.querySelector('.headerLogo').classList.add('hide');
             } else {
                 Emby.Page.setTitle(parentName || '');
             }
@@ -492,6 +491,15 @@
 
             slideUpToHide(headerElement);
             hideMainOsdControls();
+        }
+
+        function toggleOsd() {
+
+            if (currentVisibleMenu === 'osd') {
+                hideOsd();
+            } else if (!currentVisibleMenu) {
+                showOsd();
+            }
         }
 
         var osdHideTimeout;
@@ -1377,9 +1385,13 @@
         });
 
         function onWindowKeyDown(e) {
-            if (e.keyCode === 32 && !currentVisibleMenu) {
-                playbackManager.playPause(currentPlayer);
-                showOsd();
+
+            if (!currentVisibleMenu) {
+                if (e.keyCode === 32 || e.keyCode === 13) {
+                    playbackManager.playPause(currentPlayer);
+                    showOsd();
+                    return;
+                }
             }
 
             switch (e.key) {
@@ -1421,15 +1433,29 @@
             }
         }
 
-        view.querySelector('.pageContainer').addEventListener('click', function () {
+        view.addEventListener((window.PointerEvent ? 'pointerdown' : 'click'), function (e) {
 
-            // TODO: Replace this check with click vs tap detection
-            if (!layoutManager.mobile) {
-                playbackManager.playPause(currentPlayer);
+            var isClickInControlsArea = dom.parentWithClass(e.target, ['videoOsdBottom', 'upNextContainer']);
+
+            if (isClickInControlsArea) {
+                showOsd();
+
+                return;
+            }
+
+            var pointerType = e.pointerType || (layoutManager.mobile ? 'touch' : 'mouse');
+
+            switch (pointerType) {
+
+                case 'touch':
+                    toggleOsd();
+                    break;
+                default:
+                    playbackManager.playPause(currentPlayer);
+                    showOsd();
+                    break;
             }
         });
-
-        view.addEventListener('click', showOsd);
 
         if (browser.touch) {
             view.addEventListener('dblclick', onDoubleClick);

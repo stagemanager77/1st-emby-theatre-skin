@@ -22,21 +22,19 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
             focusManager.autoFocus(this);
         }
 
-        function setTitle(item) {
+        function setTitle(item, apiClient) {
 
-            var url = Emby.Models.logoImageUrl(item, {});
+            var url = logoImageUrl(item, apiClient, {});
 
             if (item.Type === 'BoxSet') {
                 Emby.Page.setTitle('');
             }
             else if (url) {
 
-                //var pageTitle = document.querySelector('.pageTitle');
-                //pageTitle.style.backgroundImage = "url('" + url + "')";
-                //pageTitle.classList.add('pageTitleWithLogo');
-                //pageTitle.innerHTML = '';
-                //document.querySelector('.headerLogo').classList.add('hide');
-                Emby.Page.setTitle('');
+                var pageTitle = document.querySelector('.pageTitle');
+                pageTitle.style.backgroundImage = "url('" + url + "')";
+                pageTitle.classList.add('pageTitleWithLogo');
+                pageTitle.innerHTML = '';
             } else {
                 Emby.Page.setTitle('');
             }
@@ -110,31 +108,6 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
             }
 
             return null;
-        }
-
-        function renderLogo(view, item, apiClient) {
-
-            var url = logoImageUrl(item, apiClient, {
-                maxWidth: 300
-            });
-
-            var detailLogo = view.querySelector('.detailLogo');
-
-            if (url) {
-                detailLogo.classList.remove('hide');
-                detailLogo.classList.add('lazy');
-                detailLogo.setAttribute('data-src', url);
-                imageLoader.lazyImage(detailLogo);
-
-                //if (detailLogo.animate) {
-                //    setTimeout(function() {
-                //        bounceIn(detailLogo);
-                //    }, 100);
-                //}
-
-            } else {
-                detailLogo.classList.add('hide');
-            }
         }
 
         function getDetailImageContainer(view, item) {
@@ -265,7 +238,8 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                 record: false,
                 //editImages: false,
                 deleteItem: item.IsFolder === true,
-                user: user
+                user: user,
+                share: true
             };
 
             if (appHost.supports('sync')) {
@@ -359,7 +333,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
             }
 
             var mediaInfoElem = view.querySelector('.mediaInfoPrimary');
-            if (item.Type === 'Season') {
+            if (item.Type === 'Season' || item.Type === 'SeriesTimer') {
                 mediaInfoElem.classList.add('hide');
             } else {
                 mediaInfoElem.classList.remove('hide');
@@ -578,6 +552,8 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                     playlistId: item.Type === 'Playlist' ? item.Id : null,
                     image: item.Type === 'Playlist',
                     artist: 'auto',
+                    showIndex: item.Type === 'MusicAlbum',
+                    index: 'disc',
                     containerAlbumArtists: item.AlbumArtists,
                     addToListButton: true
                 });
@@ -614,9 +590,10 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
             html += listView.getListViewHtml({
                 items: items,
                 enableUserDataButtons: false,
-                image: false,
+                image: true,
+                imageSource: 'channel',
                 showProgramDateTime: true,
-                showChannel: true,
+                showChannel: false,
                 mediaInfo: false,
                 action: 'none',
                 moreButton: false,
@@ -638,7 +615,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                 EnableTotalRecordCount: false,
                 EnableUserData: false,
                 SeriesTimerId: seriesTimerId,
-                Fields: "ChannelInfo"
+                Fields: "ChannelInfo,ChannelImage"
 
             }).then(function (result) {
 
@@ -1536,19 +1513,18 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
 
                     currentItem = item;
 
+                    var apiClient = connectionManager.getApiClient(item.ServerId);
+
                     // If it's a person, leave the backdrop image from wherever we came from
                     if (item.Type !== 'Person') {
                         backdrop.setBackdrops([item]);
-                        setTitle(item);
+                        setTitle(item, apiClient);
                     }
-
-                    var apiClient = connectionManager.getApiClient(item.ServerId);
 
                     if (reloadAllData) {
                         renderName(view, item);
                         renderParentName(view, item);
                         renderImage(view, item);
-                        renderLogo(view, item, apiClient);
                         renderChildren(view, item, apiClient);
                         renderSeriesTimerEditor(view, item, user, apiClient);
                         renderDetails(self, view, item, user);

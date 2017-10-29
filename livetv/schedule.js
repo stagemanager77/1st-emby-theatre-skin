@@ -101,7 +101,7 @@
 
             var group = groups[i];
 
-            html += '<div class="verticalSection">';
+            html += '<div class="verticalSection verticalSection-extrabottompadding">';
 
             html += '<h2 class="sectionTitle sectionTitle-cards padded-left">' + group.name + '</h2>';
 
@@ -114,7 +114,7 @@
 
             var supportsImageAnalysis = appHost.supports('imageanalysis');
             var cardLayout = appHost.preferVisualCards || supportsImageAnalysis;
-            cardLayout = false;
+            cardLayout = true;
 
             html += cardBuilder.getCardsHtml({
                 items: group.items,
@@ -122,16 +122,17 @@
                 showParentTitleOrTitle: true,
                 showAirTime: true,
                 showAirEndTime: true,
-                showChannelName: true,
+                showChannelName: false,
                 cardLayout: cardLayout,
                 centerText: !cardLayout,
-                vibrant: cardLayout && supportsImageAnalysis,
+                vibrant: false,
                 action: 'edit',
                 cardFooterAside: 'none',
                 preferThumb: true,
                 coverImage: true,
                 allowBottomPadding: !enableScrollX(),
-                overlayText: false
+                overlayText: false,
+                showChannelLogo: cardLayout
 
             });
             html += '</div>';
